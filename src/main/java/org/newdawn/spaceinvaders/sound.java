@@ -1,12 +1,11 @@
 package org.newdawn.spaceinvaders;
 import javax.sound.sampled.*;
 import java.io.File;
-import java.io.IOException;
 
-public class BGM {
-    public BGM(){
+public class sound {
+    public sound(String pathname){
         try {
-            AudioInputStream ais = AudioSystem.getAudioInputStream(new File("sound/bgm.wav"));
+            AudioInputStream ais = AudioSystem.getAudioInputStream(new File(pathname));
             Clip clip = AudioSystem.getClip();
             clip.open(ais);
             clip.start();

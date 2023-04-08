@@ -14,10 +14,9 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.newdawn.spaceinvaders.entity.AlienEntity;
-import org.newdawn.spaceinvaders.entity.Entity;
-import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.entity.ShotEntity;
+
+import org.newdawn.spaceinvaders.entity.*;
+
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -36,6 +35,7 @@ import org.newdawn.spaceinvaders.entity.ShotEntity;
  */
 public class Game extends Canvas 
 {
+	int timer;
 	/** The stragey that allows us to use accelerate page flipping */
 	private BufferStrategy strategy;
 	/** True if the game is currently "running", i.e. the game loop is looping */
@@ -75,14 +75,21 @@ public class Game extends Canvas
 	private String windowTitle = "Space Invaders 102";
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
-	
+
+	/** 장애물 */
+	public void AddObstacle() {
+		ObstacleEntity obstacle = new ObstacleEntity(this, "sprites/obstacle.png", (int) (Math.random() * 750), 10);
+		entities.add(obstacle);
+	}
+
+
 	/**
 	 * Construct our game and set it running.
 	 */
 	public Game() {
 		// create a frame to contain our game
 		container = new JFrame("Space Invaders 102");
-
+		
 		// get hold the content of the frame and set up the resolution of the game
 		JPanel panel = (JPanel) container.getContentPane();
 		panel.setPreferredSize(new Dimension(800,600));
@@ -147,7 +154,7 @@ public class Game extends Canvas
 	 */
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, "sprites/ship.gif",370,550);
+		ship = new ShipEntity(this,"sprites/ship.png",370,500);
 		entities.add(ship);
 		
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -233,7 +240,7 @@ public class Game extends Canvas
 		
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this, "sprites/shot.gif",ship.getX()+10,ship.getY()-30);
+		ShotEntity shot = new ShotEntity(this,"sprites/shot.png",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
 	}
 	
@@ -248,10 +255,13 @@ public class Game extends Canvas
 	 * - Checking Input
 	 * <p>
 	 */
+	String pathname;
+
+
 	public void gameLoop() {
 		long lastLoopTime = SystemTimer.getTime();
 
-		new BGM();
+		new sound("sound/bgm.wav");
 
 		// keep looping round til the game ends
 		while (gameRunning) {
@@ -264,7 +274,7 @@ public class Game extends Canvas
 			// update the frame counter
 			lastFpsTime += delta;
 			fps++;
-			
+			timer ++;
 			// update our FPS counter if a second has passed since
 			// we last recorded
 			if (lastFpsTime >= 1000) {
@@ -286,8 +296,12 @@ public class Game extends Canvas
 					
 					entity.move(delta);
 				}
+				if(timer%50==0){
+					AddObstacle();
+				}
 			}
-			
+
+
 			// cycle round drawing all the entities we have in the game
 			for (int i=0;i<entities.size();i++) {
 				Entity entity = (Entity) entities.get(i);
@@ -353,6 +367,7 @@ public class Game extends Canvas
 			// if we're pressing fire, attempt to fire
 			if (firePressed) {
 				tryToFire();
+
 			}
 			
 			// we want each frame to take 10 milliseconds, to do this
@@ -360,6 +375,9 @@ public class Game extends Canvas
 			// to this and then factor in the current time to give 
 			// us our final value to wait for
 			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+
+
+
 		}
 	}
 	
@@ -375,6 +393,8 @@ public class Game extends Canvas
 	 * 
 	 * @author Kevin Glass
 	 */
+
+
 	private class KeyInputHandler extends KeyAdapter {
 		/** The number of key presses we've had while waiting for an "any key" press */
 		private int pressCount = 1;
@@ -402,6 +422,7 @@ public class Game extends Canvas
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
+
 			}
 		} 
 		
@@ -425,6 +446,7 @@ public class Game extends Canvas
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = false;
+				new sound("sound/hitSound.wav");
 			}
 		}
 
@@ -467,6 +489,12 @@ public class Game extends Canvas
 	 * 
 	 * @param argv The arguments that are passed into our game
 	 */
+
+//	public void addObstacle(){
+//		obstacle = new ObstacleEntity(this,"sprites/obstacle.png")
+//	}
+
+
 	public static void main(String argv[]) {
 		Game g = new Game();
 
