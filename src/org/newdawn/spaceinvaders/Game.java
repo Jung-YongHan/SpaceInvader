@@ -248,10 +248,11 @@ public class Game extends Canvas
 	 * - Checking Input
 	 * <p>
 	 */
+	String pathname;
 	public void gameLoop() {
 		long lastLoopTime = SystemTimer.getTime();
 
-		new BGM();
+		new sound("sound/bgm.wav");
 
 		// keep looping round til the game ends
 		while (gameRunning) {
@@ -353,6 +354,7 @@ public class Game extends Canvas
 			// if we're pressing fire, attempt to fire
 			if (firePressed) {
 				tryToFire();
+
 			}
 			
 			// we want each frame to take 10 milliseconds, to do this
@@ -375,6 +377,8 @@ public class Game extends Canvas
 	 * 
 	 * @author Kevin Glass
 	 */
+
+
 	private class KeyInputHandler extends KeyAdapter {
 		/** The number of key presses we've had while waiting for an "any key" press */
 		private int pressCount = 1;
@@ -402,6 +406,7 @@ public class Game extends Canvas
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
+
 			}
 		} 
 		
@@ -425,6 +430,7 @@ public class Game extends Canvas
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = false;
+				new sound("sound/hitSound.wav");
 			}
 		}
 
