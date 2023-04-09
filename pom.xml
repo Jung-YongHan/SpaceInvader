@@ -13,6 +13,14 @@
             <artifactId>hibernate-core</artifactId>
             <version>5.6.9.Final</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.dnsalias.java</groupId>
+            <artifactId>timer</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/gagetimer.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <properties>
