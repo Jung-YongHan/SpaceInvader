@@ -13,9 +13,20 @@ public class GameFrame extends JFrame {
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
 
         // get hold the content of the frame and set up the resolution of the game
-        JPanel panel = (JPanel) getContentPane();
-        panel.setPreferredSize(new Dimension(800,600));
-        panel.setLayout(null);
+        setContentPane(new JPanel(){
+            @Override
+            public void paintComponent(Graphics g){
+                Image backgroundImage = new ImageIcon("src/main/resources/background/mainPageBackground.jpg").getImage();
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        });
+
+        setIgnoreRepaint(false);
+
+//        // get hold the content of the frame and set up the resolution of the game
+//        JPanel panel = (JPanel) getContentPane();
+//        panel.setPreferredSize(new Dimension(800,600));
+//        panel.setLayout(null);
 
 //        // setup our canvas size and put it into the content of the frame
 //        setBounds(0,0,800,600);
@@ -26,8 +37,8 @@ public class GameFrame extends JFrame {
         setIgnoreRepaint(true);
 
         // finally make the window visible
-        pack();
-        setResizable(false);
+//        pack();
+//        setResizable(false);
         setVisible(true);
 
     }
