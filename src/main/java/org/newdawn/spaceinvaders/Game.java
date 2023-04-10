@@ -1,16 +1,16 @@
 package org.newdawn.spaceinvaders;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -75,6 +75,7 @@ public class Game extends Canvas
 	private String windowTitle = "Space Invaders 102";
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
+	private Image background;
 
 	/** 장애물 */
 	public void AddObstacle() {
@@ -267,6 +268,12 @@ public class Game extends Canvas
 
 		new Sound("sound/bgm.wav");
 
+		try {
+			background = ImageIO.read(new File("src/main/resources/background/stage1Background.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		// keep looping round til the game ends
 		while (gameRunning) {
 			// work out how long its been since the last update, this
@@ -290,8 +297,13 @@ public class Game extends Canvas
 			// Get hold of a graphics context for the accelerated
 			// surface and blank it out
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-			g.setColor(Color.black);
-			g.fillRect(0,0,800,600);
+//			g.setColor(Color.black);
+//			g.fillRect(0,0,800,600);
+
+			// draw the background image
+			if (background != null) {
+				g.drawImage(background, 0, 0, null);
+			}
 
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
@@ -501,6 +513,7 @@ public class Game extends Canvas
 
 	public static void main(String argv[]) {
 		MainFrame mainFrame = new MainFrame();
+//		GameFrame gameFrame = new GameFrame();
 //
 //		// Start the main game loop, note: this method will not
 //		// return until the game has finished running. Hence we are
