@@ -2,8 +2,8 @@ package org.newdawn.spaceinvaders;
 import javax.sound.sampled.*;
 import java.io.File;
 
-public class sound {
-    public sound(String pathname){
+public class Sound {
+    public Sound(String pathname){
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(new File(pathname));
             Clip clip = AudioSystem.getClip();
