@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
         setContentPane(new JPanel(){
             @Override
             public void paintComponent(Graphics g){
-                Image backgroundImage = new ImageIcon("src/main/resources/background/mainPageBackground.jpg").getImage();
+                Image backgroundImage = new ImageIcon("src/main/resources/background/mainPageBackground0.png").getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         });
@@ -79,9 +79,10 @@ public class MainFrame extends JFrame {
         shopButton.setForeground(Color.WHITE); // 글자색
         shopButton.setFocusPainted(false); // 테두리
         shopButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        shopButton.setBounds(350, 275, 100, 50);
+//        shopButton.setBounds(350, 275, 100, 50);
 
         getContentPane().setLayout(new GridLayout(1, 1));
+
         getContentPane().add(startButton, BorderLayout.SOUTH);
         getContentPane().add(myPageButton, BorderLayout.SOUTH);
         getContentPane().add(shopButton, BorderLayout.SOUTH);
