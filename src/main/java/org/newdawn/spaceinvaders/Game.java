@@ -438,7 +438,9 @@ public class Game extends Canvas
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
-
+			}
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				// 메인페이지로 돌아가
 			}
 		}
 
