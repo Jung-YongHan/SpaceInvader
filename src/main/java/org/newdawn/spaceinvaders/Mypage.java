@@ -5,12 +5,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-public class MainFrame extends JFrame {
-    private JButton startButton;
-    private JButton myPageButton;
+public class Mypage extends JFrame {
+
+    private JButton BackButton;
     private JButton shopButton;
 
-    public MainFrame() {
+    public Mypage() {
         super("Main Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
@@ -28,48 +28,31 @@ public class MainFrame extends JFrame {
         setIgnoreRepaint(false);
 
         // 버튼 추가
-        startButton = new JButton("Start");
+        BackButton = new JButton("Back");
         // 버튼 서식
-        startButton.setOpaque(false);
-        startButton.setContentAreaFilled(false); // 배경
-        startButton.setBorderPainted(false); // 배경
-        startButton.setForeground(Color.WHITE); // 글자색
-        startButton.setFocusPainted(false); // 테두리
-        startButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        startButton.setBounds(350, 275, 100, 50);
+        BackButton.setOpaque(false);
+        BackButton.setContentAreaFilled(false); // 배경
+        BackButton.setBorderPainted(false); // 배경
+        BackButton.setForeground(Color.WHITE); // 글자색
+        BackButton.setFocusPainted(false); // 테두리
+        BackButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
+        BackButton.setBounds(350, 275, 100, 50);
 
-        startButton.addActionListener(new ActionListener() {
+        BackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Game game = new Game(new GameFrame());
+                        MainFrame mainFrame = new MainFrame();
                         setVisible(false);
-                        game.gameLoop();
+
                     }
                 });
                 thread.start();
             }
         });
 
-        myPageButton = new JButton("MyPage");
-        // 버튼 서식
-        myPageButton.setOpaque(false);
-        myPageButton.setContentAreaFilled(false); // 배경
-        myPageButton.setBorderPainted(false); // 배경
-        myPageButton.setForeground(Color.WHITE); // 글자색
-        myPageButton.setFocusPainted(false); // 테두리
-        myPageButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        myPageButton.setBounds(350, 275, 100, 50);
-
-        myPageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 마이페이지 넘어가는 로직
-                Mypage mypage = new Mypage();
-            }
-        });
 
         shopButton = new JButton("Shop");
         // 버튼 서식
@@ -83,8 +66,7 @@ public class MainFrame extends JFrame {
 
         getContentPane().setLayout(new GridLayout(1, 1));
 
-        getContentPane().add(startButton, BorderLayout.SOUTH);
-        getContentPane().add(myPageButton, BorderLayout.SOUTH);
+        getContentPane().add(BackButton, BorderLayout.SOUTH);
         getContentPane().add(shopButton, BorderLayout.SOUTH);
 
         shopButton.addActionListener(new ActionListener() {
