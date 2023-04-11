@@ -45,7 +45,6 @@ public class MainFrame extends JFrame {
                     @Override
                     public void run() {
                         Game game = new Game(new GameFrame());
-                        setVisible(false);
                         game.gameLoop();
                     }
                 });
@@ -68,6 +67,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // 마이페이지 넘어가는 로직
                 Mypage mypage = new Mypage();
+                setVisible(false);
             }
         });
 
