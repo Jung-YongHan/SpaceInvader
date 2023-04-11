@@ -41,15 +41,17 @@ public class Mypage extends JFrame {
         BackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        MainFrame mainFrame = new MainFrame();
-                        setVisible(false);
-
-                    }
-                });
-                thread.start();
+                MainFrame mainFrame = new MainFrame();
+                setVisible(false);
+//                Thread thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        MainFrame mainFrame = new MainFrame();
+//                        setVisible(false);
+//
+//                    }
+//                });
+//                thread.start();
             }
         });
 
