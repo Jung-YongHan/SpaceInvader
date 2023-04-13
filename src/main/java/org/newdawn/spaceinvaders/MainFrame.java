@@ -32,7 +32,7 @@ public class MainFrame extends JFrame {
         // 버튼 서식
         startButton.setOpaque(false);
         startButton.setContentAreaFilled(false); // 배경
-        startButton.setBorderPainted(false); // 배경
+        startButton.setBorderPainted(false); // 외곽선
         startButton.setForeground(Color.WHITE); // 글자색
         startButton.setFocusPainted(false); // 테두리
         startButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
@@ -57,7 +57,7 @@ public class MainFrame extends JFrame {
         // 버튼 서식
         myPageButton.setOpaque(false);
         myPageButton.setContentAreaFilled(false); // 배경
-        myPageButton.setBorderPainted(false); // 배경
+        myPageButton.setBorderPainted(false); // 외곽선
         myPageButton.setForeground(Color.WHITE); // 글자색
         myPageButton.setFocusPainted(false); // 테두리
         myPageButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
@@ -76,17 +76,11 @@ public class MainFrame extends JFrame {
         // 버튼 서식
         shopButton.setOpaque(false);
         shopButton.setContentAreaFilled(false); // 배경
-        shopButton.setBorderPainted(false); // 배경
+        shopButton.setBorderPainted(false); // 외곽선
         shopButton.setForeground(Color.WHITE); // 글자색
         shopButton.setFocusPainted(false); // 테두리
         shopButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         shopButton.setBounds(350, 275, 100, 50);
-
-        getContentPane().setLayout(new GridLayout(1, 1));
-
-        getContentPane().add(startButton, BorderLayout.SOUTH);
-        getContentPane().add(myPageButton, BorderLayout.SOUTH);
-        getContentPane().add(shopButton, BorderLayout.SOUTH);
 
         shopButton.addActionListener(new ActionListener() {
             @Override
@@ -95,6 +89,13 @@ public class MainFrame extends JFrame {
                 setVisible(false);
             }
         });
+
+        // 버튼 추가
+        getContentPane().setLayout(new GridLayout(1, 1));
+
+        getContentPane().add(startButton, BorderLayout.SOUTH);
+        getContentPane().add(myPageButton, BorderLayout.SOUTH);
+        getContentPane().add(shopButton, BorderLayout.SOUTH);
 
 
         // finally make the window visible

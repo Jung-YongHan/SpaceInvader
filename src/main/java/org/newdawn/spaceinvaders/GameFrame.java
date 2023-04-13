@@ -2,8 +2,12 @@ package org.newdawn.spaceinvaders;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GameFrame extends JFrame {
+
+    private JButton BackButton;
 
     public GameFrame() {
         // create a frame to contain our game
@@ -12,6 +16,14 @@ public class GameFrame extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
 
+//        setContentPane(new JPanel(){
+//            @Override
+//            public void paintComponent(Graphics g){
+//                Image backgroundImage = new ImageIcon("src/main/resources/background/stage1Background.jpg").getImage();
+//                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+//            }
+//        });
+
         // get hold the content of the frame and set up the resolution of the game
         JPanel panel = (JPanel) getContentPane();
         panel.setPreferredSize(new Dimension(800,600));
@@ -19,7 +31,29 @@ public class GameFrame extends JFrame {
 
         // Tell AWT not to bother repainting our canvas since we're
         // going to do that our self in accelerated mode
-        setIgnoreRepaint(true);
+        setIgnoreRepaint(false);
+
+        // 버튼 생성
+        BackButton = new JButton("Back");
+        // 버튼 서식
+        BackButton.setOpaque(false);
+        BackButton.setContentAreaFilled(false); // 배경
+        BackButton.setBorderPainted(false); // 외곽선
+        BackButton.setForeground(Color.WHITE); // 글자색
+        BackButton.setFocusPainted(false); // 테두리
+        BackButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
+        BackButton.setBounds(0, 0, 100, 50);
+
+        BackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame mainFrame = new MainFrame();
+                setVisible(false);
+            }
+        });
+
+        //버튼 추가
+        getContentPane().add(BackButton);
 
         // finally make the window visible
 //        pack();

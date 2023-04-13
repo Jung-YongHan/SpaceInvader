@@ -97,11 +97,12 @@ public class Game extends Canvas
 ////		JPanel panel = (JPanel) container.getContentPane();
 ////		panel.setPreferredSize(new Dimension(800,600));
 ////		panel.setLayout(null);
-//
+
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
+		setBackground(new Color(0, 0, 0, 0));
 		container.getContentPane().add(this);
-//
+
 //		// Tell AWT not to bother repainting our canvas since we're
 //		// going to do that our self in accelerated mode
 //		setIgnoreRepaint(true);
@@ -297,8 +298,6 @@ public class Game extends Canvas
 			// Get hold of a graphics context for the accelerated
 			// surface and blank it out
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-//			g.setColor(Color.black);
-//			g.fillRect(0,0,800,600);
 
 			// draw the background image
 			if (background != null) {
