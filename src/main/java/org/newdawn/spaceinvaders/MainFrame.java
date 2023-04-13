@@ -49,6 +49,7 @@ public class MainFrame extends JFrame {
                     }
                 });
                 thread.start();
+                setVisible(false);
             }
         });
 
