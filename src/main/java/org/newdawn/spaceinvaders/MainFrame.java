@@ -79,7 +79,7 @@ public class MainFrame extends JFrame {
         shopButton.setForeground(Color.WHITE); // 글자색
         shopButton.setFocusPainted(false); // 테두리
         shopButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-//        shopButton.setBounds(350, 275, 100, 50);
+        shopButton.setBounds(350, 275, 100, 50);
 
         getContentPane().setLayout(new GridLayout(1, 1));
 
@@ -90,7 +90,8 @@ public class MainFrame extends JFrame {
         shopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 상점으로 넘어가는 로직
+                ShopFrame shop = new ShopFrame();
+                setVisible(false);
             }
         });
 
