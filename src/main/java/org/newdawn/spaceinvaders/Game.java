@@ -213,7 +213,7 @@ public class Game extends Canvas
 	 * Notification that an alien has been killed
 	 */
 	public void notifyAlienKilled() {
-		// reduce the alient count, if there are none left, the player has won!
+		// reduce the alien count, if there are none left, the player has won!
 		alienCount--;
 
 		if (alienCount == 0) {
