@@ -97,12 +97,11 @@ public class Game extends Canvas
 ////		JPanel panel = (JPanel) container.getContentPane();
 ////		panel.setPreferredSize(new Dimension(800,600));
 ////		panel.setLayout(null);
-
+//
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
-		setBackground(new Color(0, 0, 0, 0));
 		container.getContentPane().add(this);
-
+//
 //		// Tell AWT not to bother repainting our canvas since we're
 //		// going to do that our self in accelerated mode
 //		setIgnoreRepaint(true);
@@ -158,6 +157,7 @@ public class Game extends Canvas
 	 * Initialise the starting state of the entities (ship and aliens). Each
 	 * entitiy will be added to the overall list of entities in the game.
 	 */
+	int alienkill=0;
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
 		ship = new ShipEntity(this,"sprites/ship.png",370,500);
@@ -196,8 +196,11 @@ public class Game extends Canvas
 	/**
 	 * Notification that the player has died.
 	 */
+
+
+
 	public void notifyDeath() {
-		message = "Oh no! They got you, try again?";
+		message = "Oh no! They got you, try again?"	;
 		waitingForKeyPress = true;
 	}
 
@@ -208,6 +211,7 @@ public class Game extends Canvas
 	public void notifyWin() {
 		message = "Well done! You Win!";
 		waitingForKeyPress = true;
+
 	}
 
 	/**
@@ -217,8 +221,13 @@ public class Game extends Canvas
 		// reduce the alien count, if there are none left, the player has won!
 		alienCount--;
 
+		alienkill ++;
 		if (alienCount == 0) {
 			notifyWin();
+
+			//스코어 기록
+			int score =(alienkill/(timer/1000));
+			int[] record = {timer, alienkill, score};
 		}
 
 		// if there are still some aliens left then they all need to get faster, so
@@ -298,6 +307,9 @@ public class Game extends Canvas
 			// Get hold of a graphics context for the accelerated
 			// surface and blank it out
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
+//			g.setColor(Color.black);
+//			g.fillRect(0,0,800,600);
+
 
 			// draw the background image
 			if (background != null) {
@@ -361,7 +373,16 @@ public class Game extends Canvas
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
 				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+				//타이머(스코어) 0 초기화
+				timer =0;
 			}
+			//타이머 표시
+			g.drawString("타이머 "+String.valueOf(timer),720,30);
+
+			//죽인 에일리언 표시
+			g.drawString("죽인 에일리언"+String.valueOf(alienkill),30,30);
+
+
 
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over
@@ -498,6 +519,7 @@ public class Game extends Canvas
 			}
 		}
 	}
+
 
 	/**
 	 * The entry point into the game. We'll simply create an
