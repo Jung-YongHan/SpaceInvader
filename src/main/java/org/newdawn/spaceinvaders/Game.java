@@ -76,18 +76,22 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 	private Image background;
+	private int level;
 
 	/** 장애물 */
 	public void AddObstacle() {
 		ObstacleEntity obstacle = new ObstacleEntity(this, "sprites/obstacle.png", (int) (Math.random() * 750), 10);
 		entities.add(obstacle);
+		if(level == 4) obstacle.setMoveSpeed(500);
+		else if(level == 5) obstacle.setMoveSpeed(800);
 	}
 
 
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game(JFrame frame) {
+	public Game(JFrame frame, int level) {
+		this.level = level;
 		container = frame;
 //
 ////		// create a frame to contain our game
@@ -160,16 +164,33 @@ public class Game extends Canvas
 	int alienkill=0;
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this,"sprites/ship.png",370,500);
+		ship = new ShipEntity(this, "sprites/ship.png", 370, 500);
 		entities.add(ship);
 
-		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		alienCount = 0;
-		for (int row=0;row<5;row++) {
-			for (int x=0;x<12;x++) {
-				Entity alien = new AlienEntity(this,100+(x*50),(50)+row*30);
-				entities.add(alien);
-				alienCount++;
+		if (level == 1) {
+			for (int row = 0; row < 4; row++) {
+				for (int col = 0; col < 6; col++) {
+					Entity alien = new AlienEntity(this, 100 + (col * 110), (50) + row * 40);
+					entities.add(alien);
+					alienCount++;
+				}
+			}
+		} else if (level == 2) {
+			for (int row = 0; row < 5; row++) {
+				for (int col = 0; col < 8; col++) {
+					Entity alien = new AlienEntity(this, 100 + (col * 80), (50) + row * 30);
+					entities.add(alien);
+					alienCount++;
+				}
+			}
+		} else {
+			for (int row = 0; row < 5; row++) {
+				for (int col = 0; col < 12; col++) {
+					Entity alien = new AlienEntity(this, 100 + (col * 50), (50) + row * 30);
+					entities.add(alien);
+					alienCount++;
+				}
 			}
 		}
 	}
@@ -319,13 +340,19 @@ public class Game extends Canvas
 
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
-				for (int i=0;i<entities.size();i++) {
+				for (int i = 0; i < entities.size(); i++) {
 					Entity entity = (Entity) entities.get(i);
 
 					entity.move(delta);
 				}
-				if(timer%50==0){
-					AddObstacle();
+				if (level == 4) {
+					if (timer % 50 == 0) {
+						AddObstacle();
+					}
+				} else if (level == 5) {
+					if (timer % 20 == 0) {
+						AddObstacle();
+					}
 				}
 			}
 
