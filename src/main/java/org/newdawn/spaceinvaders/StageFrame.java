@@ -38,6 +38,7 @@ public class StageFrame extends JFrame {
             levelButton[i].setFocusPainted(false); // 테두리
             levelButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 30)); // 폰트
             levelButton[i].setBounds(130*i+50, 250, 150, 60);
+            final int level = i;
             levelButton[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -45,7 +46,7 @@ public class StageFrame extends JFrame {
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            Game game = new Game(new GameFrame());
+                            Game game = new Game(new GameFrame(), level+1);
                             game.gameLoop();
                         }
                     });
