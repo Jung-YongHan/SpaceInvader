@@ -228,7 +228,7 @@ public class Game extends Canvas
 	public void notifyDeath() {
 		message = "Level "+level+", Score :"+ alienkill	;
 		waitingForKeyPress = true;
-
+		alienkill=0;
 
 	   //Rank.setScore((alienkill/(timer/1000)));
 	}
@@ -240,6 +240,7 @@ public class Game extends Canvas
 	public void notifyWin() {
 		message = "Level "+level+", Score :"+alienkill;
 		waitingForKeyPress = true;
+		alienkill=0;
 
 	}
 
