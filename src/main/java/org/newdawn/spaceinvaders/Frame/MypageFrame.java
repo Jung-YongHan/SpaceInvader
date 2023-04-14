@@ -1,16 +1,17 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.Frame;
 
-import javax.imageio.ImageIO;
+import org.newdawn.spaceinvaders.Frame.MainFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-public class Mypage extends JFrame {
+public class MypageFrame extends JFrame {
 
     private JButton BackButton;
     private JButton shopButton;
 
-    public Mypage() {
+    public MypageFrame() {
         super("Main Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);

@@ -1,6 +1,7 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.Frame;
 
-import javax.imageio.ImageIO;
+import org.newdawn.spaceinvaders.Rank;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -62,7 +63,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 마이페이지 넘어가는 로직
-                Mypage mypage = new Mypage();
+                MypageFrame mypage = new MypageFrame();
                 setVisible(false);
             }
         });

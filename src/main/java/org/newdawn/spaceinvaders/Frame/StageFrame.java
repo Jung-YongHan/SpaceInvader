@@ -1,4 +1,8 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.Frame;
+
+import org.newdawn.spaceinvaders.Frame.GameFrame;
+import org.newdawn.spaceinvaders.Frame.MainFrame;
+import org.newdawn.spaceinvaders.Game;
 
 import javax.swing.*;
 import java.awt.*;

@@ -13,9 +13,9 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 
+import org.newdawn.spaceinvaders.Frame.MainFrame;
 import org.newdawn.spaceinvaders.entity.*;
 
 
