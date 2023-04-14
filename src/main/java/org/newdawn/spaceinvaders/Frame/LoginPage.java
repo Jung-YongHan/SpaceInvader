@@ -1,13 +1,26 @@
 package org.newdawn.spaceinvaders.Frame;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginPage extends JFrame{
+    private JLabel idLabel;
+    private JLabel pwLabel;
     private JTextField idField;
     private JPasswordField pwField;
+    private JLabel message;
     private JButton loginButton;
+    private JButton registerButton;
+    private String id = null;
+    private String pw = null;
 
     public LoginPage() {
         // Window Setting
@@ -37,7 +50,7 @@ public class LoginPage extends JFrame{
 //        getContentPane().add(titleLabel);
 
         // 아이디 입력 필드
-        JLabel idLabel = new JLabel("ID");
+        idLabel = new JLabel("ID");
         idLabel.setHorizontalAlignment(JLabel.CENTER);
         idLabel.setBounds(280, 240, 60, 30);
         idField = new JTextField(10);
@@ -46,13 +59,18 @@ public class LoginPage extends JFrame{
         getContentPane().add(idField);
 
         // 비밀번호 입력 필드
-        JLabel pwLabel = new JLabel("PW");
+        pwLabel = new JLabel("PW");
         pwLabel.setHorizontalAlignment(JLabel.CENTER);
         pwLabel.setBounds(280, 280, 60, 30);
         pwField = new JPasswordField(10);
         pwField.setBounds(340, 280, 160, 30);
         getContentPane().add(pwLabel);
         getContentPane().add(pwField);
+
+        message = new JLabel("");
+        message.setHorizontalAlignment(JLabel.CENTER);
+        message.setBounds(300, 415, 200, 30);
+        getContentPane().add(message);
 
         // 로그인 버튼
         loginButton = new JButton("Login");
@@ -70,23 +88,75 @@ public class LoginPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 // 로그인 버튼을 클릭한 경우
                 if (e.getSource() == loginButton) {
-                    String id = idField.getText();
-                    String pw = new String(pwField.getPassword());
+                    id = idField.getText();
+                    pw = new String(pwField.getPassword());
 
-                    // 아이디와 비밀번호를 확인하는 코드
-                    // ...
-
-                    // 로그인 성공한 경우
-                    // 다음 페이지로 넘어감
-                    // ...
+                    if (id.isEmpty() || pw.isEmpty()) {
+                        message.setText("ID 또는 PW를 입력하세요");
+                    } else {
+                        getDataByEmail();
+                    }
                 }
             }
         });
-        add(loginButton);
+        getContentPane().add(loginButton);
+
+        // 회원가입 버튼
+        registerButton = new JButton("Register");
+        // 버튼 서식
+        registerButton.setOpaque(false);
+//        registerButton.setContentAreaFilled(false); // 배경
+        registerButton.setBackground(Color.WHITE); // 배경색
+//        registerButton.setBorderPainted(false); // 외곽선
+//        registerButton.setForeground(Color.WHITE); // 글자색
+//        registerButton.setFocusPainted(false); // 테두리
+        registerButton.setFont(new Font("Arial", Font.PLAIN, 15)); // 폰트
+        registerButton.setBounds(300, 370, 200, 35);
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new RegisterPage();
+                dispose();
+            }
+        });
+        getContentPane().add(registerButton);
 
         setVisible(true);
     }
 
+    private void getDataByEmail(){
+
+        UserRecord userRecord = null;
+        try {
+            userRecord = FirebaseAuth.getInstance().getUserByEmail(idField.getText());
+            String email = userRecord.getEmail();
+            String uid = userRecord.getUid();
+            String password = userRecord.getDisplayName();
+
+            if (password.equals(String.valueOf(pwField.getPassword()))){
+                JOptionPane.showMessageDialog(null, "Hello" + " " + email);
+                setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.");
+            }
+
+            recoverUserData(uid);
+        } catch (FirebaseAuthException ex) {
+            Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void recoverUserData(String uid){
+        UserRecord userRecord = null;
+        try {
+            userRecord = FirebaseAuth.getInstance().getUser(uid);
+
+            Logger.getLogger(LoginPage.class.getName()).log(Level.INFO, "유저 데이터를 성공적으로 Fetch:");
+            Logger.getLogger(LoginPage.class.getName()).log(Level.INFO, userRecord.getUid());
+        } catch (FirebaseAuthException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
