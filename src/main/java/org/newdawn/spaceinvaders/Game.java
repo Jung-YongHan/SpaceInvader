@@ -226,9 +226,10 @@ public class Game extends Canvas
 
 
 	public void notifyDeath() {
-		message = "Oh no! They got you, try again?"	;
+		message = "Level "+level+", Score :"+ alienkill	;
 		waitingForKeyPress = true;
-
+		updateHighScore();
+		alienkill=0;
 
 	   //Rank.setScore((alienkill/(timer/1000)));
 	}
@@ -238,9 +239,18 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Well done! You Win!";
+		message = "Level "+level+", Score :"+alienkill;
 		waitingForKeyPress = true;
+		updateHighScore();
+		alienkill=0;
 
+	}
+
+	private int highScore = 0;
+	public void updateHighScore() {
+		if (alienkill > highScore) {
+			highScore = alienkill;
+		}
 	}
 
 
@@ -433,7 +443,7 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+				g.drawString("Rank 1st's score : "+highScore+"  Press any key",(700-g.getFontMetrics().stringWidth("Press any key"))/2,300);
 				//타이머(스코어) 0 초기화
 				timer =0;
 			}
