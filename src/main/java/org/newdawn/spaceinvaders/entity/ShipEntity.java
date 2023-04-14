@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Rank;
 
 /**
  * The entity that represents the players ship
@@ -51,11 +52,19 @@ public class ShipEntity extends Entity {
 	 * 
 	 * @param other The entity with which the ship has collided
 	 */
+
+
+
+
 	public void collidedWith(Entity other) {
 		// if its an alien, notify the game that the player
 		// is dead
+
 		if (other instanceof AlienEntity) {
+
 			game.notifyDeath();
+			// game.record();
+			game.increaseCoinCount();
 		}
 	}
 

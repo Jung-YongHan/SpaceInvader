@@ -76,13 +76,10 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 	private Image background;
-	private int level;
 
 	/** 장애물 */
 	public void AddObstacle() {
 		ObstacleEntity obstacle = new ObstacleEntity(this, "sprites/obstacle.png", (int) (Math.random() * 750), 10);
-		if(level == 4) obstacle.setMoveSpeed(500);
-		else if(level == 5) obstacle.setMoveSpeed(800);
 		entities.add(obstacle);
 	}
 
@@ -90,8 +87,7 @@ public class Game extends Canvas
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game(JFrame frame, int level) {
-		this.level = level;
+	public Game(JFrame frame) {
 		container = frame;
 //
 ////		// create a frame to contain our game
@@ -162,41 +158,20 @@ public class Game extends Canvas
 	 * entitiy will be added to the overall list of entities in the game.
 	 */
 	int alienkill=0;
-
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
 		ship = new ShipEntity(this,"sprites/ship.png",370,500);
 		entities.add(ship);
 
+		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		alienCount = 0;
-		if (level == 1){
-			for (int row=0;row<4;row++) {
-				for (int col=0;col<6;col++) {
-					Entity alien = new AlienEntity(this,100+(col*110),(50)+row*40);
-					entities.add(alien);
-					alienCount++;
-				}
-			}
-		} else if (level == 2){
-			for (int row=0;row<5;row++) {
-				for (int col=0;col<8;col++) {
-					Entity alien = new AlienEntity(this,100+(col*80),(50)+row*30);
-					entities.add(alien);
-					alienCount++;
-				}
-			}
-		} else{
-			for (int row=0;row<5;row++) {
-				for (int col=0;col<12;col++) {
-					Entity alien = new AlienEntity(this,100+(col*50),(50)+row*30);
-					entities.add(alien);
-					alienCount++;
-				}
+		for (int row=0;row<5;row++) {
+			for (int x=0;x<12;x++) {
+				Entity alien = new AlienEntity(this,100+(x*50),(50)+row*30);
+				entities.add(alien);
+				alienCount++;
 			}
 		}
-		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
-
-
 	}
 
 	/**
@@ -223,8 +198,9 @@ public class Game extends Canvas
 	 */
 
 
+
 	public void notifyDeath() {
-		message = "Oh no! They got you, try again?";
+		message = "Oh no! They got you, try again?"	;
 		waitingForKeyPress = true;
 	}
 
@@ -297,6 +273,7 @@ public class Game extends Canvas
 	 */
 	String pathname;
 
+
 	public void gameLoop() {
 		long lastLoopTime = SystemTimer.getTime();
 
@@ -347,15 +324,8 @@ public class Game extends Canvas
 
 					entity.move(delta);
 				}
-				if(level == 4) {
-					if (timer % 50 == 0) {
-						AddObstacle();
-					}
-				}
-				else if (level ==5) {
-					if (timer % 20 ==0){
-						AddObstacle();
-					}
+				if(timer%50==0){
+					AddObstacle();
 				}
 			}
 
@@ -414,6 +384,7 @@ public class Game extends Canvas
 			g.drawString("죽인 에일리언"+String.valueOf(alienkill),30,30);
 
 
+
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over
 			g.dispose();
@@ -441,6 +412,7 @@ public class Game extends Canvas
 			// to this and then factor in the current time to give
 			// us our final value to wait for
 			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+
 
 
 		}
@@ -557,6 +529,10 @@ public class Game extends Canvas
 	 *
 	 * @param argv The arguments that are passed into our game
 	 */
+
+//	public void addObstacle(){
+//		obstacle = new ObstacleEntity(this,"sprites/obstacle.png")
+//	}
 
 
 	public static void main(String argv[]) {
