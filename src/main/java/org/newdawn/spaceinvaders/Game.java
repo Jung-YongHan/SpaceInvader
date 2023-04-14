@@ -242,6 +242,7 @@ public class Game extends Canvas
 		}
 	}
 
+
 	/**
 	 * Attempt to fire a shot from the player. Its called "try"
 	 * since we must first check that the player can fire at this
