@@ -11,7 +11,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.6.9.Final</version>
+            <version>6.1.7.Final</version>
         </dependency>
 
         <dependency>
@@ -21,6 +21,32 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/gagetimer.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.auth</groupId>
+            <artifactId>google-auth-library-oauth2-http</artifactId>
+            <version>1.16.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+
+
+        <!--        <dependency>-->
+<!--            <groupId>com.google.auth</groupId>-->
+<!--            <artifactId>google-auth-library-credentials</artifactId>-->
+<!--            <version>1.16.0</version>-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <properties>
@@ -28,5 +54,22 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>config</directory>
+                <includes>
+                    <include>serviceAccountKey.json</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
     
 </project>
