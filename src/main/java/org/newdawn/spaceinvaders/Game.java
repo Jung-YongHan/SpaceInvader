@@ -207,8 +207,8 @@ public class Game extends Canvas
 		message = "Oh no! They got you, try again?"	;
 		waitingForKeyPress = true;
 
-		int time = timer;
-		int killedalien =alienkill;
+//		int time = timer;
+//		int killedalien =alienkill;
 		isGameOver = true;
 	   //Rank.setScore((alienkill/(timer/1000)));
 	}
@@ -221,8 +221,8 @@ public class Game extends Canvas
 		message = "Well done! You Win!";
 		waitingForKeyPress = true;
 
-		int time = timer;
-		int killedalien =alienkill;
+//		int time = timer;
+//		int killedalien =alienkill;
 		isGameOver = true;
 	}
 
@@ -318,7 +318,7 @@ public class Game extends Canvas
 
 	public void gameLoop() {
 
-		while(true){
+
 			long lastLoopTime = SystemTimer.getTime();
 
 			new Sound("sound/bgm.wav");
@@ -457,10 +457,8 @@ public class Game extends Canvas
 				// us our final value to wait for
 				SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
 
-			if (isGameOver){
-				break;
-			}
-		}
+
+
 
 		}
 	}
