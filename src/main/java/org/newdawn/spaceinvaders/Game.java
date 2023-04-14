@@ -244,9 +244,6 @@ public class Game extends Canvas
 	}
 
 
-
-
-
 	/**
 	 * Notification that an alien has been killed
 	 */
