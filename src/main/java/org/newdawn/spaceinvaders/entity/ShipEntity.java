@@ -10,7 +10,7 @@ import org.newdawn.spaceinvaders.Game;
 public class ShipEntity extends Entity {
 	/** The game in which the ship exists */
 	private Game game;
-	
+
 	/**
 	 * Create a new entity to represent the players ship
 	 *  
@@ -58,4 +58,6 @@ public class ShipEntity extends Entity {
 			game.notifyDeath();
 		}
 	}
+
+
 }
