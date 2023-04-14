@@ -9,6 +9,7 @@ import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -174,6 +175,9 @@ public class Game extends Canvas
 		}
 	}
 
+
+
+
 	/**
 	 * Notification from a game entity that the logic of the game
 	 * should be run at the next opportunity (normally as a result of some
@@ -202,6 +206,9 @@ public class Game extends Canvas
 	public void notifyDeath() {
 		message = "Oh no! They got you, try again?"	;
 		waitingForKeyPress = true;
+
+
+	   //Rank.setScore((alienkill/(timer/1000)));
 	}
 
 	/**
@@ -211,24 +218,40 @@ public class Game extends Canvas
 	public void notifyWin() {
 		message = "Well done! You Win!";
 		waitingForKeyPress = true;
-
+		//record();
 	}
 
 	/**
 	 * Notification that an alien has been killed
 	 */
-	public void notifyAlienKilled() {
+
+
+	//코인
+	private int coinCount = 0;
+	public void increaseCoinCount() {
+		coinCount++;
+		System.out.println("Coin Count: " + coinCount); // 콘솔에 현재 코인 개수를 출력합니다.
+	}
+
+
+
+	public void notifyAlienKilled(Entity alienEntity) {
 		// reduce the alien count, if there are none left, the player has won!
 		alienCount--;
 
 		alienkill ++;
 		if (alienCount == 0) {
 			notifyWin();
-
-			//스코어 기록
-			int score =(alienkill/(timer/1000));
-			int[] record = {timer, alienkill, score};
 		}
+
+		Random rand = new Random();
+		int randomNum = rand.nextInt(100);
+
+		if (randomNum < 50) { // 50%의 확률로 코인 생성
+			CoinEntity coin = new CoinEntity(this, "sprites/coin.png", alienEntity.getX(), alienEntity.getY());
+			entities.add(coin);
+		}
+
 
 		// if there are still some aliens left then they all need to get faster, so
 		// speed up all the existing aliens
