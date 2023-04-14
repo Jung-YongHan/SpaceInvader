@@ -10,8 +10,7 @@ import java.awt.event.ActionListener;
 public class Rank extends JFrame {
 
     private JButton BackButton;
-    private JButton shopButton;
-
+    private JLabel scoreLabel;
     public Rank() {
         super("Rank");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
@@ -26,6 +25,8 @@ public class Rank extends JFrame {
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         });
+
+        scoreLabel = new JLabel();
 
         setIgnoreRepaint(false);
 
@@ -45,25 +46,21 @@ public class Rank extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 MainFrame mainFrame = new MainFrame();
                 setVisible(false);
-//                Thread thread = new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        MainFrame mainFrame = new MainFrame();
-//                        setVisible(false);
-//
-//                    }
-//                });
-//                thread.start();
             }
         });
 
-//        private JLabel recordLabel;
-//
-//        Game game = new Game();
-//        int record = game.record;
 
-//        ShipEntity ship = new ShipEntity(game, ref, 1,1);
-//        public ShipEntity(Game game,String ref,int x,int y)
+        // JPanel 초기화
+        JPanel panel = new JPanel();
+        add(panel);
+
+        // scoreLabel 초기화
+        scoreLabel = new JLabel();
+        scoreLabel.setForeground(Color.BLACK); // 기본 글씨 색을 검은색으로 설정합니다.
+        panel.add(scoreLabel);
+
+        // Rank 창을 화면에 표시합니다.
+        setVisible(true);
 
 
 
@@ -75,5 +72,9 @@ public class Rank extends JFrame {
 //         setResizable(false);
         setVisible(true);
 
+    }
+    public void displayScore(int timer, int alienkill) {
+        // 점수를 GUI에 표시하는 코드를 여기에 작성합니다.
+        scoreLabel.setText("Time: " + timer + ", Alien Kills: " + alienkill);
     }
 }
