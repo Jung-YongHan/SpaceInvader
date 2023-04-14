@@ -226,7 +226,7 @@ public class Game extends Canvas
 
 
 	public void notifyDeath() {
-		message = "Oh no! They got you, try again?"	;
+		message = "Level "+level+", Score :"+ alienkill	;
 		waitingForKeyPress = true;
 
 
@@ -238,7 +238,7 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Well done! You Win!";
+		message = "Level "+level+", Score :"+alienkill;
 		waitingForKeyPress = true;
 
 	}
