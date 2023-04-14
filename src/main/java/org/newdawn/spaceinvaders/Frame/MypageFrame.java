@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 public class MypageFrame extends JFrame {
 
     private JButton BackButton;
-    private JButton shopButton;
 
     public MypageFrame() {
         super("Main Page");
@@ -53,29 +52,6 @@ public class MypageFrame extends JFrame {
 //                    }
 //                });
 //                thread.start();
-            }
-        });
-
-
-        shopButton = new JButton("Shop");
-        // 버튼 서식
-        shopButton.setOpaque(false);
-        shopButton.setContentAreaFilled(false); // 배경
-        shopButton.setBorderPainted(false); // 배경
-        shopButton.setForeground(Color.WHITE); // 글자색
-        shopButton.setFocusPainted(false); // 테두리
-        shopButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-//        shopButton.setBounds(350, 275, 100, 50);
-
-        getContentPane().setLayout(new GridLayout(1, 1));
-
-        getContentPane().add(BackButton, BorderLayout.SOUTH);
-        getContentPane().add(shopButton, BorderLayout.SOUTH);
-
-        shopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 상점으로 넘어가는 로직
             }
         });
 
