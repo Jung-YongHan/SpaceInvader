@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 
+import org.newdawn.spaceinvaders.Frame.LoginPage;
 import org.newdawn.spaceinvaders.Frame.MainFrame;
 import org.newdawn.spaceinvaders.entity.*;
 
@@ -618,6 +619,7 @@ public class Game extends Canvas
 	public static void main(String argv[]) {
 		MainFrame mainFrame = new MainFrame();
 		new FirebaseAdminSDK().initFirebase();
+		LoginPage test = new LoginPage();
 //		GameFrame gameFrame = new GameFrame();
 //
 //		// Start the main game loop, note: this method will not
