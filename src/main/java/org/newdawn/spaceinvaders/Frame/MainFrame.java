@@ -12,7 +12,6 @@ public class MainFrame extends JFrame {
     private JButton shopButton;
     private JButton RankButton;
 
-
     public MainFrame() {
         super("Main Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
@@ -113,10 +112,6 @@ public class MainFrame extends JFrame {
                 setVisible(false);
             }
         });
-
-
-
-
         // finally make the window visible
 //         pack();
 //         setResizable(false);
