@@ -9,6 +9,7 @@ import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -76,22 +77,18 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 	private Image background;
-	private int level;
 
 	/** 장애물 */
 	public void AddObstacle() {
 		ObstacleEntity obstacle = new ObstacleEntity(this, "sprites/obstacle.png", (int) (Math.random() * 750), 10);
 		entities.add(obstacle);
-		if(level == 4) obstacle.setMoveSpeed(500);
-		else if(level == 5) obstacle.setMoveSpeed(800);
 	}
 
 
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game(JFrame frame, int level) {
-		this.level = level;
+	public Game(JFrame frame) {
 		container = frame;
 //
 ////		// create a frame to contain our game
@@ -164,36 +161,22 @@ public class Game extends Canvas
 	int alienkill=0;
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, "sprites/ship.png", 370, 500);
+		ship = new ShipEntity(this,"sprites/ship.png",370,500);
 		entities.add(ship);
 
+		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		alienCount = 0;
-		if (level == 1) {
-			for (int row = 0; row < 4; row++) {
-				for (int col = 0; col < 6; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 110), (50) + row * 40);
-					entities.add(alien);
-					alienCount++;
-				}
-			}
-		} else if (level == 2) {
-			for (int row = 0; row < 5; row++) {
-				for (int col = 0; col < 8; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 80), (50) + row * 30);
-					entities.add(alien);
-					alienCount++;
-				}
-			}
-		} else {
-			for (int row = 0; row < 5; row++) {
-				for (int col = 0; col < 12; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 50), (50) + row * 30);
-					entities.add(alien);
-					alienCount++;
-				}
+		for (int row=0;row<5;row++) {
+			for (int x=0;x<12;x++) {
+				Entity alien = new AlienEntity(this,100+(x*50),(50)+row*30);
+				entities.add(alien);
+				alienCount++;
 			}
 		}
 	}
+
+
+
 
 	/**
 	 * Notification from a game entity that the logic of the game
@@ -223,6 +206,9 @@ public class Game extends Canvas
 	public void notifyDeath() {
 		message = "Oh no! They got you, try again?"	;
 		waitingForKeyPress = true;
+
+
+	   //Rank.setScore((alienkill/(timer/1000)));
 	}
 
 	/**
@@ -235,21 +221,49 @@ public class Game extends Canvas
 
 	}
 
+
+
+
+
 	/**
 	 * Notification that an alien has been killed
 	 */
-	public void notifyAlienKilled() {
+
+
+	// Rank 객체를 전달할 수 있도록 하는 생성자
+	private Rank rank;
+	public Game(Rank rank) {
+		this.rank = rank;
+	}
+
+
+
+	//코인
+	private int coinCount = 0;
+	public void increaseCoinCount() {
+		coinCount++;
+		System.out.println("Coin Count: " + coinCount); // 콘솔에 현재 코인 개수를 출력합니다.
+	}
+
+
+
+	public void notifyAlienKilled(Entity alienEntity) {
 		// reduce the alien count, if there are none left, the player has won!
 		alienCount--;
 
 		alienkill ++;
 		if (alienCount == 0) {
 			notifyWin();
-
-			//스코어 기록
-			int score =(alienkill/(timer/1000));
-			int[] record = {timer, alienkill, score};
 		}
+
+		Random rand = new Random();
+		int randomNum = rand.nextInt(100);
+
+		if (randomNum < 50) { // 50%의 확률로 코인 생성
+			CoinEntity coin = new CoinEntity(this, "sprites/coin.png", alienEntity.getX(), alienEntity.getY());
+			entities.add(coin);
+		}
+
 
 		// if there are still some aliens left then they all need to get faster, so
 		// speed up all the existing aliens
@@ -340,19 +354,13 @@ public class Game extends Canvas
 
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
-				for (int i = 0; i < entities.size(); i++) {
+				for (int i=0;i<entities.size();i++) {
 					Entity entity = (Entity) entities.get(i);
 
 					entity.move(delta);
 				}
-				if (level == 4) {
-					if (timer % 50 == 0) {
-						AddObstacle();
-					}
-				} else if (level == 5) {
-					if (timer % 20 == 0) {
-						AddObstacle();
-					}
+				if(timer%50==0){
+					AddObstacle();
 				}
 			}
 
@@ -412,33 +420,34 @@ public class Game extends Canvas
 
 
 
-			// finally, we've completed drawing so clear up the graphics
-			// and flip the buffer over
-			g.dispose();
-			strategy.show();
+					// finally, we've completed drawing so clear up the graphics
+					// and flip the buffer over
+					g.dispose();
+					strategy.show();
 
-			// resolve the movement of the ship. First assume the ship
-			// isn't moving. If either cursor key is pressed then
-			// update the movement appropraitely
-			ship.setHorizontalMovement(0);
+					// resolve the movement of the ship. First assume the ship
+					// isn't moving. If either cursor key is pressed then
+					// update the movement appropraitely
+					ship.setHorizontalMovement(0);
 
-			if ((leftPressed) && (!rightPressed)) {
-				ship.setHorizontalMovement(-moveSpeed);
-			} else if ((rightPressed) && (!leftPressed)) {
-				ship.setHorizontalMovement(moveSpeed);
-			}
+					if ((leftPressed) && (!rightPressed)) {
+						ship.setHorizontalMovement(-moveSpeed);
+					} else if ((rightPressed) && (!leftPressed)) {
+						ship.setHorizontalMovement(moveSpeed);
+					}
 
-			// if we're pressing fire, attempt to fire
-			if (firePressed) {
-				tryToFire();
+					// if we're pressing fire, attempt to fire
+					if (firePressed) {
+						tryToFire();
 
-			}
+					}
 
-			// we want each frame to take 10 milliseconds, to do this
-			// we've recorded when we started the frame. We add 10 milliseconds
-			// to this and then factor in the current time to give
-			// us our final value to wait for
-			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+					// we want each frame to take 10 milliseconds, to do this
+					// we've recorded when we started the frame. We add 10 milliseconds
+					// to this and then factor in the current time to give
+					// us our final value to wait for
+					SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+
 
 
 
