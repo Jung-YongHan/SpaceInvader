@@ -27,13 +27,13 @@ public class LoginPage extends JFrame{
         });
         getContentPane().setLayout(null);
 
-        JLabel titleLabel = new JLabel("Login");
-//        titleLabel.setForeground(Color.BLACK); // 글자색
-//        titleLabel.setOpaque(true);
-//        titleLabel.setBackground(Color.);
-        titleLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 35));
-        titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setBounds(300, 170, 200, 55);
+//        JLabel titleLabel = new JLabel("Login");
+////        titleLabel.setForeground(Color.BLACK); // 글자색
+////        titleLabel.setOpaque(true);
+////        titleLabel.setBackground(Color.);
+//        titleLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 35));
+//        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+//        titleLabel.setBounds(300, 170, 200, 55);
 //        getContentPane().add(titleLabel);
 
         // 아이디 입력 필드
