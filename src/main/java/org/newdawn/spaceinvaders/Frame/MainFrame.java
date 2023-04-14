@@ -1,6 +1,7 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.Frame;
 
-import javax.imageio.ImageIO;
+import org.newdawn.spaceinvaders.Rank;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,6 +10,8 @@ public class MainFrame extends JFrame {
     private JButton startButton;
     private JButton myPageButton;
     private JButton shopButton;
+    private JButton RankButton;
+
 
     public MainFrame() {
         super("Main Page");
@@ -32,7 +35,7 @@ public class MainFrame extends JFrame {
         // 버튼 서식
         startButton.setOpaque(false);
         startButton.setContentAreaFilled(false); // 배경
-        startButton.setBorderPainted(false); // 외곽선
+        startButton.setBorderPainted(false); // 배경
         startButton.setForeground(Color.WHITE); // 글자색
         startButton.setFocusPainted(false); // 테두리
         startButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
@@ -41,14 +44,7 @@ public class MainFrame extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Game game = new Game(new GameFrame());
-                        game.gameLoop();
-                    }
-                });
-                thread.start();
+                StageFrame stageFrame = new StageFrame();
                 setVisible(false);
             }
         });
@@ -57,7 +53,7 @@ public class MainFrame extends JFrame {
         // 버튼 서식
         myPageButton.setOpaque(false);
         myPageButton.setContentAreaFilled(false); // 배경
-        myPageButton.setBorderPainted(false); // 외곽선
+        myPageButton.setBorderPainted(false); // 배경
         myPageButton.setForeground(Color.WHITE); // 글자색
         myPageButton.setFocusPainted(false); // 테두리
         myPageButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
@@ -67,7 +63,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 마이페이지 넘어가는 로직
-                Mypage mypage = new Mypage();
+                MypageFrame mypage = new MypageFrame();
                 setVisible(false);
             }
         });
@@ -76,11 +72,13 @@ public class MainFrame extends JFrame {
         // 버튼 서식
         shopButton.setOpaque(false);
         shopButton.setContentAreaFilled(false); // 배경
-        shopButton.setBorderPainted(false); // 외곽선
+        shopButton.setBorderPainted(false); // 배경
         shopButton.setForeground(Color.WHITE); // 글자색
         shopButton.setFocusPainted(false); // 테두리
         shopButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         shopButton.setBounds(350, 275, 100, 50);
+
+        getContentPane().setLayout(new GridLayout(1, 1));
 
         shopButton.addActionListener(new ActionListener() {
             @Override
@@ -90,12 +88,33 @@ public class MainFrame extends JFrame {
             }
         });
 
-        // 버튼 추가
+        RankButton = new JButton("Rank");
+        // 버튼 서식
+        RankButton.setOpaque(false);
+        RankButton.setContentAreaFilled(false); // 배경
+        RankButton.setBorderPainted(false); // 배경
+        RankButton.setForeground(Color.WHITE); // 글자색
+        RankButton.setFocusPainted(false); // 테두리
+        RankButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
+        RankButton.setBounds(350, 275, 100, 50);
+
         getContentPane().setLayout(new GridLayout(1, 1));
 
         getContentPane().add(startButton, BorderLayout.SOUTH);
         getContentPane().add(myPageButton, BorderLayout.SOUTH);
         getContentPane().add(shopButton, BorderLayout.SOUTH);
+        getContentPane().add(RankButton, BorderLayout.SOUTH);
+
+        RankButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 마이페이지 넘어가는 로직
+                Rank rank = new Rank();
+                setVisible(false);
+            }
+        });
+
+
 
 
         // finally make the window visible

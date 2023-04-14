@@ -9,7 +9,7 @@ import org.newdawn.spaceinvaders.Game;
 public class ObstacleEntity extends Entity {
     /** The game in which the ship exists */
     private Game game;
-    private double moveSpeed = 500;
+    private double moveSpeed=500;
 
     /** The time since the last frame change took place */
     private long lastFrameChange;
@@ -66,6 +66,9 @@ public class ObstacleEntity extends Entity {
         }
     }
 
+    public void setMoveSpeed(int moveSpeed){
+        dy = moveSpeed;
+    }
 
     /**
      * Notification that the player's ship has collided with something

@@ -1,4 +1,6 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.Frame;
+
+import org.newdawn.spaceinvaders.Frame.MainFrame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
