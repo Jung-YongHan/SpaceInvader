@@ -43,7 +43,14 @@ public class MainFrame extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StageFrame stageFrame = new StageFrame();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Game game = new Game(new GameFrame());
+                        game.gameLoop();
+                    }
+                });
+                thread.start();
                 setVisible(false);
             }
         });

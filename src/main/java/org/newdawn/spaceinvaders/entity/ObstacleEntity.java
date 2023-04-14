@@ -66,9 +66,6 @@ public class ObstacleEntity extends Entity {
         }
     }
 
-    public void setMoveSpeed(int moveSpeed){
-        this.moveSpeed = moveSpeed;
-    }
 
     /**
      * Notification that the player's ship has collided with something
