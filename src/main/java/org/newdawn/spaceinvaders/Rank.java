@@ -1,8 +1,7 @@
 package org.newdawn.spaceinvaders;
 
-import org.newdawn.spaceinvaders.entity.ShipEntity;
+import org.newdawn.spaceinvaders.Frame.MainFrame;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
