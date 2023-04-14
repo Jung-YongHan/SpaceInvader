@@ -1,28 +1,4 @@
-package org.newdawn.spaceinvaders.Frame;//package org.newdawn.spaceinvaders.Frame;
-//
-//import javax.swing.*;
-//import java.awt.*;
-//
-//public class LoginPage extends JFrame{
-//    private JLabel title;
-//    private JPasswordField inputPW;
-//    private JPanel panel1;
-//    private JTextField InputID;
-//
-//    public LoginPage() {
-//        setTitle("Login");
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
-//        setSize(800, 600);
-//        setLocationRelativeTo(null); // 창을 화면 중앙에 배치
-//
-//        title = new JLabel("Login");
-//        title.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20));
-//
-//        setVisible(true);
-//
-//    }
-//}
-
+package org.newdawn.spaceinvaders.Frame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,11 +16,6 @@ public class LoginPage extends JFrame{
         setSize(800, 600);
         setResizable(false);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
-
-//        // get hold the content of the frame and set up the resolution of the game
-//        JPanel panel = (JPanel) getContentPane();
-//        panel.setPreferredSize(new Dimension(800,600));
-//        panel.setLayout(null);
 
         // get hold the content of the frame and set up the resolution of the game
         setContentPane(new JPanel(){
