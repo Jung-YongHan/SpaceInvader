@@ -230,7 +230,7 @@ public class Game extends Canvas
 		waitingForKeyPress = true;
 		updateHighScore();
 		alienkill=0;
-
+		playCount ++;
 	   //Rank.setScore((alienkill/(timer/1000)));
 	}
 
@@ -243,14 +243,23 @@ public class Game extends Canvas
 		waitingForKeyPress = true;
 		updateHighScore();
 		alienkill=0;
-
+		playCount ++;
 	}
 
+	private int playCount =0;
 	private int highScore = 0;
 	public void updateHighScore() {
 		if (alienkill > highScore) {
 			highScore = alienkill;
 		}
+	}
+
+	// myframe에서 Playcount,highscore 접근을 위해 getter 메소드 사용
+	public int getPlayCount() {
+		return playCount;
+	}
+	public int getHighScore() {
+		return highScore;
 	}
 
 
@@ -443,7 +452,7 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("Rank 1st's score : "+highScore+"  Press any key",(700-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+				g.drawString("Play Count : "+playCount+" Rank 1st's score : "+highScore+"  Press any key",(600-g.getFontMetrics().stringWidth("Press any key"))/2,300);
 				//타이머(스코어) 0 초기화
 				timer =0;
 			}
