@@ -14,7 +14,7 @@ public class FirebaseAdminSDK {
 
         try {
             FileInputStream serviceAccount =
-                    new FileInputStream("spaceinvader-a2ad5-firebase-adminsdk-1j6qf-bcf033ec84.json");
+                    new FileInputStream("spaceinvader-a2ad5-firebase-adminsdk-1j6qf-cd998d0f76.json");
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
