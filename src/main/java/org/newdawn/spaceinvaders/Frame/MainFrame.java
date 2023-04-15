@@ -1,5 +1,8 @@
 package org.newdawn.spaceinvaders.Frame;
 
+import com.google.firebase.auth.FirebaseAuthException;
+import org.newdawn.spaceinvaders.Rank;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,6 +32,7 @@ public class MainFrame extends JFrame {
     private JButton startButton;
     private JButton myPageButton;
     private JButton shopButton;
+    private JButton RankButton;
 
     public MainFrame() {
         super("Main Page");
@@ -96,6 +100,8 @@ public class MainFrame extends JFrame {
         shopButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         shopButton.setBounds(350, 275, 100, 50);
 
+        getContentPane().setLayout(new GridLayout(1, 1));
+
         shopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,7 +121,13 @@ public class MainFrame extends JFrame {
         openImageChangePanelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openImageChangePanel();
+                // 마이페이지 넘어가는 로직
+                try {
+                    Rank rank = new Rank();
+                } catch (FirebaseAuthException ex) {
+                    throw new RuntimeException(ex);
+                }
+                setVisible(false);
             }
         });
         openImageChangePanelButton.setBounds(500,275,100,50);

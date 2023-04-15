@@ -7,13 +7,12 @@ import com.google.firebase.auth.UserRecord;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoginPage extends JFrame{
     private JLabel idLabel;
-    private JLabel pwLabel;
+    private JLabel nameLabel;
     private JTextField idField;
     private JPasswordField pwField;
     private JLabel message;
@@ -21,6 +20,8 @@ public class LoginPage extends JFrame{
     private JButton registerButton;
     private String id = null;
     private String pw = null;
+
+    static String userName = null;
 
     public LoginPage() {
         // Window Setting
@@ -59,12 +60,12 @@ public class LoginPage extends JFrame{
         getContentPane().add(idField);
 
         // 비밀번호 입력 필드
-        pwLabel = new JLabel("PW");
-        pwLabel.setHorizontalAlignment(JLabel.CENTER);
-        pwLabel.setBounds(280, 280, 60, 30);
+        nameLabel = new JLabel("Name");
+        nameLabel.setHorizontalAlignment(JLabel.CENTER);
+        nameLabel.setBounds(280, 280, 60, 30);
         pwField = new JPasswordField(10);
         pwField.setBounds(340, 280, 160, 30);
-        getContentPane().add(pwLabel);
+        getContentPane().add(nameLabel);
         getContentPane().add(pwField);
 
         message = new JLabel("");
@@ -131,9 +132,9 @@ public class LoginPage extends JFrame{
             userRecord = FirebaseAuth.getInstance().getUserByEmail(idField.getText());
             String email = userRecord.getEmail();
             String uid = userRecord.getUid();
-            String password = userRecord.getDisplayName();
+            userName = userRecord.getDisplayName();
 
-            if (password.equals(String.valueOf(pwField.getPassword()))){
+            if (userName.equals(String.valueOf(pwField.getPassword()))){
                 JOptionPane.showMessageDialog(null, "Hello" + " " + email);
                 setVisible(false);
             } else {
@@ -144,6 +145,11 @@ public class LoginPage extends JFrame{
         } catch (FirebaseAuthException ex) {
             Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public String getUserEmail() throws FirebaseAuthException {
+        UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(idField.getText());
+        return userRecord.getEmail();
     }
 
     private void recoverUserData(String uid){
@@ -158,5 +164,7 @@ public class LoginPage extends JFrame{
         }
     }
 
-
+    public static String getUserName() {
+        return userName;
+    }
 }
