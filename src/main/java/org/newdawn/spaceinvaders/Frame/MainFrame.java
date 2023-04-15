@@ -100,7 +100,7 @@ public class MainFrame extends JFrame {
         shopButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         shopButton.setBounds(350, 275, 100, 50);
 
-        getContentPane().setLayout(new GridLayout(1, 1));
+        getContentPane().setLayout(null);
 
         shopButton.addActionListener(new ActionListener() {
             @Override
@@ -121,13 +121,7 @@ public class MainFrame extends JFrame {
         openImageChangePanelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 마이페이지 넘어가는 로직
-                try {
-                    Rank rank = new Rank();
-                } catch (FirebaseAuthException ex) {
-                    throw new RuntimeException(ex);
-                }
-                setVisible(false);
+                openImageChangePanel();
             }
         });
         openImageChangePanelButton.setBounds(500,275,100,50);
@@ -149,6 +143,8 @@ public class MainFrame extends JFrame {
 
         // 지정된 폴더에서 이미지 파일을 가져오기
         String imageFolderPath = "src/main/resources/sprites/ship"; // 이미지 폴더 경로를 지정해주세요
+
+
         File folder = new File(imageFolderPath);
         File[] listOfFiles = folder.listFiles();
 
