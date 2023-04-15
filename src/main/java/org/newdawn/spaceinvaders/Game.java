@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 
 import org.newdawn.spaceinvaders.Frame.LoginPage;
@@ -166,7 +166,8 @@ public class Game extends Canvas
 	int alienkill=0;
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this,"sprites/ship.png",370,500);
+		ship = new ShipEntity(this,"sprites/ship/ship.png",370,500);
+		ImageIcon i = new ImageIcon("ship.png");
 		entities.add(ship);
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -328,7 +329,7 @@ public class Game extends Canvas
 
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this,"sprites/shot.png",ship.getX()+10,ship.getY()-30);
+		ShotEntity shot = new ShotEntity(this,"sprites/shot/shot.png",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
 	}
 

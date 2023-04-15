@@ -31,13 +31,13 @@ public class AlienEntity extends Entity {
 	 * @param y The intial y location of this alient
 	 */
 	public AlienEntity(Game game,int x,int y) {
-		super("sprites/alien.png",x,y);
+		super("sprites/alien/alien.png",x,y);
 		
 		// setup the animatin frames
 		frames[0] = sprite;
-		frames[1] = SpriteStore.get().getSprite("sprites/alien.png");
+		frames[1] = SpriteStore.get().getSprite("sprites/alien/alien.png");
 		frames[2] = sprite;
-		frames[3] = SpriteStore.get().getSprite("sprites/alien.png");
+		frames[3] = SpriteStore.get().getSprite("sprites/alien/alien.png");
 		
 		this.game = game;
 		dx = -moveSpeed;
