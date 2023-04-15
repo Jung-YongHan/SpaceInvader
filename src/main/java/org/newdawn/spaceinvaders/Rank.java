@@ -103,7 +103,6 @@ public class Rank extends JFrame {
             }
         });
 
-
     }
     public void displayScore(int timer, int alienkill) {
         // 점수를 GUI에 표시하는 코드를 여기에 작성합니다.

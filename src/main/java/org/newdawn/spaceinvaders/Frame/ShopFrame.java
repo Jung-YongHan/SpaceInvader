@@ -1,6 +1,11 @@
 package org.newdawn.spaceinvaders.Frame;
 
-import org.newdawn.spaceinvaders.Frame.MainFrame;
+import org.newdawn.spaceinvaders.Player;
+import org.newdawn.spaceinvaders.Shop;
+import org.newdawn.spaceinvaders.item.AddBulletItem;
+import org.newdawn.spaceinvaders.item.HealItem;
+import org.newdawn.spaceinvaders.item.Item;
+import org.newdawn.spaceinvaders.item.SpeedUpItem;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -8,8 +13,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ShopFrame extends JFrame {
+
+    private Shop shop;
+    private Player player;
+    private AddBulletItem addBulletItem;
+    private HealItem healItem;
+    private SpeedUpItem speedUpItem;
 
     final int itemCount = 3;
     private JButton backButton;
@@ -25,6 +37,7 @@ public class ShopFrame extends JFrame {
     private int iconNameY = 350;
     private int[] buttonX = {130, 350, 570};
     private int buttonY = 400;
+    private ArrayList<Item> items = new ArrayList<>();
     private String[] iconImage = {"bullet.png", "health.png", "speed.png"};
     private String[] iconName = {"Add Bullets", "Heal", "Speed Up"};
     private String[] iconDesc = {"If the item is used,\nthe number of projectile\ndoubles (can be duplicated)",
@@ -64,38 +77,6 @@ public class ShopFrame extends JFrame {
             }
             getContentPane().add(itemIcon[i]);
         }
-        // 수정 예정
-//        // 설명이 검은색 박스 안에 모두 들어가 아이콘 옆에 붙어 있게 구현
-//        itemDesc = new JTextArea[itemCount];
-//        for(int i=0; i<itemCount; i++){
-//            itemDesc[i] = new JTextArea(iconDesc[i]);
-//            itemDesc[i].setEditable(false);
-//            itemDesc[i].setOpaque(true);
-//            itemDesc[i].setBackground(Color.BLACK);
-//            itemDesc[i].setForeground(Color.WHITE);
-//            itemDesc[i].setFont(new Font("Arial", Font.PLAIN, 14));
-//            if(i!=2)
-//                itemDesc[i].setBounds(iconX[i]+iconSize, iconY, iconSize, iconSize);
-//            else
-//                itemDesc[i].setBounds(iconX[i]-iconSize, iconY, iconSize, iconSize);
-//
-//            // 마우스 이벤트 처리
-//            final int index = i;
-//            itemIcon[index].addMouseListener(new MouseAdapter() {
-//
-//                @Override
-//                public void mouseEntered(MouseEvent e) {
-//                    itemDesc[index].setVisible(true);
-//                }
-//
-//                @Override
-//                public void mouseExited(MouseEvent e) {
-//                    itemDesc[index].setVisible(false);
-//                }
-//            });
-////            itemDesc[i].getParent().setComponentZOrder(itemDesc[i], itemDesc[i].getParent().getComponentCount() - 2);
-//            getContentPane().add(itemDesc[i]);
-//        }
 
         // item 이름
         itemName = new JLabel[itemCount];
@@ -108,6 +89,13 @@ public class ShopFrame extends JFrame {
             getContentPane().add(itemName[i]);
         }
 
+        shop = new Shop();
+        player = new Player();
+
+        items.add(addBulletItem);
+        items.add(healItem);
+        items.add(speedUpItem);
+
         // buy 버튼
         buyButton = new JButton[itemCount];
         for(int i=0; i<itemCount; i++){
@@ -119,7 +107,18 @@ public class ShopFrame extends JFrame {
             buyButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 25));
             buyButton[i].setBounds(buttonX[i], buttonY, 80, 30);
             getContentPane().add(buyButton[i]);
+
+
+            final int index = i;
+            buyButton[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Item item = items.get(index);
+                    shop.sellItem(item, player);
+                }
+            });
         }
+
 
         // back 버튼
         backButton = new JButton("Back");
