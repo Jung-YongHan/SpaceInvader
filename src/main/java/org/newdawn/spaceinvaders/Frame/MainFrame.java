@@ -4,6 +4,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+
+
 public class MainFrame extends JFrame {
     private JButton startButton;
     private JButton myPageButton;
@@ -110,18 +131,45 @@ public class MainFrame extends JFrame {
         setVisible(true);
 
     }
-    private void openImageChangePanel() {
-        // Create a new JFrame to hold the image change panel
-        JFrame imageChangeFrame = new JFrame("이미지 변경");
-        imageChangeFrame.setSize(500, 500);
-        imageChangeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    public void openImageChangePanel() {
+        // 이미지 미리보기를 보여줄 패널 생성
+        JPanel imagePreviewPanel = new JPanel(new GridLayout(0, 2));
 
-        // Create a custom JPanel or use an existing class for the image change panel
-        JPanel imageChangePanel = new JPanel();
-        // TODO: Add components and functionality for changing ShipEntity and MainFrame images
+        // 지정된 폴더에서 이미지 파일을 가져오기
+        String imageFolderPath = "src/main/resources/sprites/ship"; // 이미지 폴더 경로를 지정해주세요
+        File folder = new File(imageFolderPath);
+        File[] listOfFiles = folder.listFiles();
 
-        imageChangeFrame.add(imageChangePanel);
-        imageChangeFrame.setVisible(true);
+        if (listOfFiles != null) {
+            for (File file : listOfFiles) {
+                if (file.isFile() && (file.getName().endsWith(".jpg") || file.getName().endsWith(".png")
+                        || file.getName().endsWith(".jpeg") || file.getName().endsWith(".gif"))) {
+                    try {
+                        BufferedImage img = ImageIO.read(file);
+                        ImageIcon icon = new ImageIcon(img.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                        JLabel label = new JLabel(icon);
+                        imagePreviewPanel.add(label);
+
+                        JButton button = new JButton("Choose");
+                        button.addActionListener(e -> {
+                            try {
+                                BufferedImage newImage = ImageIO.read(file);
+                                ImageIO.write(newImage, "png", new File("ship.png"));
+                                JOptionPane.showMessageDialog(this, "Image has been changed successfully!");
+                            } catch (IOException ex) {
+                                JOptionPane.showMessageDialog(this, "Error: Could not change the image.");
+                                ex.printStackTrace();
+                            }
+                        });
+                        imagePreviewPanel.add(button);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        JOptionPane.showMessageDialog(this, imagePreviewPanel, "Select an image", JOptionPane.PLAIN_MESSAGE);
     }
 
 }
