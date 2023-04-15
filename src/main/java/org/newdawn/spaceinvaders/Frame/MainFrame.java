@@ -26,6 +26,7 @@ public class MainFrame extends JFrame {
 
         setIgnoreRepaint(false);
 
+        getContentPane().setLayout(null);
         // 버튼 추가
         startButton = new JButton("Start");
         // 버튼 서식
@@ -35,7 +36,7 @@ public class MainFrame extends JFrame {
         startButton.setForeground(Color.WHITE); // 글자색
         startButton.setFocusPainted(false); // 테두리
         startButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        startButton.setBounds(350, 275, 100, 50);
+        startButton.setBounds(50, 275, 100, 50);
 
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -53,7 +54,7 @@ public class MainFrame extends JFrame {
         myPageButton.setForeground(Color.WHITE); // 글자색
         myPageButton.setFocusPainted(false); // 테두리
         myPageButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        myPageButton.setBounds(350, 275, 100, 50);
+        myPageButton.setBounds(180, 265, 120, 60);
 
         myPageButton.addActionListener(new ActionListener() {
             @Override
@@ -74,8 +75,6 @@ public class MainFrame extends JFrame {
         shopButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         shopButton.setBounds(350, 275, 100, 50);
 
-        getContentPane().setLayout(new GridLayout(1, 1));
-
         shopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -83,14 +82,46 @@ public class MainFrame extends JFrame {
                 setVisible(false);
             }
         });
+        // Add a JPanel to contain the button
+        JPanel buttonPanel = new JPanel();
+        getContentPane().add(buttonPanel);
 
-        getContentPane().setLayout(new GridLayout(1, 1));
+        // Create a button to open the image change panel
+        JButton openImageChangePanelButton = new JButton("이미지 변경");
+        buttonPanel.add(openImageChangePanelButton);
 
-        getContentPane().add(startButton, BorderLayout.SOUTH);
-        getContentPane().add(myPageButton, BorderLayout.SOUTH);
-        getContentPane().add(shopButton, BorderLayout.SOUTH);
+        // Add action listener to the button
+        openImageChangePanelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openImageChangePanel();
+            }
+        });
+        openImageChangePanelButton.setBounds(500,275,100,50);
+
+
+        getContentPane().add(startButton);
+        getContentPane().add(myPageButton);
+        getContentPane().add(shopButton);
+        getContentPane().add(openImageChangePanelButton);
+
+
 
         setVisible(true);
 
     }
+    private void openImageChangePanel() {
+        // Create a new JFrame to hold the image change panel
+        JFrame imageChangeFrame = new JFrame("이미지 변경");
+        imageChangeFrame.setSize(500, 500);
+        imageChangeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // Create a custom JPanel or use an existing class for the image change panel
+        JPanel imageChangePanel = new JPanel();
+        // TODO: Add components and functionality for changing ShipEntity and MainFrame images
+
+        imageChangeFrame.add(imageChangePanel);
+        imageChangeFrame.setVisible(true);
+    }
+
 }
