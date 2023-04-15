@@ -1,5 +1,7 @@
 package org.newdawn.spaceinvaders;
 
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.database.*;
 import org.newdawn.spaceinvaders.Frame.MainFrame;
 
 import javax.swing.*;
@@ -10,8 +12,16 @@ public class Rank extends JFrame {
 
     private JButton BackButton;
     private JLabel scoreLabel;
-    public Rank() {
+
+    private DB db;
+
+    public Rank() throws FirebaseAuthException {
+
         super("Rank");
+
+        db = new DB();
+        db.storeScore(50);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
@@ -61,8 +71,6 @@ public class Rank extends JFrame {
         // Rank 창을 화면에 표시합니다.
         setVisible(true);
 
-
-
         getContentPane().setLayout(new GridLayout(1, 1));
         getContentPane().add(BackButton, BorderLayout.SOUTH);
 
@@ -70,6 +78,30 @@ public class Rank extends JFrame {
 //         pack();
 //         setResizable(false);
         setVisible(true);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users");
+
+        // 상위 10명의 사용자 가져오기
+        Query topScoresQuery = myRef.orderByValue().limitToLast(10);
+        topScoresQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String userId = childSnapshot.getKey();
+                    int score = childSnapshot.getValue(Integer.class);
+                    // 사용자 ID와 점수를 사용하여 랭킹 정보를 화면에 표시
+                    System.out.println(score);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // 처리할 오류 처리
+            }
+        });
+
 
     }
     public void displayScore(int timer, int alienkill) {

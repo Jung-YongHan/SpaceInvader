@@ -82,7 +82,7 @@ public class RegisterPage extends JFrame {
                 }
                 catch (FirebaseAuthException ex){
                     Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            }
 
                 new LoginPage();
                 dispose();

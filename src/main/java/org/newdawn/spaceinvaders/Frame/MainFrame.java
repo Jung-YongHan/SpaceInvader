@@ -1,5 +1,6 @@
 package org.newdawn.spaceinvaders.Frame;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Rank;
 
 import javax.swing.*;
@@ -108,7 +109,11 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 마이페이지 넘어가는 로직
-                Rank rank = new Rank();
+                try {
+                    Rank rank = new Rank();
+                } catch (FirebaseAuthException ex) {
+                    throw new RuntimeException(ex);
+                }
                 setVisible(false);
             }
         });
