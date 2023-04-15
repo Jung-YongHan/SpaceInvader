@@ -618,10 +618,8 @@ public class Game extends Canvas
 
 	public static void main(String argv[]) {
 		MainFrame mainFrame = new MainFrame();
-		new FirebaseTool().initialize();
+		new FirebaseAdminSDK().initFirebase();
 		LoginPage test = new LoginPage();
-
-
 //		GameFrame gameFrame = new GameFrame();
 //
 //		// Start the main game loop, note: this method will not
