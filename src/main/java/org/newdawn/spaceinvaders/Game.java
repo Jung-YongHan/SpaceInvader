@@ -232,6 +232,7 @@ public class Game extends Canvas
 		updateHighScore();
 		alienkill=0;
 		playCount ++;
+		playtime = timer;
 	   //Rank.setScore((alienkill/(timer/1000)));
 	}
 
@@ -247,6 +248,7 @@ public class Game extends Canvas
 		playCount ++;
 	}
 
+	private int playtime;
 	private int playCount =0;
 	private int highScore = 0;
 	public void updateHighScore() {
@@ -449,12 +451,12 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("Play Count : "+playCount+" Rank 1st's score : "+highScore+"  Press any key",(600-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+				g.drawString("PlayTime : "+playtime/100+" Play Count : "+playCount+" Rank 1st's score : "+highScore+"  Press any key",(600-g.getFontMetrics().stringWidth("Press any key"))/2,300);
 				//타이머(스코어) 0 초기화
 				timer =0;
 			}
 			//타이머 표시
-			g.drawString("타이머 "+String.valueOf(timer),720,30);
+			g.drawString("타이머 "+String.valueOf(timer/100),720,30);
 
 			//죽인 에일리언 표시
 			g.drawString("죽인 에일리언"+String.valueOf(alienkill),30,30);
