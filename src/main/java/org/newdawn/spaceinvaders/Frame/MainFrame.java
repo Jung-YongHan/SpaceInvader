@@ -1,7 +1,5 @@
 package org.newdawn.spaceinvaders.Frame;
 
-import org.newdawn.spaceinvaders.Rank;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,7 +8,6 @@ public class MainFrame extends JFrame {
     private JButton startButton;
     private JButton myPageButton;
     private JButton shopButton;
-    private JButton RankButton;
 
     public MainFrame() {
         super("Main Page");
@@ -87,34 +84,12 @@ public class MainFrame extends JFrame {
             }
         });
 
-        RankButton = new JButton("Rank");
-        // 버튼 서식
-        RankButton.setOpaque(false);
-        RankButton.setContentAreaFilled(false); // 배경
-        RankButton.setBorderPainted(false); // 배경
-        RankButton.setForeground(Color.WHITE); // 글자색
-        RankButton.setFocusPainted(false); // 테두리
-        RankButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        RankButton.setBounds(350, 275, 100, 50);
-
         getContentPane().setLayout(new GridLayout(1, 1));
 
         getContentPane().add(startButton, BorderLayout.SOUTH);
         getContentPane().add(myPageButton, BorderLayout.SOUTH);
         getContentPane().add(shopButton, BorderLayout.SOUTH);
-        getContentPane().add(RankButton, BorderLayout.SOUTH);
 
-        RankButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 마이페이지 넘어가는 로직
-                Rank rank = new Rank();
-                setVisible(false);
-            }
-        });
-        // finally make the window visible
-//         pack();
-//         setResizable(false);
         setVisible(true);
 
     }

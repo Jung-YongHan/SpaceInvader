@@ -1,7 +1,6 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.Rank;
 
 /**
  * The entity that represents the players ship

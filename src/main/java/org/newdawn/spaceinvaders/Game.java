@@ -269,11 +269,7 @@ public class Game extends Canvas
 	 */
 
 
-	// Rank 객체를 전달할 수 있도록 하는 생성자
-	private Rank rank;
-	public Game(Rank rank) {
-		this.rank = rank;
-	}
+
 
 
 
