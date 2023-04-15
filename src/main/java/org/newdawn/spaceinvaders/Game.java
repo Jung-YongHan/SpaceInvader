@@ -88,12 +88,15 @@ public class Game extends Canvas
 		else if(level == 5) obstacle.setMoveSpeed(800);
 	}
 
+	/** 레벨 선택 */
+	public void setLevel(int level){
+		this.level = level;
+	}
 
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game(JFrame frame, int level) {
-		this.level = level;
+	public Game(JFrame frame) {
 		container = frame;
 //
 ////		// create a frame to contain our game
