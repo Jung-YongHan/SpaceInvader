@@ -1,46 +1,40 @@
 package org.newdawn.spaceinvaders;
 
-import com.dnsalias.java.timer.AdvancedTimer;
+
+import java.time.Duration;
+import java.time.Instant;
 
 /**
  * A wrapper class that provides timing methods. This class
  * provides us with a central location where we can add
- * our current timing implementation. Initially, we're going to
- * rely on the GAGE timer. (@see http://java.dnsalias.com)
+ * our current timing implementation. In this version, we're going to
+ * rely on the java.time package and java.lang.Thread.sleep() method.
  *
- * @author Kevin Glass
+ * @author Kevin Glass, modified by Assistant
  */
 public class SystemTimer {
-	/** Our link into the GAGE timer library */
-	private static AdvancedTimer timer = new AdvancedTimer();
-	/** The number of "timer ticks" per second */
-	private static long timerTicksPerSecond;
-
-	/** A little initialisation at startup, we're just going to get the GAGE timer going */
-	static {
-		timer.start();
-		timerTicksPerSecond = AdvancedTimer.getTicksPerSecond();
-	}
-
 	/**
 	 * Get the high resolution time in milliseconds
 	 *
 	 * @return The high resolution time in milliseconds
 	 */
 	public static long getTime() {
-		// we get the "timer ticks" from the high resolution timer
-		// multiply by 1000 so our end result is in milliseconds
-		// then divide by the number of ticks in a second giving
-		// us a nice clear time in milliseconds
-		return (timer.getClockTicks() * 1000) / timerTicksPerSecond;
+		// Using Instant class to get the current high resolution time in milliseconds
+		return Instant.now().toEpochMilli();
 	}
 
 	/**
-	 * Sleep for a fixed number of milliseconds. 
+	 * Sleep for a fixed number of milliseconds.
 	 *
 	 * @param duration The amount of time in milliseconds to sleep for
 	 */
 	public static void sleep(long duration) {
-		timer.sleep((duration * timerTicksPerSecond) / 1000);
+		try {
+			// Using Thread.sleep() method to sleep for a given duration in milliseconds
+			Thread.sleep(duration);
+		} catch (InterruptedException e) {
+			// In case of interruption, print the stack trace
+			e.printStackTrace();
+		}
 	}
 }
