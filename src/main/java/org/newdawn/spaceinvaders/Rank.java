@@ -8,12 +8,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+
 public class Rank extends JFrame {
 
     private JButton BackButton;
     private JLabel scoreLabel;
 
     private DB db;
+    private HashMap<String, Integer> userData = new HashMap<>();
 
     public Rank() throws FirebaseAuthException {
 
@@ -89,13 +92,11 @@ public class Rank extends JFrame {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     String userId = childSnapshot.getKey();
-                    int score = childSnapshot.getValue(Integer.class);
-                    // 사용자 ID와 점수를 사용하여 랭킹 정보를 화면에 표시
-                    System.out.println(score);
+                    HashMap<String, Integer> userData = (HashMap<String, Integer>) childSnapshot.getValue();
+//                    long score = userData.get("score");
+                    System.out.println(userId + ": " + userData);
                 }
-
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // 처리할 오류 처리

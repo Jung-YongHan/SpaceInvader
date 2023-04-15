@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class DB {
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
-    private final DatabaseReference userRef = db.getReference("users").child(LoginPage.getUserName());;
+    private final DatabaseReference userRef = db.getReference("users").child(LoginPage.getUserName());
 
     public static Object score;
 
@@ -20,7 +20,7 @@ public class DB {
 
     public void storeScore(int score) {
         HashMap<String, Integer> users = new HashMap<>();
-        users.put("high score", score);
+        users.put("score", score);
         this.userRef.setValueAsync(users);
     }
 
