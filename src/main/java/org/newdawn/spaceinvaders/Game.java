@@ -1,20 +1,22 @@
 package org.newdawn.spaceinvaders;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 
+import org.newdawn.spaceinvaders.Frame.LoginPage;
+import org.newdawn.spaceinvaders.Frame.MainFrame;
 import org.newdawn.spaceinvaders.entity.*;
 
 
@@ -75,18 +77,23 @@ public class Game extends Canvas
 	private String windowTitle = "Space Invaders 102";
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
+	private Image background;
+	private int level;
 
 	/** 장애물 */
 	public void AddObstacle() {
 		ObstacleEntity obstacle = new ObstacleEntity(this, "sprites/obstacle.png", (int) (Math.random() * 750), 10);
 		entities.add(obstacle);
+		if(level == 4) obstacle.setMoveSpeed(500);
+		else if(level == 5) obstacle.setMoveSpeed(800);
 	}
 
 
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game(JFrame frame) {
+	public Game(JFrame frame, int level) {
+		this.level = level;
 		container = frame;
 //
 ////		// create a frame to contain our game
@@ -156,6 +163,7 @@ public class Game extends Canvas
 	 * Initialise the starting state of the entities (ship and aliens). Each
 	 * entitiy will be added to the overall list of entities in the game.
 	 */
+	int alienkill=0;
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
 		ship = new ShipEntity(this,"sprites/ship.png",370,500);
@@ -163,14 +171,35 @@ public class Game extends Canvas
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		alienCount = 0;
-		for (int row=0;row<5;row++) {
-			for (int x=0;x<12;x++) {
-				Entity alien = new AlienEntity(this,100+(x*50),(50)+row*30);
-				entities.add(alien);
-				alienCount++;
+		if (level == 1) {
+			for (int row = 0; row < 4; row++) {
+				for (int col = 0; col < 6; col++) {
+					Entity alien = new AlienEntity(this, 100 + (col * 110), (50) + row * 40);
+					entities.add(alien);
+					alienCount++;
+				}
+			}
+		} else if (level == 2) {
+			for (int row = 0; row < 5; row++) {
+				for (int col = 0; col < 8; col++) {
+					Entity alien = new AlienEntity(this, 100 + (col * 80), (50) + row * 30);
+					entities.add(alien);
+					alienCount++;
+				}
+			}
+		} else {
+			for (int row = 0; row < 5; row++) {
+				for (int col = 0; col < 12; col++) {
+					Entity alien = new AlienEntity(this, 100 + (col * 50), (50) + row * 30);
+					entities.add(alien);
+					alienCount++;
+				}
 			}
 		}
 	}
+
+
+
 
 	/**
 	 * Notification from a game entity that the logic of the game
@@ -194,9 +223,16 @@ public class Game extends Canvas
 	/**
 	 * Notification that the player has died.
 	 */
+
+
+
 	public void notifyDeath() {
-		message = "Oh no! They got you, try again?";
+		message = "Level "+level+", Score :"+ alienkill	;
 		waitingForKeyPress = true;
+		updateHighScore();
+		alienkill=0;
+		playCount ++;
+	   //Rank.setScore((alienkill/(timer/1000)));
 	}
 
 	/**
@@ -204,20 +240,69 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Well done! You Win!";
+		message = "Level "+level+", Score :"+alienkill;
 		waitingForKeyPress = true;
+		updateHighScore();
+		alienkill=0;
+		playCount ++;
 	}
+
+	private int playCount =0;
+	private int highScore = 0;
+	public void updateHighScore() {
+		if (alienkill > highScore) {
+			highScore = alienkill;
+		}
+	}
+
+	// myframe에서 Playcount,highscore 접근을 위해 getter 메소드 사용
+	public int getPlayCount() {
+		return playCount;
+	}
+	public int getHighScore() {
+		return highScore;
+	}
+
 
 	/**
 	 * Notification that an alien has been killed
 	 */
-	public void notifyAlienKilled() {
-		// reduce the alient count, if there are none left, the player has won!
+
+
+	// Rank 객체를 전달할 수 있도록 하는 생성자
+	private Rank rank;
+	public Game(Rank rank) {
+		this.rank = rank;
+	}
+
+
+
+	//코인
+	private int coinCount = 0;
+	public void increaseCoinCount() {
+		coinCount++;
+		System.out.println("Coin Count: " + coinCount); // 콘솔에 현재 코인 개수를 출력합니다.
+	}
+
+
+
+	public void notifyAlienKilled(Entity alienEntity) {
+		// reduce the alien count, if there are none left, the player has won!
 		alienCount--;
 
+		alienkill ++;
 		if (alienCount == 0) {
 			notifyWin();
 		}
+
+		Random rand = new Random();
+		int randomNum = rand.nextInt(100);
+
+		if (randomNum < 50) { // 50%의 확률로 코인 생성
+			CoinEntity coin = new CoinEntity(this, "sprites/coin.png", alienEntity.getX(), alienEntity.getY());
+			entities.add(coin);
+		}
+
 
 		// if there are still some aliens left then they all need to get faster, so
 		// speed up all the existing aliens
@@ -230,6 +315,7 @@ public class Game extends Canvas
 			}
 		}
 	}
+
 
 	/**
 	 * Attempt to fire a shot from the player. Its called "try"
@@ -267,6 +353,12 @@ public class Game extends Canvas
 
 		new Sound("sound/bgm.wav");
 
+		try {
+			background = ImageIO.read(new File("src/main/resources/background/stage1Background.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		// keep looping round til the game ends
 		while (gameRunning) {
 			// work out how long its been since the last update, this
@@ -290,8 +382,14 @@ public class Game extends Canvas
 			// Get hold of a graphics context for the accelerated
 			// surface and blank it out
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-			g.setColor(Color.black);
-			g.fillRect(0,0,800,600);
+//			g.setColor(Color.black);
+//			g.fillRect(0,0,800,600);
+
+
+			// draw the background image
+			if (background != null) {
+				g.drawImage(background, 0, 0, null);
+			}
 
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
@@ -300,8 +398,14 @@ public class Game extends Canvas
 
 					entity.move(delta);
 				}
-				if(timer%50==0){
-					AddObstacle();
+				if (level == 4) {
+					if (timer % 50 == 0) {
+						AddObstacle();
+					}
+				} else if (level == 5) {
+					if (timer % 20 == 0) {
+						AddObstacle();
+					}
 				}
 			}
 
@@ -349,36 +453,46 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+				g.drawString("Play Count : "+playCount+" Rank 1st's score : "+highScore+"  Press any key",(600-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+				//타이머(스코어) 0 초기화
+				timer =0;
 			}
+			//타이머 표시
+			g.drawString("타이머 "+String.valueOf(timer),720,30);
 
-			// finally, we've completed drawing so clear up the graphics
-			// and flip the buffer over
-			g.dispose();
-			strategy.show();
+			//죽인 에일리언 표시
+			g.drawString("죽인 에일리언"+String.valueOf(alienkill),30,30);
 
-			// resolve the movement of the ship. First assume the ship
-			// isn't moving. If either cursor key is pressed then
-			// update the movement appropraitely
-			ship.setHorizontalMovement(0);
 
-			if ((leftPressed) && (!rightPressed)) {
-				ship.setHorizontalMovement(-moveSpeed);
-			} else if ((rightPressed) && (!leftPressed)) {
-				ship.setHorizontalMovement(moveSpeed);
-			}
 
-			// if we're pressing fire, attempt to fire
-			if (firePressed) {
-				tryToFire();
+					// finally, we've completed drawing so clear up the graphics
+					// and flip the buffer over
+					g.dispose();
+					strategy.show();
 
-			}
+					// resolve the movement of the ship. First assume the ship
+					// isn't moving. If either cursor key is pressed then
+					// update the movement appropraitely
+					ship.setHorizontalMovement(0);
 
-			// we want each frame to take 10 milliseconds, to do this
-			// we've recorded when we started the frame. We add 10 milliseconds
-			// to this and then factor in the current time to give
-			// us our final value to wait for
-			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+					if ((leftPressed) && (!rightPressed)) {
+						ship.setHorizontalMovement(-moveSpeed);
+					} else if ((rightPressed) && (!leftPressed)) {
+						ship.setHorizontalMovement(moveSpeed);
+					}
+
+					// if we're pressing fire, attempt to fire
+					if (firePressed) {
+						tryToFire();
+
+					}
+
+					// we want each frame to take 10 milliseconds, to do this
+					// we've recorded when we started the frame. We add 10 milliseconds
+					// to this and then factor in the current time to give
+					// us our final value to wait for
+					SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+
 
 
 
@@ -426,7 +540,9 @@ public class Game extends Canvas
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
-
+			}
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				// 메인페이지로 돌아가
 			}
 		}
 
@@ -486,6 +602,7 @@ public class Game extends Canvas
 		}
 	}
 
+
 	/**
 	 * The entry point into the game. We'll simply create an
 	 * instance of class which will start the display and game
@@ -501,6 +618,9 @@ public class Game extends Canvas
 
 	public static void main(String argv[]) {
 		MainFrame mainFrame = new MainFrame();
+		new FirebaseAdminSDK().initFirebase();
+		LoginPage test = new LoginPage();
+//		GameFrame gameFrame = new GameFrame();
 //
 //		// Start the main game loop, note: this method will not
 //		// return until the game has finished running. Hence we are
