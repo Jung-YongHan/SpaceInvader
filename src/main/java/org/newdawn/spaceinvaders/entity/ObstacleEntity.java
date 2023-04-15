@@ -9,7 +9,7 @@ import org.newdawn.spaceinvaders.Game;
 public class ObstacleEntity extends Entity {
     /** The game in which the ship exists */
     private Game game;
-    private double moveSpeed=500;
+    private double moveSpeed;
 
     /** The time since the last frame change took place */
     private long lastFrameChange;
