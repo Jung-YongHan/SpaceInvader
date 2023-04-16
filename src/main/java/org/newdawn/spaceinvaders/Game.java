@@ -12,11 +12,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
+import com.google.firebase.database.*;
+import org.apache.commons.logging.Log;
 import org.newdawn.spaceinvaders.Frame.LoginPage;
 import org.newdawn.spaceinvaders.Frame.MainFrame;
 import org.newdawn.spaceinvaders.entity.*;
@@ -89,6 +92,7 @@ public class Game extends Canvas
 	private AddBulletItem addBulletItem;
 	private HealItem healItem;
 	private SpeedUpItem speedUpItem;
+	private DatabaseReference myRef;
 
 	/** 장애물 */
 	public void AddObstacle() {
@@ -151,6 +155,8 @@ public class Game extends Canvas
 		// to manage our accelerated graphics
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
+
+		myRef = FirebaseDatabase.getInstance().getReference("users").child(LoginPage.getUserName());
 
 		addBulletItem  = new AddBulletItem();
 		healItem = new HealItem();
@@ -289,7 +295,32 @@ public class Game extends Canvas
 		waitingForKeyPress = true;
 		updateHighScore();
 		alienkill=0;
-		playCount ++;
+//		playCount ++;
+		increasePlayCount();
+	}
+
+	public void increasePlayCount() {
+		myRef.runTransaction(new Transaction.Handler() {
+		@Override
+		public Transaction.Result doTransaction(MutableData mutableData) {
+			Integer playCount = mutableData.child("playCount").getValue(Integer.class);
+			if (playCount == null) {
+				mutableData.child("playCount").setValue(1);
+			} else {
+				mutableData.child("playCount").setValue(playCount + 1);
+			}
+			return Transaction.success(mutableData);
+		}
+
+		@Override
+		public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+			if (databaseError != null) {
+				System.out.println("Transaction failed.");
+			} else {
+				System.out.println("Transaction completed.");
+			}
+		}
+	});
 	}
 
 	private int playtime;
@@ -427,8 +458,8 @@ public class Game extends Canvas
 //			g.setColor(Color.black);
 //			g.fillRect(0,0,800,600);
 
-			// 아이템 커맨드 입력
-			useSelectedItem();
+//			// 아이템 커맨드 입력
+//			useSelectedItem();
 
 			// draw the background image
 			if (background != null) {

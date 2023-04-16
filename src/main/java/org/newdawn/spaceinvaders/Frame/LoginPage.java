@@ -25,7 +25,7 @@ public class LoginPage extends JFrame{
 
     public LoginPage() {
         // Window Setting
-        setTitle("Login");
+        super("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setResizable(false);

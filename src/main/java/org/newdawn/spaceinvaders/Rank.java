@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 public class Rank extends JFrame {
 
+    private JLabel titleLabel;
     private JButton BackButton;
     private JLabel scoreLabel;
 
@@ -23,24 +24,31 @@ public class Rank extends JFrame {
         super("Rank");
 
         db = new DB();
-        db.storeScore(50);
+//        db.storeScore(50);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
+        setResizable(false);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
 
         // get hold the content of the frame and set up the resolution of the game
         setContentPane(new JPanel(){
             @Override
             public void paintComponent(Graphics g){
-                Image backgroundImage = new ImageIcon("src/main/resources/background/mainPageBackground0.png").getImage();
+                Image backgroundImage = new ImageIcon("src/main/resources/background/mainPageBackground.jpg").getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         });
 
-        scoreLabel = new JLabel();
-
         setIgnoreRepaint(false);
+        getContentPane().setLayout(null);
+
+        titleLabel = new JLabel("Rank");
+        titleLabel.setForeground(Color.WHITE); // 기본 글씨 색을 검은색으로 설정합니다.
+        titleLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 35));
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setBounds(300, 100, 200, 55);
+        getContentPane().add(titleLabel);
 
         // 버튼 추가
         BackButton = new JButton("Back");
@@ -51,7 +59,7 @@ public class Rank extends JFrame {
         BackButton.setForeground(Color.WHITE); // 글자색
         BackButton.setFocusPainted(false); // 테두리
         BackButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        BackButton.setBounds(350, 275, 100, 50);
+        BackButton.setBounds(0, 0, 100, 50);
 
         BackButton.addActionListener(new ActionListener() {
             @Override
@@ -60,41 +68,32 @@ public class Rank extends JFrame {
                 setVisible(false);
             }
         });
-
-
-        // JPanel 초기화
-        JPanel panel = new JPanel();
-        add(panel);
+        getContentPane().add(BackButton);
 
         // scoreLabel 초기화
         scoreLabel = new JLabel();
         scoreLabel.setForeground(Color.BLACK); // 기본 글씨 색을 검은색으로 설정합니다.
-        panel.add(scoreLabel);
-
-        // Rank 창을 화면에 표시합니다.
-        setVisible(true);
-
-        getContentPane().setLayout(new GridLayout(1, 1));
-        getContentPane().add(BackButton, BorderLayout.SOUTH);
+        scoreLabel.setBounds(200, 200, 400, 50);
+        getContentPane().add(scoreLabel);
 
         // finally make the window visible
 //         pack();
 //         setResizable(false);
         setVisible(true);
 
+        // Rank 불러오기
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users");
 
         // 상위 10명의 사용자 가져오기
-        Query topScoresQuery = myRef.orderByValue().limitToLast(10);
+        Query topScoresQuery = myRef.orderByChild("score").limitToLast(10);
         topScoresQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     String userId = childSnapshot.getKey();
-                    HashMap<String, Integer> userData = (HashMap<String, Integer>) childSnapshot.getValue();
-//                    long score = userData.get("score");
-                    System.out.println(userId + ": " + userData);
+                    long score = childSnapshot.child("score").getValue(Long.class);
+                    System.out.println(userId + ": " + score);
                 }
             }
             @Override
