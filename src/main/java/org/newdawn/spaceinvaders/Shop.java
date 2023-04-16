@@ -1,10 +1,11 @@
 package org.newdawn.spaceinvaders;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.newdawn.spaceinvaders.item.AddBulletItem;
 import org.newdawn.spaceinvaders.item.HealItem;
 import org.newdawn.spaceinvaders.item.Item;
 import org.newdawn.spaceinvaders.item.SpeedUpItem;
+import org.newdawn.spaceinvaders.user.Inventory;
+import org.newdawn.spaceinvaders.user.Player;
 
 import java.util.ArrayList;
 

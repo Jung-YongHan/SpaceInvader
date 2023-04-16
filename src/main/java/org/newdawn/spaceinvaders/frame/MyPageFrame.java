@@ -1,8 +1,8 @@
-package org.newdawn.spaceinvaders.Frame;
+package org.newdawn.spaceinvaders.frame;
 
+import org.newdawn.spaceinvaders.dataBase.DB;
+import org.newdawn.spaceinvaders.user.Player;
 import com.google.firebase.auth.FirebaseAuthException;
-import org.newdawn.spaceinvaders.DB;
-import org.newdawn.spaceinvaders.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class MyPageFrame extends JFrame {
     private JLabel titleLabel;
+
     private JButton backButton;
+
     private Player player;
     private DB db;
     private JLabel highScoreLabel;

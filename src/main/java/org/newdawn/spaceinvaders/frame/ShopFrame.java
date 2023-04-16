@@ -1,8 +1,8 @@
-package org.newdawn.spaceinvaders.Frame;
+package org.newdawn.spaceinvaders.frame;
 
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.Inventory;
-import org.newdawn.spaceinvaders.Player;
+import org.newdawn.spaceinvaders.user.Inventory;
+import org.newdawn.spaceinvaders.user.Player;
 import org.newdawn.spaceinvaders.Shop;
 import org.newdawn.spaceinvaders.item.AddBulletItem;
 import org.newdawn.spaceinvaders.item.HealItem;

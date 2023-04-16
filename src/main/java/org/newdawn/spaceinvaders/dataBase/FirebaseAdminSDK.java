@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.dataBase;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -7,8 +7,6 @@ import com.google.firebase.database.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

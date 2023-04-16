@@ -3,11 +3,12 @@ package org.newdawn.spaceinvaders.item;
 import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.user.Inventory;
 
-public class HealItem extends Item{
-    public HealItem(Inventory inventory) {
+public class ShieldItem extends Item{
+    public ShieldItem(Inventory inventory) {
         super(inventory);
-        coins = 50;
-        name = "HealItem";
+        this.inventory = inventory;
+        name = "ShieldItem";
+        coins = 70;
     }
 
     @Override

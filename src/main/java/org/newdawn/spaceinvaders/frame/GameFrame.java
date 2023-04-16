@@ -1,12 +1,7 @@
-package org.newdawn.spaceinvaders.Frame;
+package org.newdawn.spaceinvaders.frame;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
 public class GameFrame extends JFrame {
     public GameFrame() {

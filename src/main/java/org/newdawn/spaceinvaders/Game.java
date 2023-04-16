@@ -8,12 +8,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.IOException;
-import java.security.Key;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
-import java.util.Scanner;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,14 +17,14 @@ import javax.swing.*;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.*;
-import org.apache.commons.logging.Log;
-import org.newdawn.spaceinvaders.Frame.LoginPage;
-import org.newdawn.spaceinvaders.Frame.MainFrame;
+import org.newdawn.spaceinvaders.dataBase.DB;
+import org.newdawn.spaceinvaders.frame.LoginPage;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.item.AddBulletItem;
 import org.newdawn.spaceinvaders.item.HealItem;
-import org.newdawn.spaceinvaders.item.Item;
 import org.newdawn.spaceinvaders.item.SpeedUpItem;
+import org.newdawn.spaceinvaders.user.Inventory;
+import org.newdawn.spaceinvaders.user.Player;
 
 
 /**
@@ -95,7 +91,7 @@ public class Game extends Canvas
 	private Inventory inventory;
 	private AddBulletItem addBulletItem;
 	private int bulletCount = 1;
-	private int spaceBetweenBullets = 20;
+	private int spaceBetweenBullets = 40;
 	private HealItem healItem;
 	private SpeedUpItem speedUpItem;
 	private DatabaseReference myRef;
@@ -183,10 +179,6 @@ public class Game extends Canvas
 		myRef = FirebaseDatabase.getInstance().getReference("users").child(LoginPage.getUserName());
 		db = new DB();
 
-		addBulletItem  = new AddBulletItem(inventory);
-		healItem = new HealItem(inventory);
-		speedUpItem = new SpeedUpItem(inventory);
-		inventory = new Inventory();
 		// initialise the entities in our game so there's something
 		// to see at startup
 		initEntities();
@@ -249,18 +241,17 @@ public class Game extends Canvas
 	private void useAddBulletItem() {
 		if(inventory.getItemCount(addBulletItem.getName()) > 0) {
 			addBulletItem.useItem(this);
-			System.out.println("총알 추가!");
 		}
 	}
 
 	private void useHealItem() {
-		if(inventory.getItemCount(addBulletItem.getName()) > 0) {
+		if(inventory.getItemCount(healItem.getName()) > 0) {
 			healItem.useItem(this);
 		}
 	}
 
 	private void useSpeedUpItem() {
-		if(inventory.getItemCount(addBulletItem.getName()) > 0) {
+		if(inventory.getItemCount(speedUpItem.getName()) > 0) {
 			speedUpItem.useItem(this);
 		}
 	}
@@ -573,35 +564,33 @@ public class Game extends Canvas
 			//죽인 에일리언 표시
 			g.drawString("죽인 에일리언"+String.valueOf(alienkill),30,30);
 
+			// finally, we've completed drawing so clear up the graphics
+			// and flip the buffer over
+			g.dispose();
+			strategy.show();
 
+			// resolve the movement of the ship. First assume the ship
+			// isn't moving. If either cursor key is pressed then
+			// update the movement appropraitely
+			ship.setHorizontalMovement(0);
 
-					// finally, we've completed drawing so clear up the graphics
-					// and flip the buffer over
-					g.dispose();
-					strategy.show();
+			if ((leftPressed) && (!rightPressed)) {
+				ship.setHorizontalMovement(-moveSpeed);
+			} else if ((rightPressed) && (!leftPressed)) {
+				ship.setHorizontalMovement(moveSpeed);
+			}
 
-					// resolve the movement of the ship. First assume the ship
-					// isn't moving. If either cursor key is pressed then
-					// update the movement appropraitely
-					ship.setHorizontalMovement(0);
+			// if we're pressing fire, attempt to fire
+			if (firePressed) {
+				tryToFire();
 
-					if ((leftPressed) && (!rightPressed)) {
-						ship.setHorizontalMovement(-moveSpeed);
-					} else if ((rightPressed) && (!leftPressed)) {
-						ship.setHorizontalMovement(moveSpeed);
-					}
+			}
 
-					// if we're pressing fire, attempt to fire
-					if (firePressed) {
-						tryToFire();
-
-					}
-
-					// we want each frame to take 10 milliseconds, to do this
-					// we've recorded when we started the frame. We add 10 milliseconds
-					// to this and then factor in the current time to give
-					// us our final value to wait for
-					SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
+			// we want each frame to take 10 milliseconds, to do this
+			// we've recorded when we started the frame. We add 10 milliseconds
+			// to this and then factor in the current time to give
+			// us our final value to wait for
+			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
 
 
 
@@ -652,9 +641,18 @@ public class Game extends Canvas
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				rightPressed = true;
 			}
+			// 위아래 키 이벤트를 처리하는 코드를 추가합니다.
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				ship.setVerticalMovement(-moveSpeed);
+			}
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				ship.setVerticalMovement(moveSpeed);
+			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
 			}
+
+
 			if (e.getKeyCode() == KeyEvent.VK_Z && !zKeyPressed) {
 				if (canUseItem(lastAddBulletItemUse)) {
 					useAddBulletItemPressed = true;
@@ -698,6 +696,13 @@ public class Game extends Canvas
 			}
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				rightPressed = false;
+			}
+			// 위아래 키 이벤트를 처리하는 코드를 추가합니다.
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				ship.setVerticalMovement(0);
+			}
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				ship.setVerticalMovement(0);
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = false;
@@ -763,22 +768,4 @@ public class Game extends Canvas
 	 *
 	 * @param argv The arguments that are passed into our game
 	 */
-
-//	public void addObstacle(){
-//		obstacle = new ObstacleEntity(this,"sprites/obstacle.png")
-//	}
-
-
-	public static void main(String argv[]) {
-		new FirebaseAdminSDK().initFirebase();
-		LoginPage test = new LoginPage();
-//		GameFrame gameFrame = new GameFrame();
-//
-//		// Start the main game loop, note: this method will not
-//		// return until the game has finished running. Hence we are
-//		// using the actual main thread to run the game.
-//		g.gameLoop();
-		// 1) 여기다가 게임 상태를 읽는 로직을 넣는다.
-		// 2) 스레드로 게임을 돌린다. 그러면 actionKeyPerformed가 끝날거니까
-	}
 }

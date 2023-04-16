@@ -1,14 +1,12 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.user;
 
 import org.newdawn.spaceinvaders.item.AddBulletItem;
 import org.newdawn.spaceinvaders.item.HealItem;
-import org.newdawn.spaceinvaders.item.Item;
 import org.newdawn.spaceinvaders.item.SpeedUpItem;
 
 import java.util.HashMap;
 
 public class Inventory {
-    private Game game;
     private HashMap<String, Integer> items;
     private AddBulletItem addBulletItem;
     private SpeedUpItem speedUpItem;
