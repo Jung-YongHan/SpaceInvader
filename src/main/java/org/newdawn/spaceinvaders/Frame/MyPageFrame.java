@@ -44,7 +44,7 @@ public class MyPageFrame extends JFrame {
         backButton.setForeground(Color.WHITE); // 글자색
         backButton.setFocusPainted(false); // 테두리
         backButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        backButton.setBounds(0, 0, 100, 50);
+        backButton.setBounds(0, 500, 100, 20); // set position and size
 
         backButton.addActionListener(new ActionListener() {
             @Override

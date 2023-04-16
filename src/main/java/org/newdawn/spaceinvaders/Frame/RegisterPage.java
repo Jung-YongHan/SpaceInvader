@@ -18,6 +18,7 @@ public class RegisterPage extends JFrame {
     private JTextField emailField;
     private JPasswordField pwField;
     private JButton addAccountButton;
+    private JButton backButton;
     public RegisterPage() {
         // Window Setting
         setTitle("Login");
@@ -89,6 +90,25 @@ public class RegisterPage extends JFrame {
             }
         });
         getContentPane().add(addAccountButton);
+
+        // 버튼 추가
+        backButton = new JButton("Back");
+        // 버튼 서식
+        backButton.setOpaque(false);
+        backButton.setContentAreaFilled(false); // 배경
+        backButton.setBorderPainted(false); // 배경
+        backButton.setFocusPainted(false); // 테두리
+        backButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
+        backButton.setBounds(0, 500, 100, 20); // set position and size
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame mainFrame = new MainFrame();
+                setVisible(false);
+            }
+        });
+        getContentPane().add(backButton);
 
         setVisible(true);
     }
