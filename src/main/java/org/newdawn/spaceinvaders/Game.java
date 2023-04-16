@@ -295,10 +295,8 @@ public class Game extends Canvas
 		message = "Level " + level + ", Score :" + alienkill;
 		waitingForKeyPress = true;
 		db.storeHighScore(alienkill);
-//		updateHighScore();
 		alienkill = 0;
 		db.increasePlayCount();
-//		db.storeHighScore();
 	}
 
 //	public void increasePlayCount() {
@@ -330,23 +328,14 @@ public class Game extends Canvas
 	private int score = 0;
 	private int highScore;
 
-
-	public void updatePlayCount() {
-		playCount = db.getPlayCount();
-	}
-
 	// myframe에서 Playcount,highscore 접근을 위해 getter 메소드 사용
 	public int getPlayCount() {
-		updatePlayCount();
+		playCount = db.getPlayCount();
 		return playCount;
 	}
 
-	public void updateHighScore() {
-		highScore = db.getHighScore();
-	}
-
 	public int getHighScore() {
-		updateHighScore();
+		highScore = db.getHighScore();
 		return highScore;
 	}
 
