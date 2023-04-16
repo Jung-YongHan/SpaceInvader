@@ -27,6 +27,7 @@ public class Rank extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
+        setResizable(false);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
 
         // get hold the content of the frame and set up the resolution of the game
@@ -37,8 +38,6 @@ public class Rank extends JFrame {
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         });
-
-        scoreLabel = new JLabel();
 
         setIgnoreRepaint(false);
 
@@ -70,9 +69,6 @@ public class Rank extends JFrame {
         scoreLabel = new JLabel();
         scoreLabel.setForeground(Color.BLACK); // 기본 글씨 색을 검은색으로 설정합니다.
         panel.add(scoreLabel);
-
-        // Rank 창을 화면에 표시합니다.
-        setVisible(true);
 
         getContentPane().setLayout(new GridLayout(1, 1));
         getContentPane().add(BackButton, BorderLayout.SOUTH);
