@@ -86,7 +86,11 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 마이페이지 넘어가는 로직
-                MyPageFrame myPageFrame = new MyPageFrame(player);
+                try {
+                    MyPageFrame myPageFrame = new MyPageFrame(player);
+                } catch (FirebaseAuthException ex) {
+                    throw new RuntimeException(ex);
+                }
                 setVisible(false);
             }
         });

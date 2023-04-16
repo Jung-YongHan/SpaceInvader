@@ -1,6 +1,8 @@
 package org.newdawn.spaceinvaders.frame;
 
+import org.newdawn.spaceinvaders.dataBase.DB;
 import org.newdawn.spaceinvaders.user.Player;
+import com.google.firebase.auth.FirebaseAuthException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,9 +14,16 @@ public class MyPageFrame extends JFrame {
     private JButton backButton;
 
     private Player player;
+    private DB db;
+    private JLabel highScoreLabel;
+    private JLabel playCountLabel;
+    private JLabel playTimeLabel;
+    private int playTime;
 
-    public MyPageFrame(Player player) {
+    public MyPageFrame(Player player) throws FirebaseAuthException {
         super("MyPage");
+        db = new DB();
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
@@ -59,11 +68,45 @@ public class MyPageFrame extends JFrame {
         });
         getContentPane().add(backButton);
 
+        LoadContent();
+
 
         // finally make the window visible
 //         pack();
 //         setResizable(false);
         setVisible(true);
+
+    }
+
+    public void LoadContent() {
+
+//        highScoreLabel = new JLabel("최고 점수: " + db.getHighScore());
+        highScoreLabel = new JLabel();
+        db.getHighScore(highScore -> {
+            highScoreLabel.setText("최고 점수: " + highScore);
+        });
+        highScoreLabel.setForeground(Color.WHITE);
+        highScoreLabel.setBounds(300, 230, 200, 30);
+
+//        playCountLabel = new JLabel("누적 플레이 수: " + db.getPlayCount());
+        playCountLabel = new JLabel();
+        db.getHighScore(count -> {
+            playCountLabel.setText("누적 플레이 수: " + count);
+        });
+        playCountLabel.setForeground(Color.WHITE);
+        playCountLabel.setBounds(300, 280, 200, 30);
+
+//        playTimeLabel = new JLabel("누적 플레이 시간: " + playTime);
+        playTimeLabel = new JLabel();
+        db.getPlayTime(time -> {
+            playTimeLabel.setText("누적 플레이 시간: " + time);
+        });
+        playTimeLabel.setForeground(Color.WHITE);
+        playTimeLabel.setBounds(300, 330, 200, 30);
+
+        getContentPane().add(highScoreLabel);
+        getContentPane().add(playCountLabel);
+        getContentPane().add(playTimeLabel);
 
     }
 }

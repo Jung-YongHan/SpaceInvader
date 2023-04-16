@@ -5,6 +5,7 @@ import com.google.firebase.database.*;
 import org.newdawn.spaceinvaders.frame.LoginPage;
 
 import java.util.HashMap;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,19 +16,22 @@ public class DB {
 
     public static Object score = 0;
     private Integer playCount = 0;
+    private Integer playTime = 0;
     private Integer highScore = 0;
     private Integer firstPlaceScore = 0;
 
     public DB() throws FirebaseAuthException {
     }
 
-    public int getHighScore() {
-        userRef.addValueEventListener(new ValueEventListener() {
+    public void getHighScore(Consumer<Integer> callback) {
+        userRef.child("highScore").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("highScore").getValue() != null) {
-                    highScore = dataSnapshot.child("highScore").getValue(Integer.class);
+                Integer highScore = dataSnapshot.getValue(Integer.class);
+                if (highScore == null) {
+                    highScore = 0;
                 }
+                callback.accept(highScore);
             }
 
             @Override
@@ -35,23 +39,43 @@ public class DB {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
-        return highScore;
     }
 
+//    public Integer getHighScore() {
+//        userRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.child("highScore").getValue() != null) {
+//                    highScore = dataSnapshot.child("highScore").getValue(Integer.class);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                System.out.println("The read failed: " + databaseError.getCode());
+//            }
+//        });
+//        return highScore;
+//    }
+
     public void storeHighScore(int score) {
-        Integer currentHighScore = getHighScore();
-        HashMap<String, Object> users = new HashMap<>();
-        users.put("highScore", Math.max(currentHighScore, score));
-        this.userRef.updateChildren(users, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError != null) {
-                    System.out.println("Data could not be updated: " + databaseError.getMessage());
-                } else {
-                    System.out.println("Data updated successfully.");
+        getHighScore(highScore -> {
+            Integer currentHighScore = highScore;
+            HashMap<String, Object> users = new HashMap<>();
+            users.put("highScore", Math.max(currentHighScore, score));
+            this.userRef.updateChildren(users, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    if (databaseError != null) {
+                        System.out.println("Data could not be updated: " + databaseError.getMessage());
+                    } else {
+                        System.out.println("Data updated successfully.");
+                    }
                 }
-            }
+            });
         });
+//        Integer currentHighScore = getHighScore();
+
     }
 
     public Object getFirstPlaceScore() {
@@ -108,6 +132,24 @@ public class DB {
         return playCount;
     }
 
+    public void getPlayCount(Consumer<Integer> callback) {
+        userRef.child("playCount").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Integer playCount = dataSnapshot.getValue(Integer.class);
+                if (playCount == null) {
+                    playCount = 0;
+                }
+                callback.accept(playCount);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+    }
+
     public void increasePlayCount() {
         userRef.runTransaction(new Transaction.Handler() {
             @Override
@@ -154,6 +196,39 @@ public class DB {
                 }
             }
         });
+    }
+
+    public void getPlayTime(Consumer<Integer> callback) {
+        userRef.child("playTime").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Integer playTime = dataSnapshot.getValue(Integer.class);
+                if (playTime == null) {
+                    playTime = 0;
+                }
+                callback.accept(playTime);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+//        userRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.child("playTime").getValue() != null) {
+//                    playTime = dataSnapshot.child("playTime").getValue(Integer.class);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                System.out.println("The read failed: " + databaseError.getCode());
+//            }
+//        });
+////        return playTime;
     }
 
 //    public Object returnData(){
