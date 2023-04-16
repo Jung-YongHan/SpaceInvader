@@ -1,8 +1,9 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.dataBase;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.*;
-import org.newdawn.spaceinvaders.Frame.MainFrame;
+import org.newdawn.spaceinvaders.frame.MainFrame;
+import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;
 import java.awt.*;

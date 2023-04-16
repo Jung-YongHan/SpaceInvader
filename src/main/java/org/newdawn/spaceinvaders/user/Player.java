@@ -1,7 +1,7 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.user;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.user.Inventory;
 
 public class Player {
     private int coins;

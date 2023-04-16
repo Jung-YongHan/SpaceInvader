@@ -1,7 +1,7 @@
 package org.newdawn.spaceinvaders.item;
 
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.Inventory;
+import org.newdawn.spaceinvaders.user.Inventory;
 
 public class AddBulletItem extends Item {
 
