@@ -24,8 +24,7 @@ public class Rank extends JFrame {
         super("Rank");
 
         db = new DB();
-        db.storeScore(50);
-        db.initPlayCount();
+//        db.storeScore(50);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);

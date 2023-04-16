@@ -33,21 +33,6 @@ public class DB {
         });
     }
 
-    public void initPlayCount() {
-        HashMap<String, Object> users = new HashMap<>();
-        users.put("playCount", 0);
-        this.userRef.updateChildren(users, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError != null) {
-                    System.out.println("Data could not be updated: " + databaseError.getMessage());
-                } else {
-                    System.out.println("Data updated successfully.");
-                }
-            }
-        });
-    }
-
     public void readData(){
         userRef.addValueEventListener(new ValueEventListener() {
             @Override

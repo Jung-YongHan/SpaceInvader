@@ -156,7 +156,7 @@ public class Game extends Canvas
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
 
-		myRef = FirebaseDatabase.getInstance().getReference("users");
+		myRef = FirebaseDatabase.getInstance().getReference("users").child(LoginPage.getUserName());
 
 		addBulletItem  = new AddBulletItem();
 		healItem = new HealItem();
@@ -296,7 +296,7 @@ public class Game extends Canvas
 		updateHighScore();
 		alienkill=0;
 //		playCount ++;
-//		increasePlayCount();
+		increasePlayCount();
 	}
 
 	public void increasePlayCount() {
@@ -305,9 +305,9 @@ public class Game extends Canvas
 		public Transaction.Result doTransaction(MutableData mutableData) {
 			Integer playCount = mutableData.child("playCount").getValue(Integer.class);
 			if (playCount == null) {
-				mutableData.setValue(1);
+				mutableData.child("playCount").setValue(1);
 			} else {
-				mutableData.setValue(playCount + 1);
+				mutableData.child("playCount").setValue(playCount + 1);
 			}
 			return Transaction.success(mutableData);
 		}
