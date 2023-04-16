@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.*;
 import org.apache.commons.logging.Log;
 import org.newdawn.spaceinvaders.Frame.LoginPage;
@@ -109,6 +110,7 @@ public class Game extends Canvas
 	private long lastSpeedUpItemUse = 0;
 	private static final long ITEM_USE_INTERVAL = 5000;
 
+	private DB db;
 
 	/** 장애물 */
 	public void AddObstacle() {
@@ -126,7 +128,7 @@ public class Game extends Canvas
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game(JFrame frame, Player player) {
+	public Game(JFrame frame, Player player) throws FirebaseAuthException {
 		container = frame;
 //
 ////		// create a frame to contain our game
@@ -179,6 +181,12 @@ public class Game extends Canvas
 		speedUpItem = new SpeedUpItem(inventory);
 
 		myRef = FirebaseDatabase.getInstance().getReference("users").child(LoginPage.getUserName());
+		db = new DB();
+
+		addBulletItem  = new AddBulletItem(inventory);
+		healItem = new HealItem(inventory);
+		speedUpItem = new SpeedUpItem(inventory);
+		inventory = new Inventory();
 		// initialise the entities in our game so there's something
 		// to see at startup
 		initEntities();
@@ -289,10 +297,10 @@ public class Game extends Canvas
 	public void notifyDeath() {
 		message = "Level "+level+", Score :"+ alienkill	;
 		waitingForKeyPress = true;
-		updateHighScore();
+//		updateHighScore();
 		alienkill=0;
-		playCount ++;
-		playtime = timer;
+		db.increasePlayCount();
+		db.updatePlayTime(timer / 100);
 	   //Rank.setScore((alienkill/(timer/1000)));
 	}
 
@@ -301,53 +309,56 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Level "+level+", Score :"+alienkill;
+		message = "Level " + level + ", Score :" + alienkill;
 		waitingForKeyPress = true;
-		updateHighScore();
-		alienkill=0;
-//		playCount ++;
-		increasePlayCount();
+		db.storeHighScore(alienkill);
+		alienkill = 0;
+		db.increasePlayCount();
+		db.updatePlayTime(timer / 100);
 	}
 
-	public void increasePlayCount() {
-		myRef.runTransaction(new Transaction.Handler() {
-		@Override
-		public Transaction.Result doTransaction(MutableData mutableData) {
-			Integer playCount = mutableData.child("playCount").getValue(Integer.class);
-			if (playCount == null) {
-				mutableData.child("playCount").setValue(1);
-			} else {
-				mutableData.child("playCount").setValue(playCount + 1);
-			}
-			return Transaction.success(mutableData);
-		}
-
-		@Override
-		public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-			if (databaseError != null) {
-				System.out.println("Transaction failed.");
-			} else {
-				System.out.println("Transaction completed.");
-			}
-		}
-	});
-	}
+//	public void increasePlayCount() {
+//		myRef.runTransaction(new Transaction.Handler() {
+//		@Override
+//		public Transaction.Result doTransaction(MutableData mutableData) {
+//			Integer playCount = mutableData.child("playCount").getValue(Integer.class);
+//			if (playCount == null) {
+//				mutableData.child("playCount").setValue(1);
+//			} else {
+//				mutableData.child("playCount").setValue(playCount + 1);
+//			}
+//			return Transaction.success(mutableData);
+//		}
+//
+//		@Override
+//		public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+//			if (databaseError != null) {
+//				System.out.println("Transaction failed.");
+//			} else {
+//				System.out.println("Transaction completed.");
+//			}
+//		}
+//	});
+//	}
 
 	private int playtime;
-	private int playCount =0;
-	private int highScore = 0;
-	public void updateHighScore() {
-		if (alienkill > highScore) {
-			highScore = alienkill;
-		}
-	}
+	private int playCount;
+	private int score = 0;
+	private int highScore;
 
 	// myframe에서 Playcount,highscore 접근을 위해 getter 메소드 사용
 	public int getPlayCount() {
+		playCount = db.getPlayCount();
 		return playCount;
 	}
+
 	public int getHighScore() {
+		highScore = db.getHighScore();
 		return highScore;
+	}
+
+	public int getScore() {
+		return score;
 	}
 
 

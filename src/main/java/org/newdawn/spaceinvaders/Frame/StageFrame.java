@@ -1,5 +1,6 @@
 package org.newdawn.spaceinvaders.Frame;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Frame.GameFrame;
 import org.newdawn.spaceinvaders.Frame.MainFrame;
 import org.newdawn.spaceinvaders.Game;
@@ -55,7 +56,12 @@ public class StageFrame extends JFrame {
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            Game game = new Game(new GameFrame(), player);
+                            Game game = null;
+                            try {
+                                game = new Game(new GameFrame(), player);
+                            } catch (FirebaseAuthException ex) {
+                                throw new RuntimeException(ex);
+                            }
                             game.setLevel(level);
                             game.gameLoop();
                         }

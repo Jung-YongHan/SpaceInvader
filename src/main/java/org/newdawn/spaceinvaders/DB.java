@@ -13,14 +13,35 @@ public class DB {
 
     private final DatabaseReference userRef = db.getReference("users").child(LoginPage.getUserName());
 
-    public static Object score;
+    public static Object score = 0;
+    private Integer playCount = 0;
+    private Integer highScore = 0;
+    private Integer firstPlaceScore = 0;
 
     public DB() throws FirebaseAuthException {
     }
 
-    public void storeScore(int score) {
+    public int getHighScore() {
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("highScore").getValue() != null) {
+                    highScore = dataSnapshot.child("highScore").getValue(Integer.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+        return highScore;
+    }
+
+    public void storeHighScore(int score) {
+        Integer currentHighScore = getHighScore();
         HashMap<String, Object> users = new HashMap<>();
-        users.put("score", score);
+        users.put("highScore", Math.max(currentHighScore, score));
         this.userRef.updateChildren(users, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -33,7 +54,29 @@ public class DB {
         });
     }
 
-    public void readData(){
+    public Object getFirstPlaceScore() {
+        // Rank 불러오기
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users");
+
+        // 상위 10명의 사용자 가져오기
+        Query topScoresQuery = myRef.orderByChild("score").limitToLast(1);
+        topScoresQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    firstPlaceScore = Math.toIntExact(dataSnapshot.child("score").getValue(Long.class));
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // 처리할 오류 처리
+            }
+        });
+        return firstPlaceScore;
+    }
+
+    public void readHighScore(){
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -48,8 +91,73 @@ public class DB {
         });
     }
 
-    public Object returnData(){
-        return score;
+    public int getPlayCount() {
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("playCount").getValue() != null) {
+                    playCount = dataSnapshot.child("playCount").getValue(Integer.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+        return playCount;
     }
+
+    public void increasePlayCount() {
+        userRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Integer playCount = mutableData.child("playCount").getValue(Integer.class);
+                if (playCount == null) {
+                    mutableData.child("playCount").setValue(1);
+                } else {
+                    mutableData.child("playCount").setValue(playCount + 1);
+                }
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    System.out.println("Transaction failed.");
+                } else {
+                    System.out.println("Transaction completed.");
+                }
+            }
+        });
+    }
+
+    public void updatePlayTime(int time) {
+        userRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Integer playTime = mutableData.child("playTime").getValue(Integer.class);
+                if (playTime == null) {
+                    mutableData.child("playTime").setValue(time);
+                } else {
+                    mutableData.child("playTime").setValue(playTime + time);
+                }
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    System.out.println("Transaction failed.");
+                } else {
+                    System.out.println("Transaction completed.");
+                }
+            }
+        });
+    }
+
+//    public Object returnData(){
+//        return score;
+//    }
 
 }
