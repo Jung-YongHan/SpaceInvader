@@ -17,6 +17,7 @@ public class MainFrame extends JFrame {
         super("Main Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
+        setResizable(false);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
 
         // get hold the content of the frame and set up the resolution of the game
@@ -40,7 +41,7 @@ public class MainFrame extends JFrame {
         startButton.setForeground(Color.WHITE); // 글자색
         startButton.setFocusPainted(false); // 테두리
         startButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        startButton.setBounds(50, 275, 100, 50);
+        startButton.setBounds(0, 300, 200, 50);
 
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -58,7 +59,7 @@ public class MainFrame extends JFrame {
         myPageButton.setForeground(Color.WHITE); // 글자색
         myPageButton.setFocusPainted(false); // 테두리
         myPageButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        myPageButton.setBounds(180, 265, 120, 60);
+        myPageButton.setBounds(200, 300, 200, 50);
 
         myPageButton.addActionListener(new ActionListener() {
             @Override
@@ -77,9 +78,7 @@ public class MainFrame extends JFrame {
         shopButton.setForeground(Color.WHITE); // 글자색
         shopButton.setFocusPainted(false); // 테두리
         shopButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        shopButton.setBounds(350, 275, 100, 50);
-
-        getContentPane().setLayout(new GridLayout(1, 1));
+        shopButton.setBounds(400, 300, 200, 50);
 
         shopButton.addActionListener(new ActionListener() {
             @Override
@@ -109,7 +108,7 @@ public class MainFrame extends JFrame {
                 setVisible(false);
             }
         });
-        openImageChangePanelButton.setBounds(500,275,100,50);
+        openImageChangePanelButton.setBounds(600, 300, 200, 50);
 
 
         getContentPane().add(startButton);

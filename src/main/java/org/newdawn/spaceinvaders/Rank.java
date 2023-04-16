@@ -23,7 +23,7 @@ public class Rank extends JFrame {
         super("Rank");
 
         db = new DB();
-        db.storeScore(50);
+//        db.storeScore(50);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
@@ -86,7 +86,7 @@ public class Rank extends JFrame {
         DatabaseReference myRef = database.getReference("users");
 
         // 상위 10명의 사용자 가져오기
-        Query topScoresQuery = myRef.orderByValue().limitToLast(10);
+        Query topScoresQuery = myRef.orderByChild("score").limitToLast(10);
         topScoresQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
