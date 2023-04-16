@@ -13,21 +13,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 
 
 public class MainFrame extends JFrame {
@@ -36,6 +28,8 @@ public class MainFrame extends JFrame {
     private JButton shopButton;
     private JButton RankButton;
     private Player player;
+    private JButton rankButton;
+    private JButton openImageChangePanelButton;
 
 
     public MainFrame(Player player) {
@@ -45,6 +39,7 @@ public class MainFrame extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
+        setResizable(false);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
 
         // get hold the content of the frame and set up the resolution of the game
@@ -68,7 +63,7 @@ public class MainFrame extends JFrame {
         startButton.setForeground(Color.WHITE); // 글자색
         startButton.setFocusPainted(false); // 테두리
         startButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        startButton.setBounds(50, 275, 100, 50);
+        startButton.setBounds(0, 300, 200, 50);
 
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -86,7 +81,7 @@ public class MainFrame extends JFrame {
         myPageButton.setForeground(Color.WHITE); // 글자색
         myPageButton.setFocusPainted(false); // 테두리
         myPageButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        myPageButton.setBounds(180, 265, 120, 60);
+        myPageButton.setBounds(200, 300, 200, 50);
 
         myPageButton.addActionListener(new ActionListener() {
             @Override
@@ -105,9 +100,7 @@ public class MainFrame extends JFrame {
         shopButton.setForeground(Color.WHITE); // 글자색
         shopButton.setFocusPainted(false); // 테두리
         shopButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        shopButton.setBounds(350, 275, 100, 50);
-
-        getContentPane().setLayout(null);
+        shopButton.setBounds(400, 300, 200, 50);
 
         shopButton.addActionListener(new ActionListener() {
             @Override
@@ -121,9 +114,8 @@ public class MainFrame extends JFrame {
         getContentPane().add(buttonPanel);
 
         // Create a button to open the image change panel
-        JButton openImageChangePanelButton = new JButton("이미지 변경");
+        openImageChangePanelButton = new JButton("이미지 변경");
         buttonPanel.add(openImageChangePanelButton);
-
         // Add action listener to the button
         openImageChangePanelButton.addActionListener(new ActionListener() {
             @Override
@@ -131,7 +123,7 @@ public class MainFrame extends JFrame {
                 openImageChangePanel();
             }
         });
-        openImageChangePanelButton.setBounds(500,275,100,50);
+        openImageChangePanelButton.setBounds(600, 300, 200, 50);
 
 
         getContentPane().add(startButton);
@@ -139,6 +131,30 @@ public class MainFrame extends JFrame {
         getContentPane().add(shopButton);
         getContentPane().add(openImageChangePanelButton);
 
+        // Rank 버튼 (임시)
+        rankButton = new JButton("Rank");
+        // 버튼 서식
+        rankButton.setOpaque(false);
+        rankButton.setContentAreaFilled(false); // 배경
+        rankButton.setBorderPainted(false); // 배경
+        rankButton.setForeground(Color.WHITE); // 글자색
+        rankButton.setFocusPainted(false); // 테두리
+        rankButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
+        rankButton.setBounds(700, 500, 100, 50);
+
+        rankButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 마이페이지 넘어가는 로직
+                try {
+                    Rank rankPage = new Rank();
+                } catch (FirebaseAuthException ex) {
+                    throw new RuntimeException(ex);
+                }
+                setVisible(false);
+            }
+        });
+        getContentPane().add(rankButton);
 
 
         setVisible(true);
