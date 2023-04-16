@@ -17,7 +17,7 @@ public class Rank extends JFrame {
     private JLabel scoreLabel;
     private Player player;
     private DB db;
-    private HashMap<String, Integer> userData = new HashMap<>();
+//    private HashMap<String, Integer> userData = new HashMap<>();
 
     public Rank(Player player) throws FirebaseAuthException {
 

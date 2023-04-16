@@ -48,7 +48,7 @@ import org.newdawn.spaceinvaders.item.SpeedUpItem;
  */
 public class Game extends Canvas
 {
-	int timer;
+	private int timer;
 	/** The stragey that allows us to use accelerate page flipping */
 	private BufferStrategy strategy;
 	/** True if the game is currently "running", i.e. the game loop is looping */
@@ -347,15 +347,18 @@ public class Game extends Canvas
 	private int highScore;
 
 	// myframe에서 Playcount,highscore 접근을 위해 getter 메소드 사용
-	public int getPlayCount() {
-		playCount = db.getPlayCount();
-		return playCount;
-	}
+//	public int getPlayCount() {
+//		playCount = db.getPlayCount();
+//		return playCount;
+//	}
 
-	public int getHighScore() {
-		highScore = db.getHighScore();
-		return highScore;
-	}
+//	public int getHighScore() {
+//		db.getHighScore(score -> {
+//			return score;
+//		});
+////		highScore = db.getHighScore();
+////		return highScore;
+//	}
 
 	public int getScore() {
 		return score;
@@ -560,7 +563,7 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("PlayTime : "+playtime/100+" Play Count : "+playCount+" Rank 1st's score : "+highScore+"  Press any key",(600-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+				g.drawString("PlayTime : " + timer / 100 + " Play Count : " + db.getPlayCount() + " Rank 1st's score : " + db.getFirstPlaceScore() + "  Press any key", (600 - g.getFontMetrics().stringWidth("Press any key")) / 2, 300);
 				//타이머(스코어) 0 초기화
 				timer =0;
 			}
