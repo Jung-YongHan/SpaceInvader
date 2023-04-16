@@ -1,8 +1,5 @@
 package org.newdawn.spaceinvaders.Frame;
 
-import com.google.firebase.auth.FirebaseAuthException;
-import org.newdawn.spaceinvaders.Rank;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,21 +8,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 
 
 public class MainFrame extends JFrame {
@@ -86,7 +75,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 마이페이지 넘어가는 로직
-                MypageFrame mypage = new MypageFrame();
+                MyPageFrame mypage = new MyPageFrame();
                 setVisible(false);
             }
         });
