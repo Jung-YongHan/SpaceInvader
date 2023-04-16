@@ -24,7 +24,8 @@ public class Rank extends JFrame {
         super("Rank");
 
         db = new DB();
-//        db.storeScore(50);
+        db.storeScore(50);
+        db.initPlayCount();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
@@ -92,9 +93,10 @@ public class Rank extends JFrame {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     String userId = childSnapshot.getKey();
-                    HashMap<String, Integer> userData = (HashMap<String, Integer>) childSnapshot.getValue();
-//                    long score = userData.get("score");
-                    System.out.println(userId + ": " + userData);
+//                    HashMap<String, Integer> userData = (HashMap<String, Integer>) childSnapshot.getValue();
+                    long score = childSnapshot.child("score").getValue(Long.class);
+//                    System.out.println(userId + ": " + userData);
+                    System.out.println(userId + ": " + score);
                 }
             }
             @Override

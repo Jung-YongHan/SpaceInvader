@@ -1,5 +1,8 @@
 package org.newdawn.spaceinvaders.Frame;
 
+import com.google.firebase.auth.FirebaseAuthException;
+import org.newdawn.spaceinvaders.Rank;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,7 +24,8 @@ public class MainFrame extends JFrame {
     private JButton startButton;
     private JButton myPageButton;
     private JButton shopButton;
-    private JButton RankButton;
+    private JButton rankButton;
+    private JButton openImageChangePanelButton;
 
     public MainFrame() {
         super("Main Page");
@@ -102,9 +106,8 @@ public class MainFrame extends JFrame {
         getContentPane().add(buttonPanel);
 
         // Create a button to open the image change panel
-        JButton openImageChangePanelButton = new JButton("이미지 변경");
+        openImageChangePanelButton = new JButton("이미지 변경");
         buttonPanel.add(openImageChangePanelButton);
-
         // Add action listener to the button
         openImageChangePanelButton.addActionListener(new ActionListener() {
             @Override
@@ -120,6 +123,30 @@ public class MainFrame extends JFrame {
         getContentPane().add(shopButton);
         getContentPane().add(openImageChangePanelButton);
 
+        // Rank 버튼 (임시)
+        rankButton = new JButton("Rank");
+        // 버튼 서식
+        rankButton.setOpaque(false);
+        rankButton.setContentAreaFilled(false); // 배경
+        rankButton.setBorderPainted(false); // 배경
+        rankButton.setForeground(Color.WHITE); // 글자색
+        rankButton.setFocusPainted(false); // 테두리
+        rankButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
+        rankButton.setBounds(700, 500, 100, 50);
+
+        rankButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 마이페이지 넘어가는 로직
+                try {
+                    Rank rankPage = new Rank();
+                } catch (FirebaseAuthException ex) {
+                    throw new RuntimeException(ex);
+                }
+                setVisible(false);
+            }
+        });
+        getContentPane().add(rankButton);
 
 
         setVisible(true);
