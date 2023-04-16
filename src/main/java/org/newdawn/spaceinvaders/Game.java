@@ -9,15 +9,21 @@ import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 
 import org.newdawn.spaceinvaders.Frame.LoginPage;
 import org.newdawn.spaceinvaders.Frame.MainFrame;
 import org.newdawn.spaceinvaders.entity.*;
+import org.newdawn.spaceinvaders.item.AddBulletItem;
+import org.newdawn.spaceinvaders.item.HealItem;
+import org.newdawn.spaceinvaders.item.Item;
+import org.newdawn.spaceinvaders.item.SpeedUpItem;
 
 
 /**
@@ -79,6 +85,10 @@ public class Game extends Canvas
 	private JFrame container;
 	private Image background;
 	private int level;
+	private Inventory inventory;
+	private AddBulletItem addBulletItem;
+	private HealItem healItem;
+	private SpeedUpItem speedUpItem;
 
 	/** 장애물 */
 	public void AddObstacle() {
@@ -88,12 +98,15 @@ public class Game extends Canvas
 		else if(level == 5) obstacle.setMoveSpeed(800);
 	}
 
+	/** 레벨 선택 */
+	public void setLevel(int level){
+		this.level = level;
+	}
 
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game(JFrame frame, int level) {
-		this.level = level;
+	public Game(JFrame frame) {
 		container = frame;
 //
 ////		// create a frame to contain our game
@@ -139,6 +152,10 @@ public class Game extends Canvas
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
 
+		addBulletItem  = new AddBulletItem();
+		healItem = new HealItem();
+		speedUpItem = new SpeedUpItem();
+		inventory = new Inventory();
 		// initialise the entities in our game so there's something
 		// to see at startup
 		initEntities();
@@ -166,7 +183,8 @@ public class Game extends Canvas
 	int alienkill=0;
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this,"sprites/ship.png",370,500);
+		ship = new ShipEntity(this,"sprites/ship/ship.png",370,500);
+		ImageIcon i = new ImageIcon("ship.png");
 		entities.add(ship);
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -198,7 +216,33 @@ public class Game extends Canvas
 		}
 	}
 
-
+	public void useSelectedItem(){
+		HashMap<Item, Integer> items = inventory.getItems();
+		Scanner s = new Scanner(System.in);
+		char input = s.nextLine().charAt(0);
+		if (input == 'z'){
+			if(items.get(addBulletItem) != 0){
+				addBulletItem.useItem();
+				items.put(addBulletItem, items.get(addBulletItem)-1);
+			}
+			else System.out.println("AddBulletItem이 부족합니다.");
+		}
+		else if (input == 'x'){
+			if(items.get(healItem) != 0){
+				healItem.useItem();
+				items.put(healItem, items.get(healItem)-1);
+			}
+			else System.out.println("HealItem이 부족합니다.");
+		}
+		else if (input == 'c'){
+			if(items.get(speedUpItem) != 0){
+				speedUpItem.useItem();
+				items.put(speedUpItem, items.get(speedUpItem)-1);
+			}
+			else System.out.println("SpeedUpItem이 부족합니다.");
+		}
+		inventory.setItems(items);
+	}
 
 
 	/**
@@ -328,7 +372,7 @@ public class Game extends Canvas
 
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this,"sprites/shot.png",ship.getX()+10,ship.getY()-30);
+		ShotEntity shot = new ShotEntity(this,"sprites/shot/shot.png",ship.getX()+10,ship.getY()-30);
 		entities.add(shot);
 	}
 
@@ -383,6 +427,8 @@ public class Game extends Canvas
 //			g.setColor(Color.black);
 //			g.fillRect(0,0,800,600);
 
+			// 아이템 커맨드 입력
+			useSelectedItem();
 
 			// draw the background image
 			if (background != null) {

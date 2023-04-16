@@ -49,7 +49,8 @@ public class StageFrame extends JFrame {
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            Game game = new Game(new GameFrame(), level+1);
+                            Game game = new Game(new GameFrame());
+                            game.setLevel(level);
                             game.gameLoop();
                         }
                     });

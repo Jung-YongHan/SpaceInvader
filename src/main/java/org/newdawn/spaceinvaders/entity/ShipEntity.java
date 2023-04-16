@@ -52,9 +52,6 @@ public class ShipEntity extends Entity {
 	 * @param other The entity with which the ship has collided
 	 */
 
-
-
-
 	public void collidedWith(Entity other) {
 		// if its an alien, notify the game that the player
 		// is dead
