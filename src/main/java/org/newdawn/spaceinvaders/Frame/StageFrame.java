@@ -58,7 +58,7 @@ public class StageFrame extends JFrame {
                         public void run() {
                             Game game = null;
                             try {
-                                game = new Game(new GameFrame());
+                                game = new Game(new GameFrame(), player);
                             } catch (FirebaseAuthException ex) {
                                 throw new RuntimeException(ex);
                             }

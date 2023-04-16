@@ -183,9 +183,9 @@ public class Game extends Canvas
 		myRef = FirebaseDatabase.getInstance().getReference("users").child(LoginPage.getUserName());
 		db = new DB();
 
-		addBulletItem  = new AddBulletItem();
-		healItem = new HealItem();
-		speedUpItem = new SpeedUpItem();
+		addBulletItem  = new AddBulletItem(inventory);
+		healItem = new HealItem(inventory);
+		speedUpItem = new SpeedUpItem(inventory);
 		inventory = new Inventory();
 		// initialise the entities in our game so there's something
 		// to see at startup
@@ -263,7 +263,6 @@ public class Game extends Canvas
 		if(inventory.getItemCount(addBulletItem.getName()) > 0) {
 			speedUpItem.useItem(this);
 		}
-		inventory.setItems(items);
 	}
 
 	private boolean canUseItem(long lastItemUse) {
