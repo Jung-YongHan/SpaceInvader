@@ -1,15 +1,17 @@
 package org.newdawn.spaceinvaders.item;
 
+import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Inventory;
+
 public class HealItem extends Item{
-    private int coins;
-    private String name;
-    public HealItem() {
+    public HealItem(Inventory inventory) {
+        super(inventory);
         coins = 50;
         name = "HealItem";
     }
 
     @Override
-    public void useItem() {
+    public void useItem(Game game) {
 
     }
 }

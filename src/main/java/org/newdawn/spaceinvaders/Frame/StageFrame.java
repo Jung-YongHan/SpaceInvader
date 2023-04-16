@@ -4,6 +4,8 @@ import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Frame.GameFrame;
 import org.newdawn.spaceinvaders.Frame.MainFrame;
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Inventory;
+import org.newdawn.spaceinvaders.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,10 +13,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class StageFrame extends JFrame {
     private JButton[] levelButton;
+    private Player player;
     private final int levels = 5;
     private JButton backButton;
-    public StageFrame() {
+    public StageFrame(Player player) {
         super("Stage Page");
+
+        this.player = player;
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
@@ -81,7 +87,7 @@ public class StageFrame extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame();
+                MainFrame mainFrame = new MainFrame(player);
                 setVisible(false);
             }
         });

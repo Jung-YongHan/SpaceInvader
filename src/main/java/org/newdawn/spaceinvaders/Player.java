@@ -1,19 +1,18 @@
 package org.newdawn.spaceinvaders;
 
-import org.newdawn.spaceinvaders.item.Item;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
     private int coins;
-    private HashMap<Item, Integer> items;
     private Inventory inventory;
-
-    public Player() {
-        coins = 0;
-        items = new HashMap<>();
-        inventory = new Inventory();
+    private Game game;
+    public Player(){
+        coins = 100;
+        this.inventory = new Inventory();
+    }
+    public void setGame(Game game){
+        this.game = game;
     }
 
     public int getCoins() {
@@ -24,15 +23,15 @@ public class Player {
         this.coins = coins;
     }
 
-    public void addItemToInventory(Item item) {
+    public void addItemToInventory(String item) {
         inventory.addItem(item);
     }
 
-    public void removeItemFromInventory(Item item) {
+    public void removeItemFromInventory(String item) {
         inventory.removeItem(item);
     }
 
-    public HashMap<Item, Integer> getInventory() {
-        return inventory.getItems();
+    public Inventory getInventory() {
+        return inventory;
     }
 }

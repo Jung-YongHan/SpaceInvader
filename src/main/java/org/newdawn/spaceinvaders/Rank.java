@@ -15,14 +15,14 @@ public class Rank extends JFrame {
     private JLabel titleLabel;
     private JButton BackButton;
     private JLabel scoreLabel;
-
+    private Player player;
     private DB db;
     private HashMap<String, Integer> userData = new HashMap<>();
 
-    public Rank() throws FirebaseAuthException {
+    public Rank(Player player) throws FirebaseAuthException {
 
         super("Rank");
-
+        this.player = player;
         db = new DB();
 //        db.storeScore(50);
 
@@ -64,7 +64,7 @@ public class Rank extends JFrame {
         BackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame();
+                MainFrame mainFrame = new MainFrame(player);
                 setVisible(false);
             }
         });
