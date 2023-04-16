@@ -18,7 +18,7 @@ public class MyPageFrame extends JFrame {
     private JLabel highScoreLabel;
     private JLabel playCountLabel;
     private JLabel playTimeLabel;
-    private int playTime;
+    private JLabel coinLabel;
 
     public MyPageFrame(Player player) throws FirebaseAuthException {
         super("MyPage");
@@ -80,33 +80,38 @@ public class MyPageFrame extends JFrame {
 
     public void LoadContent() {
 
-//        highScoreLabel = new JLabel("최고 점수: " + db.getHighScore());
         highScoreLabel = new JLabel();
         db.getHighScore(highScore -> {
             highScoreLabel.setText("최고 점수: " + highScore);
         });
         highScoreLabel.setForeground(Color.WHITE);
-        highScoreLabel.setBounds(300, 230, 200, 30);
+        highScoreLabel.setBounds(300, 220, 200, 30);
 
-//        playCountLabel = new JLabel("누적 플레이 수: " + db.getPlayCount());
         playCountLabel = new JLabel();
         db.getHighScore(count -> {
             playCountLabel.setText("누적 플레이 수: " + count);
         });
         playCountLabel.setForeground(Color.WHITE);
-        playCountLabel.setBounds(300, 280, 200, 30);
+        playCountLabel.setBounds(300, 270, 200, 30);
 
-//        playTimeLabel = new JLabel("누적 플레이 시간: " + playTime);
         playTimeLabel = new JLabel();
         db.getPlayTime(time -> {
             playTimeLabel.setText("누적 플레이 시간: " + time);
         });
         playTimeLabel.setForeground(Color.WHITE);
-        playTimeLabel.setBounds(300, 330, 200, 30);
+        playTimeLabel.setBounds(300, 320, 200, 30);
+
+        coinLabel = new JLabel();
+        db.getCoin(coin -> {
+            coinLabel.setText("코인: " + coin);
+        });
+        coinLabel.setForeground(Color.WHITE);
+        coinLabel.setBounds(300, 370, 200, 30);
 
         getContentPane().add(highScoreLabel);
         getContentPane().add(playCountLabel);
         getContentPane().add(playTimeLabel);
+        getContentPane().add(coinLabel);
 
     }
 }
