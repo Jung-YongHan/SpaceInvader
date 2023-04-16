@@ -12,14 +12,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.*;
-import org.apache.commons.logging.Log;
 import org.newdawn.spaceinvaders.Frame.LoginPage;
 import org.newdawn.spaceinvaders.Frame.MainFrame;
 import org.newdawn.spaceinvaders.entity.*;
@@ -93,6 +92,7 @@ public class Game extends Canvas
 	private HealItem healItem;
 	private SpeedUpItem speedUpItem;
 	private DatabaseReference myRef;
+	private DB db;
 
 	/** 장애물 */
 	public void AddObstacle() {
@@ -110,7 +110,7 @@ public class Game extends Canvas
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game(JFrame frame) {
+	public Game(JFrame frame) throws FirebaseAuthException {
 		container = frame;
 //
 ////		// create a frame to contain our game
@@ -157,6 +157,7 @@ public class Game extends Canvas
 		strategy = getBufferStrategy();
 
 		myRef = FirebaseDatabase.getInstance().getReference("users").child(LoginPage.getUserName());
+		db = new DB();
 
 		addBulletItem  = new AddBulletItem();
 		healItem = new HealItem();
@@ -279,9 +280,9 @@ public class Game extends Canvas
 	public void notifyDeath() {
 		message = "Level "+level+", Score :"+ alienkill	;
 		waitingForKeyPress = true;
-		updateHighScore();
+//		updateHighScore();
 		alienkill=0;
-		playCount ++;
+		db.increasePlayCount();
 		playtime = timer;
 	   //Rank.setScore((alienkill/(timer/1000)));
 	}
@@ -291,53 +292,66 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Level "+level+", Score :"+alienkill;
+		message = "Level " + level + ", Score :" + alienkill;
 		waitingForKeyPress = true;
-		updateHighScore();
-		alienkill=0;
-//		playCount ++;
-		increasePlayCount();
+		db.storeHighScore(alienkill);
+//		updateHighScore();
+		alienkill = 0;
+		db.increasePlayCount();
+//		db.storeHighScore();
 	}
 
-	public void increasePlayCount() {
-		myRef.runTransaction(new Transaction.Handler() {
-		@Override
-		public Transaction.Result doTransaction(MutableData mutableData) {
-			Integer playCount = mutableData.child("playCount").getValue(Integer.class);
-			if (playCount == null) {
-				mutableData.child("playCount").setValue(1);
-			} else {
-				mutableData.child("playCount").setValue(playCount + 1);
-			}
-			return Transaction.success(mutableData);
-		}
-
-		@Override
-		public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-			if (databaseError != null) {
-				System.out.println("Transaction failed.");
-			} else {
-				System.out.println("Transaction completed.");
-			}
-		}
-	});
-	}
+//	public void increasePlayCount() {
+//		myRef.runTransaction(new Transaction.Handler() {
+//		@Override
+//		public Transaction.Result doTransaction(MutableData mutableData) {
+//			Integer playCount = mutableData.child("playCount").getValue(Integer.class);
+//			if (playCount == null) {
+//				mutableData.child("playCount").setValue(1);
+//			} else {
+//				mutableData.child("playCount").setValue(playCount + 1);
+//			}
+//			return Transaction.success(mutableData);
+//		}
+//
+//		@Override
+//		public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+//			if (databaseError != null) {
+//				System.out.println("Transaction failed.");
+//			} else {
+//				System.out.println("Transaction completed.");
+//			}
+//		}
+//	});
+//	}
 
 	private int playtime;
-	private int playCount =0;
-	private int highScore = 0;
-	public void updateHighScore() {
-		if (alienkill > highScore) {
-			highScore = alienkill;
-		}
+	private int playCount;
+	private int score = 0;
+	private int highScore;
+
+
+	public void updatePlayCount() {
+		playCount = db.getPlayCount();
 	}
 
 	// myframe에서 Playcount,highscore 접근을 위해 getter 메소드 사용
 	public int getPlayCount() {
+		updatePlayCount();
 		return playCount;
 	}
+
+	public void updateHighScore() {
+		highScore = db.getHighScore();
+	}
+
 	public int getHighScore() {
+		updateHighScore();
 		return highScore;
+	}
+
+	public int getScore() {
+		return score;
 	}
 
 
@@ -528,7 +542,7 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("PlayTime : "+playtime/100+" Play Count : "+playCount+" Rank 1st's score : "+highScore+"  Press any key",(600-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+				g.drawString("PlayTime : "+playtime/100+" Play Count : "+playCount+" Rank 1st's score : "+ score +"  Press any key",(600-g.getFontMetrics().stringWidth("Press any key"))/2,300);
 				//타이머(스코어) 0 초기화
 				timer =0;
 			}
