@@ -13,9 +13,10 @@ public class DB {
 
     private final DatabaseReference userRef = db.getReference("users").child(LoginPage.getUserName());
 
-    public static Object score;
-    private Integer playCount;
+    public static Object score = 0;
+    private Integer playCount = 0;
     private Integer highScore = 0;
+    private Integer firstPlaceScore = 0;
 
     public DB() throws FirebaseAuthException {
     }
@@ -53,6 +54,28 @@ public class DB {
         });
     }
 
+    public Object getFirstPlaceScore() {
+        // Rank 불러오기
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users");
+
+        // 상위 10명의 사용자 가져오기
+        Query topScoresQuery = myRef.orderByChild("score").limitToLast(1);
+        topScoresQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    firstPlaceScore = Math.toIntExact(dataSnapshot.child("score").getValue(Long.class));
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // 처리할 오류 처리
+            }
+        });
+        return firstPlaceScore;
+    }
+
     public void readHighScore(){
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -72,7 +95,9 @@ public class DB {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                playCount = dataSnapshot.child("playCount").getValue(Integer.class);
+                if (dataSnapshot.child("playCount").getValue() != null) {
+                    playCount = dataSnapshot.child("playCount").getValue(Integer.class);
+                }
             }
 
             @Override
@@ -107,8 +132,32 @@ public class DB {
         });
     }
 
-    public Object returnData(){
-        return score;
+    public void updatePlayTime(int time) {
+        userRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Integer playTime = mutableData.child("playTime").getValue(Integer.class);
+                if (playTime == null) {
+                    mutableData.child("playTime").setValue(time);
+                } else {
+                    mutableData.child("playTime").setValue(playTime + time);
+                }
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    System.out.println("Transaction failed.");
+                } else {
+                    System.out.println("Transaction completed.");
+                }
+            }
+        });
     }
+
+//    public Object returnData(){
+//        return score;
+//    }
 
 }
