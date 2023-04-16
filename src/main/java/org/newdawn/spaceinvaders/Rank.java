@@ -93,9 +93,7 @@ public class Rank extends JFrame {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     String userId = childSnapshot.getKey();
-//                    HashMap<String, Integer> userData = (HashMap<String, Integer>) childSnapshot.getValue();
                     long score = childSnapshot.child("score").getValue(Long.class);
-//                    System.out.println(userId + ": " + userData);
                     System.out.println(userId + ": " + score);
                 }
             }
