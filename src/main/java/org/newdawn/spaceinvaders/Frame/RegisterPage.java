@@ -3,6 +3,7 @@ package org.newdawn.spaceinvaders.Frame;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import org.newdawn.spaceinvaders.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +20,11 @@ public class RegisterPage extends JFrame {
     private JPasswordField pwField;
     private JButton addAccountButton;
     private JButton backButton;
+    private Player player;
     public RegisterPage() {
         // Window Setting
         setTitle("Login");
+        this.player = player;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setResizable(false);
@@ -104,7 +107,7 @@ public class RegisterPage extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame();
+                LoginPage loginPage = new LoginPage();
                 setVisible(false);
             }
         });

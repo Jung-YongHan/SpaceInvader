@@ -1,5 +1,7 @@
 package org.newdawn.spaceinvaders.Frame;
 
+import org.newdawn.spaceinvaders.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +11,9 @@ public class MyPageFrame extends JFrame {
 
     private JButton backButton;
 
-    public MyPageFrame() {
+    private Player player;
+
+    public MyPageFrame(Player player) {
         super("MyPage");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
@@ -49,7 +53,7 @@ public class MyPageFrame extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame();
+                MainFrame mainFrame = new MainFrame(player);
                 setVisible(false);
             }
         });

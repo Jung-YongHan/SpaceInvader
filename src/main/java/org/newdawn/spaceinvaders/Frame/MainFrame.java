@@ -87,7 +87,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 마이페이지 넘어가는 로직
-                MypageFrame mypage = new MypageFrame(player);
+                MyPageFrame myPageFrame = new MyPageFrame(player);
                 setVisible(false);
             }
         });
@@ -147,7 +147,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // 마이페이지 넘어가는 로직
                 try {
-                    Rank rankPage = new Rank();
+                    Rank rankPage = new Rank(player);
                 } catch (FirebaseAuthException ex) {
                     throw new RuntimeException(ex);
                 }
