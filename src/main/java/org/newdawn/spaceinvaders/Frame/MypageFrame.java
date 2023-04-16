@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.Frame;
 
 import org.newdawn.spaceinvaders.Frame.MainFrame;
+import org.newdawn.spaceinvaders.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,9 +10,11 @@ import java.awt.event.ActionListener;
 public class MypageFrame extends JFrame {
 
     private JButton BackButton;
+    private Player player;
 
-    public MypageFrame() {
+    public MypageFrame(Player player) {
         super("Main Page");
+        this.player = player;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
@@ -41,7 +44,7 @@ public class MypageFrame extends JFrame {
         BackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame();
+                MainFrame mainFrame = new MainFrame(player);
                 setVisible(false);
 //                Thread thread = new Thread(new Runnable() {
 //                    @Override

@@ -1,15 +1,22 @@
 package org.newdawn.spaceinvaders.item;
 
-public class AddBulletItem extends Item{
-    private String name;
-    private int coins;
-    public AddBulletItem() {
+import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Inventory;
+
+public class AddBulletItem extends Item {
+
+    public AddBulletItem(Inventory inventory) {
+        super(inventory);
+        this.inventory = inventory;
         name = "AddBulletItem";
         coins = 100;
     }
 
     @Override
-    public void useItem() {
-
+    public void useItem(Game game) {
+        if (inventory.getItemCount(this.getName()) > 0) {
+            game.increaseBulletCount();
+            inventory.removeItem(this.getName());
+        }
     }
 }

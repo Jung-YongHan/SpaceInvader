@@ -1,14 +1,16 @@
 package org.newdawn.spaceinvaders.item;
 
+import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Inventory;
+
 public class SpeedUpItem extends Item{
-    private int coins;
-    private String name;
-    public SpeedUpItem() {
+    public SpeedUpItem(Inventory inventory) {
+        super(inventory);
         coins = 30;
         name = "SpeedUpItem";
     }
 
-    public void useItem(){
+    public void useItem(Game game){
 
     }
 }

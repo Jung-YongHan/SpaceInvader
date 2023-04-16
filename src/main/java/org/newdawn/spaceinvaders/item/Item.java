@@ -1,10 +1,17 @@
 package org.newdawn.spaceinvaders.item;
 
-public abstract class Item {
-    private String name;
-    private int coins;
+import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Inventory;
 
-    public Item(){}
+public abstract class Item {
+    protected Inventory inventory;
+    protected Game game;
+    protected String name;
+    protected int coins;
+
+    public Item(Inventory inventory){
+        this.inventory = inventory;
+    }
     public int getPrice() {
         return coins;
     }
@@ -12,6 +19,6 @@ public abstract class Item {
     public String getName() {
         return name;
     }
-    public abstract void useItem();
+    public abstract void useItem(Game game);
 }
 

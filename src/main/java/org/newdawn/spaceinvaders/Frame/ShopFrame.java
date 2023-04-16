@@ -1,5 +1,7 @@
 package org.newdawn.spaceinvaders.Frame;
 
+import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Inventory;
 import org.newdawn.spaceinvaders.Player;
 import org.newdawn.spaceinvaders.Shop;
 import org.newdawn.spaceinvaders.item.AddBulletItem;
@@ -19,6 +21,8 @@ public class ShopFrame extends JFrame {
 
     private Shop shop;
     private Player player;
+    private Game game;
+    private Inventory inventory;
     private AddBulletItem addBulletItem;
     private HealItem healItem;
     private SpeedUpItem speedUpItem;
@@ -44,8 +48,12 @@ public class ShopFrame extends JFrame {
                                  "If you use the item,\nyour health is restored\nby half.",
                                  "If the item is used,\nthe player's speed is\nincreased by 1.2 times\n(can be duplicated)."};
 
-    public ShopFrame() {
+    public ShopFrame(Player player) {
         super("Shop");
+
+        this.player = player;
+        inventory = player.getInventory();
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
@@ -89,8 +97,10 @@ public class ShopFrame extends JFrame {
             getContentPane().add(itemName[i]);
         }
 
-        shop = new Shop();
-        player = new Player();
+        shop = new Shop(player);
+        addBulletItem = new AddBulletItem(inventory);
+        healItem = new HealItem(inventory);
+        speedUpItem = new SpeedUpItem(inventory);
 
         items.add(addBulletItem);
         items.add(healItem);
@@ -135,7 +145,7 @@ public class ShopFrame extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame();
+                MainFrame mainFrame = new MainFrame(player);
                 setVisible(false);
             }
         });

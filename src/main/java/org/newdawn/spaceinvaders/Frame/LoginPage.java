@@ -3,6 +3,7 @@ package org.newdawn.spaceinvaders.Frame;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import org.newdawn.spaceinvaders.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,7 @@ public class LoginPage extends JFrame{
     private JButton registerButton;
     private String id = null;
     private String pw = null;
+    private Player player;
 
     static String userName = null;
 
@@ -136,6 +138,8 @@ public class LoginPage extends JFrame{
 
             if (userName.equals(String.valueOf(pwField.getPassword()))){
                 JOptionPane.showMessageDialog(null, "Hello" + " " + email);
+                player = new Player();
+                MainFrame mainFrame = new MainFrame(player);
                 setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.");

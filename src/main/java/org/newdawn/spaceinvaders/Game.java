@@ -8,10 +8,10 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.IOException;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -85,10 +85,25 @@ public class Game extends Canvas
 	private JFrame container;
 	private Image background;
 	private int level;
+	/** item관련 변수 */
+	private Player player;
 	private Inventory inventory;
 	private AddBulletItem addBulletItem;
+	private int bulletCount = 1;
+	private int spaceBetweenBullets = 20;
 	private HealItem healItem;
 	private SpeedUpItem speedUpItem;
+	private boolean useAddBulletItemPressed = false;
+	private boolean useHealItemPressed = false;
+	private boolean useSpeedUpItemPressed = false;
+	private boolean zKeyPressed = false;
+	private boolean xKeyPressed = false;
+	private boolean cKeyPressed = false;
+	private long lastAddBulletItemUse = 0;
+	private long lastHealItemUse = 0;
+	private long lastSpeedUpItemUse = 0;
+	private static final long ITEM_USE_INTERVAL = 5000;
+
 
 	/** 장애물 */
 	public void AddObstacle() {
@@ -106,7 +121,7 @@ public class Game extends Canvas
 	/**
 	 * Construct our game and set it running.
 	 */
-	public Game(JFrame frame) {
+	public Game(JFrame frame, Player player) {
 		container = frame;
 //
 ////		// create a frame to contain our game
@@ -152,10 +167,12 @@ public class Game extends Canvas
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
 
-		addBulletItem  = new AddBulletItem();
-		healItem = new HealItem();
-		speedUpItem = new SpeedUpItem();
-		inventory = new Inventory();
+		inventory = player.getInventory();
+
+		addBulletItem  = new AddBulletItem(inventory);
+		healItem = new HealItem(inventory);
+		speedUpItem = new SpeedUpItem(inventory);
+
 		// initialise the entities in our game so there's something
 		// to see at startup
 		initEntities();
@@ -215,35 +232,28 @@ public class Game extends Canvas
 			}
 		}
 	}
-
-	public void useSelectedItem(){
-		HashMap<Item, Integer> items = inventory.getItems();
-		Scanner s = new Scanner(System.in);
-		char input = s.nextLine().charAt(0);
-		if (input == 'z'){
-			if(items.get(addBulletItem) != 0){
-				addBulletItem.useItem();
-				items.put(addBulletItem, items.get(addBulletItem)-1);
-			}
-			else System.out.println("AddBulletItem이 부족합니다.");
+	private void useAddBulletItem() {
+		if(inventory.getItemCount(addBulletItem.getName()) > 0) {
+			addBulletItem.useItem(this);
+			System.out.println("총알 추가!");
 		}
-		else if (input == 'x'){
-			if(items.get(healItem) != 0){
-				healItem.useItem();
-				items.put(healItem, items.get(healItem)-1);
-			}
-			else System.out.println("HealItem이 부족합니다.");
-		}
-		else if (input == 'c'){
-			if(items.get(speedUpItem) != 0){
-				speedUpItem.useItem();
-				items.put(speedUpItem, items.get(speedUpItem)-1);
-			}
-			else System.out.println("SpeedUpItem이 부족합니다.");
-		}
-		inventory.setItems(items);
 	}
 
+	private void useHealItem() {
+		if(inventory.getItemCount(addBulletItem.getName()) > 0) {
+			healItem.useItem(this);
+		}
+	}
+
+	private void useSpeedUpItem() {
+		if(inventory.getItemCount(addBulletItem.getName()) > 0) {
+			speedUpItem.useItem(this);
+		}
+	}
+
+	private boolean canUseItem(long lastItemUse) {
+		return System.currentTimeMillis() - lastItemUse >= ITEM_USE_INTERVAL;
+	}
 
 	/**
 	 * Notification from a game entity that the logic of the game
@@ -372,8 +382,12 @@ public class Game extends Canvas
 
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
-		ShotEntity shot = new ShotEntity(this,"sprites/shot/shot.png",ship.getX()+10,ship.getY()-30);
-		entities.add(shot);
+
+		for (int i = 0; i < bulletCount; i++) {
+			int bulletX = ship.getX() + 10 - (bulletCount - 1) * spaceBetweenBullets / 2 + i * spaceBetweenBullets;
+			ShotEntity shot = new ShotEntity(this, "sprites/shot/shot.png", bulletX, ship.getY() - 30);
+			entities.add(shot);
+		}
 	}
 
 	/**
@@ -386,8 +400,7 @@ public class Game extends Canvas
 	 * - Updating game events
 	 * - Checking Input
 	 * <p>
-	 */
-	String pathname;
+	 */String pathname;
 
 
 	public void gameLoop() {
@@ -428,7 +441,15 @@ public class Game extends Canvas
 //			g.fillRect(0,0,800,600);
 
 			// 아이템 커맨드 입력
-			useSelectedItem();
+			if (useAddBulletItemPressed) {
+				useAddBulletItem();
+			}
+			if (useHealItemPressed) {
+				useHealItem();
+			}
+			if (useSpeedUpItemPressed) {
+				useSpeedUpItem();
+			}
 
 			// draw the background image
 			if (background != null) {
@@ -543,6 +564,10 @@ public class Game extends Canvas
 		}
 	}
 
+	public void increaseBulletCount() {
+		bulletCount++;
+	}
+
 	/**
 	 * A class to handle keyboard input from the user. The class
 	 * handles both dynamic input during game play, i.e. left/right
@@ -585,6 +610,27 @@ public class Game extends Canvas
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
 			}
+			if (e.getKeyCode() == KeyEvent.VK_Z && !zKeyPressed) {
+				if (canUseItem(lastAddBulletItemUse)) {
+					useAddBulletItemPressed = true;
+					lastAddBulletItemUse = System.currentTimeMillis();
+					zKeyPressed = true;
+				}
+			}
+			if (e.getKeyCode() == KeyEvent.VK_X && !xKeyPressed) {
+				if (canUseItem(lastHealItemUse)) {
+					useHealItemPressed = true;
+					lastHealItemUse = System.currentTimeMillis();
+					xKeyPressed = true;
+				}
+			}
+			if (e.getKeyCode() == KeyEvent.VK_C && !cKeyPressed) {
+				if (canUseItem(lastSpeedUpItemUse)) {
+					useSpeedUpItemPressed = true;
+					lastSpeedUpItemUse = System.currentTimeMillis();
+					cKeyPressed = true;
+				}
+			}
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				// 메인페이지로 돌아가
 			}
@@ -611,6 +657,24 @@ public class Game extends Canvas
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = false;
 				new Sound("sound/hitSound.wav");
+			}
+			if (e.getKeyCode() == KeyEvent.VK_Z) {
+				if (e.getKeyCode() == KeyEvent.VK_Z) {
+					zKeyPressed = false;
+					useAddBulletItemPressed = false;
+				}
+			}
+			if (e.getKeyCode() == KeyEvent.VK_X) {
+				if (e.getKeyCode() == KeyEvent.VK_X) {
+					xKeyPressed = false;
+					useHealItemPressed = false;
+				}
+			}
+			if (e.getKeyCode() == KeyEvent.VK_C) {
+				if (e.getKeyCode() == KeyEvent.VK_C) {
+					cKeyPressed = false;
+					useSpeedUpItemPressed = false;
+				}
 			}
 		}
 
@@ -661,7 +725,6 @@ public class Game extends Canvas
 
 
 	public static void main(String argv[]) {
-		MainFrame mainFrame = new MainFrame();
 		new FirebaseAdminSDK().initFirebase();
 		LoginPage test = new LoginPage();
 //		GameFrame gameFrame = new GameFrame();

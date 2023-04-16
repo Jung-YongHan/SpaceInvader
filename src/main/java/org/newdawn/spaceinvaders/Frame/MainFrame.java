@@ -1,6 +1,8 @@
 package org.newdawn.spaceinvaders.Frame;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import org.newdawn.spaceinvaders.Inventory;
+import org.newdawn.spaceinvaders.Player;
 import org.newdawn.spaceinvaders.Rank;
 
 import javax.swing.*;
@@ -33,9 +35,14 @@ public class MainFrame extends JFrame {
     private JButton myPageButton;
     private JButton shopButton;
     private JButton RankButton;
+    private Player player;
 
-    public MainFrame() {
+
+    public MainFrame(Player player) {
         super("Main Page");
+
+        this.player = player;
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
@@ -66,7 +73,7 @@ public class MainFrame extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StageFrame stageFrame = new StageFrame();
+                StageFrame stageFrame = new StageFrame(player);
                 setVisible(false);
             }
         });
@@ -85,7 +92,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 마이페이지 넘어가는 로직
-                MypageFrame mypage = new MypageFrame();
+                MypageFrame mypage = new MypageFrame(player);
                 setVisible(false);
             }
         });
@@ -105,7 +112,7 @@ public class MainFrame extends JFrame {
         shopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ShopFrame shop = new ShopFrame();
+                ShopFrame shop = new ShopFrame(player);
                 setVisible(false);
             }
         });
