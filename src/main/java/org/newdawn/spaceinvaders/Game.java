@@ -290,8 +290,11 @@ public class Game extends Canvas
 		waitingForKeyPress = true;
 //		updateHighScore();
 		alienkill=0;
+//		db.updateGameData(timer / 100, coinCount);
 		db.increasePlayCount();
 		db.updatePlayTime(timer / 100);
+		db.updateCoin(coinCount);
+		coinCount = 0;
 	   //Rank.setScore((alienkill/(timer/1000)));
 	}
 
@@ -304,8 +307,11 @@ public class Game extends Canvas
 		waitingForKeyPress = true;
 		db.storeHighScore(alienkill);
 		alienkill = 0;
+//		db.updateGameData(timer / 100, coinCount);
 		db.increasePlayCount();
 		db.updatePlayTime(timer / 100);
+		db.updateCoin(coinCount);
+		coinCount = 0;
 	}
 
 //	public void increasePlayCount() {

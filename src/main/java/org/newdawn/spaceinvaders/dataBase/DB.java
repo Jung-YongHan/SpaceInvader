@@ -5,6 +5,7 @@ import com.google.firebase.database.*;
 import org.newdawn.spaceinvaders.frame.LoginPage;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -214,22 +215,84 @@ public class DB {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
+    }
 
-//        userRef.addValueEventListener(new ValueEventListener() {
+    public int getPlayTime() {
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("playTime").getValue() != null) {
+                    playTime = dataSnapshot.child("playTime").getValue(Integer.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+        return playTime;
+    }
+
+    public void updateCoin(int newCoin) {
+        userRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Integer coin = mutableData.child("coin").getValue(Integer.class);
+                if (coin == null) {
+                    mutableData.child("coin").setValue(newCoin);
+                } else {
+                    mutableData.child("coin").setValue(coin + newCoin);
+                }
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    System.out.println("Transaction failed.");
+                } else {
+                    System.out.println("Transaction completed.");
+                }
+            }
+        });
+    }
+
+    public void getCoin(Consumer<Integer> callback) {
+        userRef.child("coin").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Integer coin = dataSnapshot.getValue(Integer.class);
+                if (coin == null) {
+                    coin = 0;
+                }
+                callback.accept(coin);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+    }
+
+//    public void updateGameData(int time, int coin) {
+//        Map<String, Object> updates = new HashMap<>();
+//        updates.put("playCount", 1 + getPlayCount());
+//        updates.put("playTime", time + getPlayTime());
+//        updates.put("coin", coin);
+//
+//        userRef.updateChildren(updates, new DatabaseReference.CompletionListener() {
 //            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.child("playTime").getValue() != null) {
-//                    playTime = dataSnapshot.child("playTime").getValue(Integer.class);
+//            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//                if (databaseError != null) {
+//                    System.out.println("Update failed.");
+//                } else {
+//                    System.out.println("Update succeeded.");
 //                }
 //            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                System.out.println("The read failed: " + databaseError.getCode());
-//            }
 //        });
-////        return playTime;
-    }
+//    }
 
 //    public Object returnData(){
 //        return score;
