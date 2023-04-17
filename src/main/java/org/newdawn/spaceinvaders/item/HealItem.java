@@ -6,7 +6,7 @@ import org.newdawn.spaceinvaders.user.Inventory;
 public class HealItem extends Item{
     public HealItem(Inventory inventory) {
         super(inventory);
-        coins = 50;
+        coins = 5;
         name = "HealItem";
     }
 

@@ -1,5 +1,6 @@
 package org.newdawn.spaceinvaders.frame;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
@@ -48,7 +49,7 @@ public class ShopFrame extends JFrame {
                                  "If you use the item,\nyour health is restored\nby half.",
                                  "If the item is used,\nthe player's speed is\nincreased by 1.2 times\n(can be duplicated)."};
 
-    public ShopFrame(Player player) {
+    public ShopFrame(Player player) throws FirebaseAuthException {
         super("Shop");
 
         this.player = player;
