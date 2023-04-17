@@ -25,6 +25,7 @@ public class Rank extends JFrame {
         super("Rank");
         this.player = player;
         db = new DB();
+        loadRank();
 //        db.storeScore(50);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
@@ -82,6 +83,11 @@ public class Rank extends JFrame {
 //         setResizable(false);
         setVisible(true);
 
+
+
+    }
+
+    public void loadRank() {
         // Rank 불러오기
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users");
@@ -100,10 +106,11 @@ public class Rank extends JFrame {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // 처리할 오류 처리
+                System.out.println("failed");
             }
         });
-
     }
+
     public void displayScore(int timer, int alienKill) {
         // 점수를 GUI에 표시하는 코드를 여기에 작성합니다.
         scoreLabel.setText("Time: " + timer + ", Alien Kills: " + alienKill);
