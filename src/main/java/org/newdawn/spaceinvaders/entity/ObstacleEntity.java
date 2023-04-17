@@ -78,7 +78,6 @@ public class ObstacleEntity extends Entity {
     public void collidedWith(Entity other) {
         if (other instanceof ShipEntity) {
             game.removeEntity(this);
-            game.notifyDeath();
         }
     }
 }

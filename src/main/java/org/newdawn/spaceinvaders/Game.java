@@ -53,7 +53,7 @@ public class Game extends Canvas
 	/** The list of entities that need to be removed from the game this loop */
 	private ArrayList removeList = new ArrayList();
 	/** The entity representing the player */
-	private Entity ship;
+	private ShipEntity ship;
 	/** The speed at which the player's ship should move (pixels/sec) */
 	private double moveSpeed = 300;
 	/** The time at which last fired a shot */
@@ -249,6 +249,9 @@ public class Game extends Canvas
 				}
 			}
 		}
+	}
+	public ShipEntity getShip(){
+		return ship;
 	}
 	private void useAddBulletItem() {
 		if(inventory.getItemCount(addBulletItem.getName()) > 0) {
@@ -667,9 +670,7 @@ public class Game extends Canvas
 			// us our final value to wait for
 			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
 
-
-
-
+			ship.updateShieldStatus();
 		}
 	}
 

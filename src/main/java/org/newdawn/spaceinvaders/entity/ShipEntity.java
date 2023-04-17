@@ -1,6 +1,8 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Sprite;
+import org.newdawn.spaceinvaders.SpriteStore;
 
 /**
  * The entity that represents the players ship
@@ -13,7 +15,7 @@ public class ShipEntity extends Entity {
 	private int health = 1;
 	private boolean shieldActive;
 	private long shieldStartTime;
-	private long SHIELD_DURATION = 10000;
+	private long SHIELD_DURATION = 5000;
 	private String normalImage = "sprites/ship/ship.png";
 	private String shieldedImage = "sprites/ship/shieldShip.png";
 
@@ -69,6 +71,11 @@ public class ShipEntity extends Entity {
 				else
 					health--;
 			}
+			else{
+				if (other instanceof ObstacleEntity) {
+					game.removeEntity(other);
+				}
+			}
 		}
 	}
 
@@ -80,34 +87,34 @@ public class ShipEntity extends Entity {
 	public void activateShield() {
 		this.shieldActive = true;
 		this.shieldStartTime = System.currentTimeMillis();
-		// 바뀐 이미지로 변경하세요.
+		setShieldedImage();
 	}
 
 	public void updateShieldStatus() {
 		if (this.shieldActive && System.currentTimeMillis() - this.shieldStartTime > SHIELD_DURATION) {
 			this.shieldActive = false;
-			// 원래 이미지로 변경하세요.
+			setNormalImage();
 		}
 	}
 
 	public boolean isShieldActive() {
 		return this.shieldActive;
 	}
-//	public void setNormalImage() {
-//		try {
-//			Sprite sprite = new Sprite(normalImage);
-//			setSprite(sprite);
-//		} catch (Exception e) {
-//			System.out.println("Failed to load normal image: " + e.getMessage());
-//		}
-//	}
-//
-//	public void setShieldedImage() {
-//		try {
-//			Sprite sprite = new Sprite(shieldedImage);
-//			setSprite(sprite);
-//		} catch (Exception e) {
-//			System.out.println("Failed to load shielded image: " + e.getMessage());
-//		}
-//	}
+	public void setNormalImage() {
+		try {
+			Sprite sprite = SpriteStore.get().getSprite(normalImage);
+			setSprite(sprite);
+		} catch (Exception e) {
+			System.out.println("Failed to load normal image: " + e.getMessage());
+		}
+	}
+
+	public void setShieldedImage() {
+		try {
+			Sprite sprite = SpriteStore.get().getSprite(shieldedImage);
+			setSprite(sprite);
+		} catch (Exception e) {
+			System.out.println("Failed to load shielded image: " + e.getMessage());
+		}
+	}
 }
