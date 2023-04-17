@@ -11,6 +11,11 @@ public class ShipEntity extends Entity {
 	/** The game in which the ship exists */
 	private Game game;
 	private int health = 1;
+	private boolean shieldActive;
+	private long shieldStartTime;
+	private long SHIELD_DURATION = 10000;
+	private String normalImage = "sprites/ship/ship.png";
+	private String shieldedImage = "sprites/ship/shieldShip.png";
 
 	/**
 	 * Create a new entity to represent the players ship
@@ -23,6 +28,7 @@ public class ShipEntity extends Entity {
 	public ShipEntity(Game game,String ref,int x,int y) {
 		super(ref,x,y);
 		this.game = game;
+		this.shieldActive = false;
 	}
 	
 	/**
@@ -57,10 +63,12 @@ public class ShipEntity extends Entity {
 		// is dead
 
 		if (other instanceof AlienEntity || other instanceof ObstacleEntity) {
-			if (health == 1)
-				game.notifyDeath();
-			else
-				health--;
+			if (!this.isShieldActive()) {
+				if (health == 1)
+					game.notifyDeath();
+				else
+					health--;
+			}
 		}
 	}
 
@@ -68,4 +76,38 @@ public class ShipEntity extends Entity {
 	public void setHP(int health){
 		this.health = health;
 	}
+
+	public void activateShield() {
+		this.shieldActive = true;
+		this.shieldStartTime = System.currentTimeMillis();
+		// 바뀐 이미지로 변경하세요.
+	}
+
+	public void updateShieldStatus() {
+		if (this.shieldActive && System.currentTimeMillis() - this.shieldStartTime > SHIELD_DURATION) {
+			this.shieldActive = false;
+			// 원래 이미지로 변경하세요.
+		}
+	}
+
+	public boolean isShieldActive() {
+		return this.shieldActive;
+	}
+//	public void setNormalImage() {
+//		try {
+//			Sprite sprite = new Sprite(normalImage);
+//			setSprite(sprite);
+//		} catch (Exception e) {
+//			System.out.println("Failed to load normal image: " + e.getMessage());
+//		}
+//	}
+//
+//	public void setShieldedImage() {
+//		try {
+//			Sprite sprite = new Sprite(shieldedImage);
+//			setSprite(sprite);
+//		} catch (Exception e) {
+//			System.out.println("Failed to load shielded image: " + e.getMessage());
+//		}
+//	}
 }
