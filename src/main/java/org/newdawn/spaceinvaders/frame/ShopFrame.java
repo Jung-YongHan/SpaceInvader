@@ -2,6 +2,7 @@ package org.newdawn.spaceinvaders.frame;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.dataBase.DB;
 import org.newdawn.spaceinvaders.item.*;
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
@@ -44,12 +45,14 @@ public class ShopFrame extends JFrame {
     private ArrayList<Item> items = new ArrayList<>();
     private String[] iconImage = {"bullet.png", "health.png", "speed.png", "shield.png", "reloadspeedup.png"};
     private String[] iconName = {"Add Bullets", "Heal", "Speed Up", "Shield", "ReLoad Speed Up"};
+    private DB db;
 
     public ShopFrame(Player player) throws FirebaseAuthException {
         super("Shop");
 
         this.player = player;
         inventory = player.getInventory();
+        db = new DB();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
