@@ -1,9 +1,7 @@
 package org.newdawn.spaceinvaders;
 
-import org.newdawn.spaceinvaders.item.AddBulletItem;
-import org.newdawn.spaceinvaders.item.HealItem;
-import org.newdawn.spaceinvaders.item.Item;
-import org.newdawn.spaceinvaders.item.SpeedUpItem;
+import org.newdawn.spaceinvaders.frame.ShopFrame;
+import org.newdawn.spaceinvaders.item.*;
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
 
@@ -20,6 +18,8 @@ public class Shop {
         items.add(new AddBulletItem(inventory));
         items.add(new HealItem(inventory));
         items.add(new SpeedUpItem(inventory));
+        items.add(new ShieldItem(inventory));
+        items.add(new ReLoadSpeedUpItem(inventory));
     }
 
     public void sellItem(Item item, Player player) {
@@ -27,6 +27,8 @@ public class Shop {
             player.setCoins(player.getCoins() - item.getPrice());
             player.addItemToInventory(item.getName());
             System.out.println("You have purchased " + item.getName() + ".");
+
+
         } else {
             System.out.println("You do not have enough money to purchase " + item.getName() + ".");
         }
