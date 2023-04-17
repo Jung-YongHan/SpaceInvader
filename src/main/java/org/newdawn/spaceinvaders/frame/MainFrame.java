@@ -108,7 +108,11 @@ public class MainFrame extends JFrame {
         shopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ShopFrame shop = new ShopFrame(player);
+                try {
+                    ShopFrame shop = new ShopFrame(player);
+                } catch (FirebaseAuthException ex) {
+                    throw new RuntimeException(ex);
+                }
                 setVisible(false);
             }
         });

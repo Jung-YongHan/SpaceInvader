@@ -1,10 +1,7 @@
 package org.newdawn.spaceinvaders;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +18,10 @@ import org.newdawn.spaceinvaders.dataBase.DB;
 import org.newdawn.spaceinvaders.frame.LoginPage;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.item.*;
+import org.newdawn.spaceinvaders.frame.MainFrame;
+import org.newdawn.spaceinvaders.item.AddBulletItem;
+import org.newdawn.spaceinvaders.item.HealItem;
+import org.newdawn.spaceinvaders.item.SpeedUpItem;
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
 
@@ -83,6 +84,7 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 	private Image background;
+	private JButton backButton;
 	private int level;
 	/** item관련 변수 */
 	private Player player;
@@ -420,6 +422,10 @@ public class Game extends Canvas
 	/**
 	 * Notification that an alien has been killed
 	 */
+
+
+
+
 
 
 	//코인

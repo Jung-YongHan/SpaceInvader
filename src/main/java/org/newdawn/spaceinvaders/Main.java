@@ -2,6 +2,8 @@ package org.newdawn.spaceinvaders;
 
 import org.newdawn.spaceinvaders.dataBase.FirebaseAdminSDK;
 import org.newdawn.spaceinvaders.frame.LoginPage;
+import org.newdawn.spaceinvaders.frame.MainFrame;
+import org.newdawn.spaceinvaders.user.Player;
 
 public class Main {
     public static void main(String argv[]) {

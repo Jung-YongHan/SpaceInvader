@@ -1,5 +1,6 @@
 package org.newdawn.spaceinvaders.frame;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.item.*;
 import org.newdawn.spaceinvaders.user.Inventory;
@@ -44,7 +45,7 @@ public class ShopFrame extends JFrame {
     private String[] iconImage = {"bullet.png", "health.png", "speed.png", "shield.png", "reloadspeedup.png"};
     private String[] iconName = {"Add Bullets", "Heal", "Speed Up", "Shield", "ReLoad Speed Up"};
 
-    public ShopFrame(Player player) {
+    public ShopFrame(Player player) throws FirebaseAuthException {
         super("Shop");
 
         this.player = player;
