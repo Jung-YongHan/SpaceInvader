@@ -57,12 +57,15 @@ public class ShipEntity extends Entity {
 		// is dead
 
 		if (other instanceof AlienEntity || other instanceof ObstacleEntity) {
-			if (health == 0)
+			if (health == 1)
 				game.notifyDeath();
 			else
 				health--;
 		}
 	}
 
-
+	public int getHP(){ return health; }
+	public void setHP(int health){
+		this.health = health;
+	}
 }

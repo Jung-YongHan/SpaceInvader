@@ -12,9 +12,9 @@ public class ReLoadSpeedUpItem extends Item{
     }
     @Override
     public void useItem(Game game) {
-//        if (inventory.getItemCount(this.getName()) > 0) {
-//            game.increaseBulletCount();
-//            inventory.removeItem(this.getName());
-//        }
+        if (inventory.getItemCount(this.getName()) > 0) {
+            game.setFireSpeed(game.getFireSpeed()*(0.75));
+            inventory.removeItem(this.getName());
+        }
     }
 }
