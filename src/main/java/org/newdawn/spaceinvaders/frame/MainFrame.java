@@ -134,35 +134,35 @@ public class MainFrame extends JFrame {
         getContentPane().add(shopButton);
         getContentPane().add(openImageChangePanelButton);
 
-        // Rank 버튼 (임시)
-        rankButton = new JButton("Rank");
-        // 버튼 서식
-        rankButton.setOpaque(false);
-        rankButton.setContentAreaFilled(false); // 배경
-        rankButton.setBorderPainted(false); // 배경
-        rankButton.setForeground(Color.WHITE); // 글자색
-        rankButton.setFocusPainted(false); // 테두리
-        rankButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        rankButton.setBounds(700, 500, 100, 50);
-
-        rankButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 마이페이지 넘어가는 로직
-                try {
-                    Rank rankPage = new Rank(player);
-                } catch (FirebaseAuthException ex) {
-                    throw new RuntimeException(ex);
-                }
-                setVisible(false);
-            }
-        });
-        getContentPane().add(rankButton);
+//        // Rank 버튼 (임시)
+//        rankButton = new JButton("Rank");
+//        // 버튼 서식
+//        rankButton.setOpaque(false);
+//        rankButton.setContentAreaFilled(false); // 배경
+//        rankButton.setBorderPainted(false); // 배경
+//        rankButton.setForeground(Color.WHITE); // 글자색
+//        rankButton.setFocusPainted(false); // 테두리
+//        rankButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
+//        rankButton.setBounds(700, 500, 100, 50);
+//
+//        rankButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                // 마이페이지 넘어가는 로직
+//                try {
+//                    Rank rankPage = new Rank(player);
+//                } catch (FirebaseAuthException ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//                setVisible(false);
+//            }
+//        });
+//        getContentPane().add(rankButton);
 
 
         setVisible(true);
-
     }
+
     public void openImageChangePanel() {
         // 이미지 미리보기를 보여줄 패널 생성
         JPanel imagePreviewPanel = new JPanel(new GridLayout(0, 2));

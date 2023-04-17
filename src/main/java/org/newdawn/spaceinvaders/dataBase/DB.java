@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 public class DB {
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
-
     private final DatabaseReference userRef = db.getReference("users").child(LoginPage.getUserName());
 
     public static Object score = 0;
@@ -75,8 +74,6 @@ public class DB {
                 }
             });
         });
-//        Integer currentHighScore = getHighScore();
-
     }
 
     public Object getFirstPlaceScore() {
@@ -167,9 +164,9 @@ public class DB {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 if (databaseError != null) {
-                    System.out.println("Transaction failed.");
+                    System.out.println("Transaction failed. - playCount");
                 } else {
-                    System.out.println("Transaction completed.");
+                    System.out.println("Transaction completed. - playCount");
                 }
             }
         });
@@ -191,9 +188,9 @@ public class DB {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 if (databaseError != null) {
-                    System.out.println("Transaction failed.");
+                    System.out.println("Transaction failed. - playTime");
                 } else {
-                    System.out.println("Transaction completed.");
+                    System.out.println("Transaction completed. - playTime");
                 }
             }
         });
@@ -250,9 +247,9 @@ public class DB {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 if (databaseError != null) {
-                    System.out.println("Transaction failed.");
+                    System.out.println("Transaction failed. - coin");
                 } else {
-                    System.out.println("Transaction completed.");
+                    System.out.println("Transaction completed. - coin");
                 }
             }
         });

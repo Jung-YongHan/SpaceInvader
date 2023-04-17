@@ -290,10 +290,6 @@ public class Game extends Canvas
 		waitingForKeyPress = true;
 //		updateHighScore();
 		alienkill=0;
-//		db.updateGameData(timer / 100, coinCount);
-		db.increasePlayCount();
-		db.updatePlayTime(timer / 100);
-		db.updateCoin(coinCount);
 		coinCount = 0;
 	   //Rank.setScore((alienkill/(timer/1000)));
 	}
@@ -307,9 +303,23 @@ public class Game extends Canvas
 		waitingForKeyPress = true;
 		db.storeHighScore(alienkill);
 		alienkill = 0;
-//		db.updateGameData(timer / 100, coinCount);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		db.increasePlayCount();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		db.updatePlayTime(timer / 100);
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		db.updateCoin(coinCount);
 		coinCount = 0;
 	}
@@ -560,14 +570,15 @@ public class Game extends Canvas
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
 				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("PlayTime : " + timer / 100 + " Play Count : " + db.getPlayCount() + " Rank 1st's score : " + db.getFirstPlaceScore() + "  Press any key", (600 - g.getFontMetrics().stringWidth("Press any key")) / 2, 300);
+				g.drawString("Press any key", (800 - g.getFontMetrics().stringWidth("Press any key")) / 2, 300);
 				//타이머(스코어) 0 초기화
 				timer =0;
 			}
-			//타이머 표시
-			g.drawString("타이머 "+String.valueOf(timer/100),720,30);
+//			//타이머 표시
+//			g.drawString("타이머 "+String.valueOf(timer/100),720,30);
 
 			//죽인 에일리언 표시
+			g.setColor(Color.white);
 			g.drawString("죽인 에일리언"+String.valueOf(alienkill),30,30);
 
 			// finally, we've completed drawing so clear up the graphics
