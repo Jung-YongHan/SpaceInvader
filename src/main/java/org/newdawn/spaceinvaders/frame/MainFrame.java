@@ -19,6 +19,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 
 public class MainFrame extends JFrame {
@@ -28,7 +32,7 @@ public class MainFrame extends JFrame {
     private JButton RankButton;
     private Player player;
     private JButton rankButton;
-    private JButton openImageChangePanelButton;
+    private JButton gameintroduction;
 
 
     public MainFrame(Player player) {
@@ -117,22 +121,27 @@ public class MainFrame extends JFrame {
         getContentPane().add(buttonPanel);
 
         // Create a button to open the image change panel
-        openImageChangePanelButton = new JButton("이미지 변경");
-        buttonPanel.add(openImageChangePanelButton);
+        gameintroduction = new JButton("게임 설명");
+        buttonPanel.add(gameintroduction);
         // Add action listener to the button
-        openImageChangePanelButton.addActionListener(new ActionListener() {
+        gameintroduction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openImageChangePanel();
+                gameIntroductionDialog();
+
             }
         });
-        openImageChangePanelButton.setBounds(600, 300, 200, 50);
+
+
+        gameintroduction.setBounds(600, 300, 200, 50);
 
 
         getContentPane().add(startButton);
         getContentPane().add(myPageButton);
         getContentPane().add(shopButton);
-        getContentPane().add(openImageChangePanelButton);
+        getContentPane().add(gameintroduction);
+
+
 
 //        // Rank 버튼 (임시)
 //        rankButton = new JButton("Rank");
@@ -163,47 +172,40 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-    public void openImageChangePanel() {
-        // 이미지 미리보기를 보여줄 패널 생성
-        JPanel imagePreviewPanel = new JPanel(new GridLayout(0, 2));
+    private void gameIntroductionDialog() {
+        String introductionText = "1. 코인 획득 방법 : 몬스터 피격시 일정 확률로 코인이 drop 됩니다.\n" +
+                "2. 상점 이용 방법 : 획득한 코인은 DB에 저장됩니다. 저장된 코인으로 아이템을 구매하세요!\n" +
+                "3. Level 시스템 : 총 5가지의 단계로 게임은 구성되어 있습니다.\n" +
+                "4. Login 시스템 : 당신의 고유 아이디로 게임의 정보를 저장하고 플레이하세요!";
+        String highlightedText = "Introduction";
 
-        // 지정된 폴더에서 이미지 파일을 가져오기
-        String imageFolderPath = "src/main/resources/sprites/ship"; // 이미지 폴더 경로를 지정해주세요
+        JTextPane introductionPane = new JTextPane();
+        introductionPane.setEditable(false);
+        introductionPane.setBackground(new Color(0, 0, 0, 0)); // 배경 투명
+        introductionPane.setOpaque(false);
+        introductionPane.setForeground(Color.BLACK); // 텍스트 색상
 
+        // 기본 텍스트 스타일 설정
+        SimpleAttributeSet defaultAttributes = new SimpleAttributeSet();
+        StyleConstants.setFontFamily(defaultAttributes, "Verdana");
+        StyleConstants.setFontSize(defaultAttributes, 14);
 
-        File folder = new File(imageFolderPath);
-        File[] listOfFiles = folder.listFiles();
+        // 강조 텍스트 스타일 설정
+        SimpleAttributeSet highlightedAttributes = new SimpleAttributeSet();
+        StyleConstants.setFontFamily(highlightedAttributes, "Verdana");
+        StyleConstants.setFontSize(highlightedAttributes, 20);
+        StyleConstants.setBold(highlightedAttributes, true);
 
-        if (listOfFiles != null) {
-            for (File file : listOfFiles) {
-                if (file.isFile() && (file.getName().endsWith(".jpg") || file.getName().endsWith(".png")
-                        || file.getName().endsWith(".jpeg") || file.getName().endsWith(".gif"))) {
-                    try {
-                        BufferedImage img = ImageIO.read(file);
-                        ImageIcon icon = new ImageIcon(img.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                        JLabel label = new JLabel(icon);
-                        imagePreviewPanel.add(label);
-
-                        JButton button = new JButton("Choose");
-                        button.addActionListener(e -> {
-                            try {
-                                BufferedImage newImage = ImageIO.read(file);
-                                ImageIO.write(newImage, "png", new File("ship.png"));
-                                JOptionPane.showMessageDialog(this, "Image has been changed successfully!");
-                            } catch (IOException ex) {
-                                JOptionPane.showMessageDialog(this, "Error: Could not change the image.");
-                                ex.printStackTrace();
-                            }
-                        });
-                        imagePreviewPanel.add(button);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+        // JTextPane의 Document에 텍스트와 스타일 적용
+        Document doc = introductionPane.getStyledDocument();
+        try {
+            doc.insertString(doc.getLength(), highlightedText + "\n\n", highlightedAttributes);
+            doc.insertString(doc.getLength(), introductionText, defaultAttributes);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
         }
 
-        JOptionPane.showMessageDialog(this, imagePreviewPanel, "Select an image", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, introductionPane, "게임 설명", JOptionPane.INFORMATION_MESSAGE);
     }
 
 }
