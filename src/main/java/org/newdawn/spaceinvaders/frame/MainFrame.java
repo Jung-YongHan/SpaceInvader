@@ -126,6 +126,12 @@ public class MainFrame extends JFrame {
 
         // Create a button to open the image change panel
         gameintroduction = new JButton("게임 설명");
+        // 버튼 서식
+        gameintroduction.setOpaque(false);
+        gameintroduction.setContentAreaFilled(false); // 배경
+        gameintroduction.setBorderPainted(false); // 외곽선
+        gameintroduction.setForeground(Color.WHITE); // 글자색
+        gameintroduction.setFocusPainted(false); // 테두리
         buttonPanel.add(gameintroduction);
         // Add action listener to the button
         gameintroduction.addActionListener(new ActionListener() {

@@ -641,6 +641,7 @@ public class Game extends Canvas
 			//죽인 에일리언 표시
 			g.setColor(Color.white);
 			g.drawString("죽인 에일리언"+String.valueOf(alienkill),30,30);
+			g.drawString("HP: " + String.valueOf(ship.getHP()), 720, 30);
 
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over

@@ -12,7 +12,7 @@ import org.newdawn.spaceinvaders.SpriteStore;
 public class ShipEntity extends Entity {
 	/** The game in which the ship exists */
 	private Game game;
-	private int health = 1;
+	private int health = 3;
 	private boolean shieldActive;
 	private long shieldStartTime;
 	private long SHIELD_DURATION = 5000;
