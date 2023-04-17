@@ -8,7 +8,7 @@ public class HealItem extends Item{
     public HealItem(Inventory inventory) {
         super(inventory);
         this.inventory = inventory;
-        coins = 50;
+        coins = 3;
         name = "HealItem";
     }
 
