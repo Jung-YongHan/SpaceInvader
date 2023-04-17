@@ -1,10 +1,15 @@
 package org.newdawn.spaceinvaders.frame;
 
+import org.newdawn.spaceinvaders.user.Player;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GameFrame extends JFrame {
-    public GameFrame() {
+    private JButton backButton;
+    public GameFrame(Player player) {
         // create a frame to contain our game
         super("Space Invaders 102");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
@@ -20,6 +25,26 @@ public class GameFrame extends JFrame {
         // going to do that our self in accelerated mode
         setIgnoreRepaint(true);
         getContentPane().setLayout(null);
+
+        backButton = new JButton("<");
+        // 버튼 서식
+        backButton.setOpaque(false);
+        backButton.setContentAreaFilled(false); // 배경
+        backButton.setBackground(Color.black);
+        backButton.setBorderPainted(false); // 배경
+//        backButton.setForeground(Color.WHITE); // 글자색
+        backButton.setFocusPainted(false); // 테두리
+        backButton.setFont(new Font("Arial", Font.BOLD, 20)); // 폰트
+        backButton.setBounds(0, 510, 50, 40); // set position and size
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame mainFrame = new MainFrame(player);
+                setVisible(false);
+            }
+        });
+        panel.add(backButton);
 
         // finally make the window visible
 //        pack();
