@@ -8,7 +8,7 @@ public class SpeedUpItem extends Item{
         super(inventory);
         this.inventory = inventory;
         name = "SpeedUpItem";
-        coins = 30;
+        coins = 2;
     }
 
     public void useItem(Game game){

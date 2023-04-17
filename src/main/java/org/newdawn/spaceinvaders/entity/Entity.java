@@ -149,4 +149,7 @@ public abstract class Entity {
 	 * @param other The entity with which this entity collided.
 	 */
 	public abstract void collidedWith(Entity other);
+	public void setSprite(Sprite sprite){
+		this.sprite = sprite;
+	}
 }
