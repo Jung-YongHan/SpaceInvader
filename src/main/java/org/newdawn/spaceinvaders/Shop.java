@@ -35,7 +35,6 @@ public class Shop {
             System.out.println(coin);
             if (coin >= item.getPrice()) {
                 db.updateCoin(-item.getPrice());
-//                player.setCoins(coin - item.getPrice());
                 player.addItemToInventory(item.getName());
                 System.out.println("You have purchased " + item.getName() + ".");
             } else {
