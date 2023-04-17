@@ -2,13 +2,10 @@ package org.newdawn.spaceinvaders.frame;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.item.*;
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
 import org.newdawn.spaceinvaders.Shop;
-import org.newdawn.spaceinvaders.item.AddBulletItem;
-import org.newdawn.spaceinvaders.item.HealItem;
-import org.newdawn.spaceinvaders.item.Item;
-import org.newdawn.spaceinvaders.item.SpeedUpItem;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -20,6 +17,7 @@ import java.util.ArrayList;
 
 public class ShopFrame extends JFrame {
 
+    private JLabel playerCoins;
     private Shop shop;
     private Player player;
     private Game game;
@@ -27,27 +25,25 @@ public class ShopFrame extends JFrame {
     private AddBulletItem addBulletItem;
     private HealItem healItem;
     private SpeedUpItem speedUpItem;
+    private ReLoadSpeedUpItem reLoadSpeedUpItem;
+    private ShieldItem shieldItem;
 
-    final int itemCount = 3;
+    final int itemCount = 5;
     private JButton backButton;
     private JButton[] buyButton;
     private JLabel[] itemIcon;
     private JLabel[] itemName;
-    private JTextArea[] itemDesc;
 
-    private int iconSize = 144;
-    private int[] iconX = {100, 320, 520};
-    private int[] iconNameX = {120, 370, 565};
+    private int iconSize = 128;
+    private int[] iconX = {60, 180, 320, 460, 600};
+    private int[] iconNameX = {70, 230, 340, 490, 590};
     private int iconY = 200;
     private int iconNameY = 350;
-    private int[] buttonX = {130, 350, 570};
+    private int[] buttonX = {90, 210, 340, 480, 630};
     private int buttonY = 400;
     private ArrayList<Item> items = new ArrayList<>();
-    private String[] iconImage = {"bullet.png", "health.png", "speed.png"};
-    private String[] iconName = {"Add Bullets", "Heal", "Speed Up"};
-    private String[] iconDesc = {"If the item is used,\nthe number of projectile\ndoubles (can be duplicated)",
-                                 "If you use the item,\nyour health is restored\nby half.",
-                                 "If the item is used,\nthe player's speed is\nincreased by 1.2 times\n(can be duplicated)."};
+    private String[] iconImage = {"bullet.png", "health.png", "speed.png", "shield.png", "reloadspeedup.png"};
+    private String[] iconName = {"Add Bullets", "Heal", "Speed Up", "Shield", "ReLoad Speed Up"};
 
     public ShopFrame(Player player) throws FirebaseAuthException {
         super("Shop");
@@ -94,7 +90,7 @@ public class ShopFrame extends JFrame {
             itemName[i].setOpaque(false);
             itemName[i].setForeground(Color.BLACK);
             itemName[i].setFont(new Font("Arial", Font.BOLD, 20));
-            itemName[i].setBounds(iconNameX[i], iconNameY, iconSize, 20);
+            itemName[i].setBounds(iconNameX[i], iconNameY, 200, 20);
             getContentPane().add(itemName[i]);
         }
 
@@ -102,10 +98,14 @@ public class ShopFrame extends JFrame {
         addBulletItem = new AddBulletItem(inventory);
         healItem = new HealItem(inventory);
         speedUpItem = new SpeedUpItem(inventory);
+        shieldItem = new ShieldItem(inventory);
+        reLoadSpeedUpItem = new ReLoadSpeedUpItem(inventory);
 
         items.add(addBulletItem);
         items.add(healItem);
         items.add(speedUpItem);
+        items.add(shieldItem);
+        items.add(reLoadSpeedUpItem);
 
         // buy 버튼
         buyButton = new JButton[itemCount];
@@ -119,13 +119,13 @@ public class ShopFrame extends JFrame {
             buyButton[i].setBounds(buttonX[i], buttonY, 80, 30);
             getContentPane().add(buyButton[i]);
 
-
             final int index = i;
             buyButton[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Item item = items.get(index);
                     shop.sellItem(item, player);
+                    updatePlayerCoins();
                 }
             });
         }
@@ -142,7 +142,6 @@ public class ShopFrame extends JFrame {
         backButton.setBounds(0, 500, 100, 20); // set position and size
         getContentPane().add(backButton);
 
-
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -151,8 +150,19 @@ public class ShopFrame extends JFrame {
             }
         });
 
+        playerCoins = new JLabel("Coins: " + String.valueOf(player.getCoins()));
+        playerCoins.setOpaque(false);
+        playerCoins.setForeground(Color.WHITE);
+        playerCoins.setFont(new Font("Arial", Font.BOLD, 20));
+        playerCoins.setBounds(620, 500, 200, 20);
+        getContentPane().add(playerCoins);
+
+
         // finally make the window visible
         setVisible(true);
+    }
+    public void updatePlayerCoins() {
+        playerCoins.setText("Coins: " + String.valueOf(player.getCoins()));
     }
 }
 
