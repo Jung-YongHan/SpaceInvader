@@ -8,7 +8,7 @@ public class ReLoadSpeedUpItem extends Item{
         super(inventory);
         this.inventory = inventory;
         name = "ReLoadSpeedUpItem";
-        coins = 5;
+        coins = 0;
     }
     @Override
     public void useItem(Game game) {

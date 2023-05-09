@@ -11,7 +11,7 @@ public class ShieldItem extends Item{
         super(inventory);
         this.inventory = inventory;
         name = "ShieldItem";
-        coins = 5;
+        coins = 0;
     }
 
     @Override

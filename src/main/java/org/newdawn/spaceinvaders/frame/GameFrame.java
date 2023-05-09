@@ -26,25 +26,25 @@ public class GameFrame extends JFrame {
         setIgnoreRepaint(true);
         getContentPane().setLayout(null);
 
-        backButton = new JButton("<");
-        // 버튼 서식
-        backButton.setOpaque(false);
-        backButton.setContentAreaFilled(false); // 배경
-        backButton.setBackground(Color.black);
-        backButton.setBorderPainted(false); // 배경
-//        backButton.setForeground(Color.WHITE); // 글자색
-        backButton.setFocusPainted(false); // 테두리
-        backButton.setFont(new Font("Arial", Font.BOLD, 20)); // 폰트
-        backButton.setBounds(0, 510, 50, 40); // set position and size
-
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame(player);
-                setVisible(false);
-            }
-        });
-        panel.add(backButton);
+//        backButton = new JButton("<");
+//        // 버튼 서식
+//        backButton.setOpaque(false);
+//        backButton.setContentAreaFilled(false); // 배경
+//        backButton.setBackground(Color.black);
+//        backButton.setBorderPainted(false); // 배경
+////        backButton.setForeground(Color.WHITE); // 글자색
+//        backButton.setFocusPainted(false); // 테두리
+//        backButton.setFont(new Font("Arial", Font.BOLD, 20)); // 폰트
+//        backButton.setBounds(0, 510, 50, 40); // set position and size
+//
+//        backButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                MainFrame mainFrame = new MainFrame(player);
+//                setVisible(false);
+//            }
+//        });
+//        panel.add(backButton);
 
         // finally make the window visible
 //        pack();

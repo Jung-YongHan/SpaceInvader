@@ -71,11 +71,6 @@ public class ShipEntity extends Entity {
 				else
 					health--;
 			}
-			else{
-				if (other instanceof ObstacleEntity) {
-					game.removeEntity(other);
-				}
-			}
 		}
 	}
 

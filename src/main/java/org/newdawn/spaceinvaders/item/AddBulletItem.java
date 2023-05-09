@@ -9,7 +9,7 @@ public class AddBulletItem extends Item {
         super(inventory);
         this.inventory = inventory;
         name = "AddBulletItem";
-        coins = 5;
+        coins = 0;
     }
 
     @Override
