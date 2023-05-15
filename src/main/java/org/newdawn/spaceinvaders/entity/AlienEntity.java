@@ -27,8 +27,8 @@ public class AlienEntity extends Entity {
 	 * Create a new alien entity
 	 * 
 	 * @param game The game in which this entity is being created
-	 * @param x The intial x location of this alien
-	 * @param y The intial y location of this alient
+	 * @param x The initial x location of this alien
+	 * @param y The initial y location of this alien
 	 */
 	public AlienEntity(Game game,int x,int y) {
 		super("sprites/alien/alien.png",x,y);
