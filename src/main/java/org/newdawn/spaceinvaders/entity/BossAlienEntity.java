@@ -4,10 +4,9 @@ import org.newdawn.spaceinvaders.Game;
 
 public class BossAlienEntity extends Entity{
     /** The speed at which the alien moves horizontally */
-    private double moveSpeed = 75;
+    private double moveSpeed = 200;
     /** The game in which the entity exists */
     private Game game;
-    private int hp;
 
     /**
      * Construct a entity based on a sprite image and a location.
@@ -20,7 +19,6 @@ public class BossAlienEntity extends Entity{
         super("sprites/bossAlien/bossAlien2.png", x, y);
 
         this.game = game;
-        this.hp = 10;
         dx = -moveSpeed;
     }
 
@@ -32,7 +30,7 @@ public class BossAlienEntity extends Entity{
         }
         // and vice vesa, if we have reached the right hand side of
         // the screen and are moving right, request a logic update
-        if ((dx > 0) && (x > 750)) {
+        if ((dx > 0) && (x > 590)) {
             game.updateLogic();
         }
 
@@ -48,7 +46,7 @@ public class BossAlienEntity extends Entity{
 
         // if we've reached the bottom of the screen then the player
         // dies
-        if (y > 570 || hp <= 0) {
+        if (y > 400) {
             game.notifyDeath();
         }
     }
@@ -56,6 +54,5 @@ public class BossAlienEntity extends Entity{
     @Override
     public void collidedWith(Entity other) {
         // collisions with aliens are handled elsewhere
-        hp--;
     }
 }

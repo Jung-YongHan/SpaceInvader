@@ -58,9 +58,9 @@ public class ShotEntity extends Entity {
 		if (used) {
 			return;
 		}
-		
+
 		// if we've hit an alien, kill it!
-		if (other instanceof AlienEntity) {
+		if (other instanceof AlienEntity || other instanceof BossAlienEntity) {
 			// remove the affected entities
 			game.removeEntity(this);
 			game.removeEntity(other);

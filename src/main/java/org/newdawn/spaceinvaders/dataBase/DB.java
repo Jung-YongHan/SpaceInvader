@@ -119,6 +119,7 @@ public class DB {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child("playCount").getValue() != null) {
                     playCount = dataSnapshot.child("playCount").getValue(Integer.class);
+                    System.out.println("count " + playCount);
                 }
             }
 
@@ -127,6 +128,7 @@ public class DB {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
+        System.out.println("return " + playCount);
         return playCount;
     }
 
