@@ -7,67 +7,21 @@ public class BossAlienEntity extends Entity{
     private double moveSpeed = 75;
     /** The game in which the entity exists */
     private Game game;
-    private int stage;
-    private String ref;
     private int hp;
 
     /**
      * Construct a entity based on a sprite image and a location.
      *
      * @param game The game in which this entity is being created
-     * @param stage The number of stage
      * @param x The initial x location of this alien
      * @param y The initial y location of this alien
      */
-    public BossAlienEntity(Game game, int stage, int x, int y) {
-        super(getRefFromStage(stage), x, y);
+    public BossAlienEntity(Game game, int x, int y) {
+        super("sprites/bossAlien/bossAlien2.png", x, y);
 
         this.game = game;
-        this.stage = stage;
-        set(stage);
+        this.hp = 10;
         dx = -moveSpeed;
-    }
-
-    private static String getRefFromStage(int stage) {
-        switch (stage) {
-            case 1:
-                return "sprites/bossAlien/bossAlien1.png";
-            case 2:
-                return "sprites/bossAlien/bossAlien2.png";
-            case 3:
-                return "sprites/bossAlien/bossAlien3.png";
-            case 4:
-                return "sprites/bossAlien/bossAlien4.png";
-            case 5:
-                return "sprites/bossAlien/bossAlien5.png";
-            default:
-                return "";
-        }
-    }
-
-    private void set(int stage) {
-        switch (stage) {
-            case 1:
-                this.moveSpeed = 300;
-                this.hp = 10;
-                break;
-            case 2:
-                this.moveSpeed = 100;
-                this.hp = 10;
-                break;
-            case 3:
-                this.moveSpeed = 500;
-                this.hp = 15;
-                break;
-            case 4:
-                this.moveSpeed = 350;
-                this.hp = 15;
-                break;
-            case 5:
-                this.moveSpeed = 200;
-                this.hp = 15;
-                break;
-        }
     }
 
     public void move(long delta) {
