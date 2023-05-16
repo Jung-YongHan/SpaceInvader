@@ -9,6 +9,7 @@ public class BossAlienEntity extends Entity{
     private Game game;
     private int stage;
     private String ref;
+    private int hp;
 
     /**
      * Construct a entity based on a sprite image and a location.
@@ -48,18 +49,23 @@ public class BossAlienEntity extends Entity{
         switch (stage) {
             case 1:
                 this.moveSpeed = 300;
+                this.hp = 10;
                 break;
             case 2:
                 this.moveSpeed = 100;
+                this.hp = 10;
                 break;
             case 3:
                 this.moveSpeed = 500;
+                this.hp = 15;
                 break;
             case 4:
                 this.moveSpeed = 350;
+                this.hp = 15;
                 break;
             case 5:
                 this.moveSpeed = 200;
+                this.hp = 15;
                 break;
         }
     }
@@ -88,7 +94,7 @@ public class BossAlienEntity extends Entity{
 
         // if we've reached the bottom of the screen then the player
         // dies
-        if (y > 570) {
+        if (y > 570 || hp <= 0) {
             game.notifyDeath();
         }
     }
@@ -96,5 +102,6 @@ public class BossAlienEntity extends Entity{
     @Override
     public void collidedWith(Entity other) {
         // collisions with aliens are handled elsewhere
+        hp--;
     }
 }
