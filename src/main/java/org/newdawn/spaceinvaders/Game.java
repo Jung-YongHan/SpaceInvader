@@ -85,6 +85,7 @@ public class Game extends Canvas
 	private JFrame container;
 	private Image background;
 	private JButton backButton;
+	private int currentLevel;
 	private int level;
 	/** item관련 변수 */
 	private Player player;
@@ -124,10 +125,14 @@ public class Game extends Canvas
 		entities.add(obstacle);
 		if(level == 4) obstacle.setMoveSpeed(500);
 		else if(level == 5) obstacle.setMoveSpeed(800);
+		else if(level == 6) obstacle.setMoveSpeed(800);
 	}
 
 	/** 레벨 선택 */
 	public void setLevel(int level){
+		if (level != 6) {
+			this.currentLevel = level;
+		}
 		this.level = level;
 	}
 
@@ -193,6 +198,7 @@ public class Game extends Canvas
 
 		// initialise the entities in our game so there's something
 		// to see at startup
+
 		initEntities();
 	}
 
@@ -224,6 +230,13 @@ public class Game extends Canvas
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
 		alienCount = 0;
+		db.getPlayCount(count -> {
+			if (count != 0 && count % 5 == 0) {
+				setLevel(6);
+			} else {
+				setLevel(currentLevel);
+			}
+		});
 		if (level == 1) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 6; col++) {
@@ -240,6 +253,13 @@ public class Game extends Canvas
 					alienCount++;
 				}
 			}
+		} else if (level == 6) {
+			for (int n = 0; n < 15; n++) {
+				Entity alien = new BossAlienEntity(this, 700, 50);
+				entities.add(alien);
+				alienCount++;
+			}
+
 		} else {
 			for (int row = 0; row < 5; row++) {
 				for (int col = 0; col < 12; col++) {
@@ -338,6 +358,8 @@ public class Game extends Canvas
 	public void notifyDeath() {
 		message = "Level "+level+", Score :"+ alienkill	;
 		waitingForKeyPress = true;
+		updatePlayInfo(timer, coinCount);
+		coinCount = 0;
 //		updateHighScore();
 		alienkill=0;
 		coinCount = 0;
@@ -358,6 +380,10 @@ public class Game extends Canvas
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
+		updatePlayInfo(timer, coinCount);
+	}
+
+	public void updatePlayInfo(int timer, int coin) {
 		db.increasePlayCount();
 		try {
 			Thread.sleep(100);
@@ -370,7 +396,7 @@ public class Game extends Canvas
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
-		db.updateCoin(coinCount);
+		db.updateCoin(coin);
 		coinCount = 0;
 	}
 
@@ -581,6 +607,10 @@ public class Game extends Canvas
 						AddObstacle();
 					}
 				} else if (level == 5) {
+					if (timer % 20 == 0) {
+						AddObstacle();
+					}
+				} else if (level == 6) {
 					if (timer % 20 == 0) {
 						AddObstacle();
 					}
