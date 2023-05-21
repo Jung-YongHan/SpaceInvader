@@ -38,7 +38,7 @@ public class AlienEntity extends Entity {
 	 * @param y The initial y location of this alien
 	 */
 	public AlienEntity(Game game,int x,int y, Player player) {
-		super(SpriteStore.get().getSprite(player.getTheme().getAlienEntityImage()).toString(),x,y);
+		super(player.getTheme().getAlienEntityImage(),x,y);
 		this.game = game;
 		dx = -moveSpeed;
 	}

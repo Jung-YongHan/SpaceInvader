@@ -6,6 +6,6 @@ public class CatTheme extends Theme{
 
     @Override
     public String getImageFolderPath() {
-        return path + "Cat\\";
+        return path + "Cat/";
     }
 }

@@ -32,6 +32,7 @@ public class ThemeFrame extends JFrame {
             public void paintComponent(Graphics g) {
                 Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
                 g.drawImage(backgroundImage, 0, 0, 800, 600, this);
+                repaint();
             }
         });
 

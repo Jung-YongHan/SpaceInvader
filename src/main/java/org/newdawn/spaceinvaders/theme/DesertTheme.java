@@ -4,6 +4,6 @@ public class DesertTheme extends Theme{
 
     @Override
     public String getImageFolderPath() {
-        return path + "Desert\\";
+        return path + "Desert/";
     }
 }

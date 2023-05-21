@@ -9,7 +9,7 @@ public abstract class Theme {
     String alienEntityImage = "alien.png";
     String bossEntityImage = "bossAlien";
     String obstacleImage = "obstacle.png";
-    String path = "src\\main\\resources\\background\\";
+    String path = "src/main/resources/background/";
 
     public abstract String getImageFolderPath();
     public String getBackgroundImage(){
