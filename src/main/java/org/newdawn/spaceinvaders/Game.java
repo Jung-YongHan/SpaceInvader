@@ -18,10 +18,10 @@ import org.newdawn.spaceinvaders.dataBase.DB;
 import org.newdawn.spaceinvaders.frame.LoginPage;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.item.*;
-import org.newdawn.spaceinvaders.frame.MainFrame;
 import org.newdawn.spaceinvaders.item.AddBulletItem;
 import org.newdawn.spaceinvaders.item.HealItem;
 import org.newdawn.spaceinvaders.item.SpeedUpItem;
+import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
 
@@ -118,29 +118,16 @@ public class Game extends Canvas
 	private static final long ITEM_USE_INTERVAL = 3000;
 
 	private DB db;
+	private Theme theme;
 
-	/** 장애물 */
-	public void AddObstacle() {
-		ObstacleEntity obstacle = new ObstacleEntity(this, "sprites/obstacle.png", (int) (Math.random() * 750), 10);
-		entities.add(obstacle);
-		if(level == 4) obstacle.setMoveSpeed(500);
-		else if(level == 5) obstacle.setMoveSpeed(800);
-		else if(level == 6) obstacle.setMoveSpeed(800);
-	}
 
-	/** 레벨 선택 */
-	public void setLevel(int level){
-		if (level != 6) {
-			this.currentLevel = level;
-		}
-		this.level = level;
-	}
 
 	/**
 	 * Construct our game and set it running.
 	 */
 	public Game(JFrame frame, Player player) throws FirebaseAuthException {
 		container = frame;
+		this.player = player;
 //
 ////		// create a frame to contain our game
 ////		container = new JFrame("Space Invaders 102");
@@ -222,6 +209,7 @@ public class Game extends Canvas
 	 * entitiy will be added to the overall list of entities in the game.
 	 */
 	int alienkill=0;
+	// 민재형 이부분 캐릭터 사진 변경임
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
 		ship = new ShipEntity(this,"sprites/ship/ship.png",370,500);
@@ -240,7 +228,7 @@ public class Game extends Canvas
 		if (level == 1) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 6; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 110), (50) + row * 40);
+					Entity alien = new AlienEntity(this, 100 + (col * 110), (50) + row * 40, this.player);
 					entities.add(alien);
 					alienCount++;
 				}
@@ -248,7 +236,7 @@ public class Game extends Canvas
 		} else if (level == 2) {
 			for (int row = 0; row < 5; row++) {
 				for (int col = 0; col < 8; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 80), (50) + row * 30);
+					Entity alien = new AlienEntity(this, 100 + (col * 80), (50) + row * 30, this.player);
 					entities.add(alien);
 					alienCount++;
 				}
@@ -263,7 +251,7 @@ public class Game extends Canvas
 		} else {
 			for (int row = 0; row < 5; row++) {
 				for (int col = 0; col < 12; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 50), (50) + row * 30);
+					Entity alien = new AlienEntity(this, 100 + (col * 50), (50) + row * 30, this.player);
 					entities.add(alien);
 					alienCount++;
 				}
@@ -537,7 +525,7 @@ public class Game extends Canvas
 		new Sound("sound/bgm.wav");
 
 		try {
-			background = ImageIO.read(new File("src/main/resources/background/stage1Background.jpg"));
+			background = ImageIO.read(new File(this.theme.getBackgroundImage()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -718,9 +706,28 @@ public class Game extends Canvas
 	 * @author Kevin Glass
 	 */
 
+	/** 장애물 */
+	public void AddObstacle() {
+		ObstacleEntity obstacle = new ObstacleEntity(this, this.theme.getObstacleImage(), (int) (Math.random() * 750), 10);
+		entities.add(obstacle);
+		if(level == 4) obstacle.setMoveSpeed(500);
+		else if(level == 5) obstacle.setMoveSpeed(800);
+		else if(level == 6) obstacle.setMoveSpeed(800);
+	}
+
+	/** 레벨 선택 */
+	public void setLevel(int level){
+		if (level != 6) {
+			this.currentLevel = level;
+		}
+		this.level = level;
+	}
+
 
 	private class KeyInputHandler extends KeyAdapter {
-		/** The number of key presses we've had while waiting for an "any key" press */
+		/**
+		 * The number of key presses we've had while waiting for an "any key" press
+		 */
 		private int pressCount = 1;
 
 		/**

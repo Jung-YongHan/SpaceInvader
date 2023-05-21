@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.dataBase.DB;
 import org.newdawn.spaceinvaders.item.*;
+import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
 import org.newdawn.spaceinvaders.Shop;
@@ -16,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ShopFrame extends JFrame {
+public class ShopFrame extends JFrame{
 
     private JLabel playerCoins;
     private Shop shop;
@@ -46,6 +47,7 @@ public class ShopFrame extends JFrame {
     private String[] iconImage = {"bullet.png", "health.png", "speed.png", "shield.png", "reloadspeedup.png"};
     private String[] iconName = {"Add Bullets", "Heal", "Speed Up", "Shield", "ReLoad Speed Up"};
     private DB db;
+    private Theme theme;
 
     public ShopFrame(Player player) throws FirebaseAuthException {
         super("Shop");
@@ -62,8 +64,9 @@ public class ShopFrame extends JFrame {
         setContentPane(new JPanel(){
             @Override
             public void paintComponent(Graphics g){
-                Image backgroundImage = new ImageIcon("src/main/resources/background/mainPageBackground0.png").getImage();
+                Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                repaint();
             }
         });
 

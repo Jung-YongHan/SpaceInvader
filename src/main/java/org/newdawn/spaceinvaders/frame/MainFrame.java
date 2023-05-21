@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.frame;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Player;
 import org.newdawn.spaceinvaders.dataBase.Rank;
 
@@ -25,7 +26,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame{
+    private JButton themeConfig;
     private JButton startButton;
     private JButton myPageButton;
     private JButton shopButton;
@@ -33,6 +35,7 @@ public class MainFrame extends JFrame {
     private Player player;
     private JButton rankButton;
     private JButton gameintroduction;
+    private Theme theme;
 
 
     public MainFrame(Player player) {
@@ -49,8 +52,9 @@ public class MainFrame extends JFrame {
         setContentPane(new JPanel(){
             @Override
             public void paintComponent(Graphics g){
-                Image backgroundImage = new ImageIcon("src/main/resources/background/mainPageBackground0.png").getImage();
+                Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                repaint();
             }
         });
 
@@ -145,11 +149,30 @@ public class MainFrame extends JFrame {
 
         gameintroduction.setBounds(600, 300, 200, 50);
 
+        themeConfig = new JButton("Config");
+        // 버튼 서식
+        themeConfig.setOpaque(false);
+        themeConfig.setContentAreaFilled(false); // 배경
+        themeConfig.setBorderPainted(false); // 배경
+        themeConfig.setForeground(Color.WHITE); // 글자색
+        themeConfig.setFocusPainted(false); // 테두리
+        themeConfig.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트 buttonPanel.add(themeConfig);
+        // Add action listener to the button
+        themeConfig.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ThemeFrame themeFrame = new ThemeFrame(player);
+                setVisible(false);
+            }
+        });
+
+        themeConfig.setBounds(300, 350, 200, 50);
 
         getContentPane().add(startButton);
         getContentPane().add(myPageButton);
         getContentPane().add(shopButton);
         getContentPane().add(gameintroduction);
+        getContentPane().add(themeConfig);
 
 
 

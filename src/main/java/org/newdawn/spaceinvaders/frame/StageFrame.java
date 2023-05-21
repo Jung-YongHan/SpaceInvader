@@ -2,17 +2,20 @@ package org.newdawn.spaceinvaders.frame;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-public class StageFrame extends JFrame {
+public class StageFrame extends JFrame{
     private JButton[] levelButton;
     private Player player;
     private final int levels = 5;
     private JButton backButton;
+    private Theme theme;
+
     public StageFrame(Player player) {
         super("Stage Page");
 
@@ -26,8 +29,9 @@ public class StageFrame extends JFrame {
         setContentPane(new JPanel(){
             @Override
             public void paintComponent(Graphics g){
-                Image backgroundImage = new ImageIcon("src/main/resources/background/mainPageBackground0.png").getImage();
+                Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                repaint();
             }
         });
 

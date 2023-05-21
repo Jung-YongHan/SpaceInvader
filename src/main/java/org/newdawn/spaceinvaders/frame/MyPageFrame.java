@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.frame;
 
 import org.newdawn.spaceinvaders.dataBase.DB;
+import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Player;
 import com.google.firebase.auth.FirebaseAuthException;
 
@@ -8,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-public class MyPageFrame extends JFrame {
+public class MyPageFrame extends JFrame{
     private JLabel titleLabel;
 
     private JButton backButton;
@@ -19,6 +20,7 @@ public class MyPageFrame extends JFrame {
     private JLabel playCountLabel;
     private JLabel playTimeLabel;
     private JLabel coinLabel;
+    private Theme theme;
 
     public MyPageFrame(Player player) throws FirebaseAuthException {
         super("MyPage");
@@ -32,8 +34,9 @@ public class MyPageFrame extends JFrame {
         setContentPane(new JPanel(){
             @Override
             public void paintComponent(Graphics g){
-                Image backgroundImage = new ImageIcon("src/main/resources/background/mainPageBackground.jpg").getImage();
+                Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
                 g.drawImage(backgroundImage, 0, 0, 800, 600, this);
+                repaint();
             }
         });
 

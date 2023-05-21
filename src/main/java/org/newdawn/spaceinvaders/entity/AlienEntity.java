@@ -3,6 +3,11 @@ package org.newdawn.spaceinvaders.entity;
 import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.SpriteStore;
+import org.newdawn.spaceinvaders.theme.CatTheme;
+import org.newdawn.spaceinvaders.theme.DesertTheme;
+import org.newdawn.spaceinvaders.theme.SpaceTheme;
+import org.newdawn.spaceinvaders.theme.Theme;
+import org.newdawn.spaceinvaders.user.Player;
 
 /**
  * An entity which represents one of our space invader aliens.
@@ -22,7 +27,9 @@ public class AlienEntity extends Entity {
 	private long frameDuration = 250;
 	/** The current frame of animation being displayed */
 	private int frameNumber;
-	
+	private Theme theme;
+	private Player player;
+
 	/**
 	 * Create a new alien entity
 	 * 
@@ -30,15 +37,8 @@ public class AlienEntity extends Entity {
 	 * @param x The initial x location of this alien
 	 * @param y The initial y location of this alien
 	 */
-	public AlienEntity(Game game,int x,int y) {
-		super("sprites/alien/alien.png",x,y);
-		
-		// setup the animatin frames
-		frames[0] = sprite;
-		frames[1] = SpriteStore.get().getSprite("sprites/alien/alien.png");
-		frames[2] = sprite;
-		frames[3] = SpriteStore.get().getSprite("sprites/alien/alien.png");
-		
+	public AlienEntity(Game game,int x,int y, Player player) {
+		super(SpriteStore.get().getSprite(player.getTheme().getAlienEntityImage()).toString(),x,y);
 		this.game = game;
 		dx = -moveSpeed;
 	}

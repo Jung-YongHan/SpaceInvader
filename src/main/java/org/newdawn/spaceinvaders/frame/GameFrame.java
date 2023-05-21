@@ -1,20 +1,29 @@
 package org.newdawn.spaceinvaders.frame;
 
+import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class GameFrame extends JFrame {
+public class GameFrame extends JFrame{
     private JButton backButton;
+    private Theme theme;
+
     public GameFrame(Player player) {
         // create a frame to contain our game
         super("Space Invaders 102");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
+
+        setContentPane(new JPanel(){
+            @Override
+            public void paintComponent(Graphics g){
+                Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        });
 
         // get hold the content of the frame and set up the resolution of the game
         JPanel panel = (JPanel) getContentPane();
@@ -26,32 +35,7 @@ public class GameFrame extends JFrame {
         setIgnoreRepaint(true);
         getContentPane().setLayout(null);
 
-//        backButton = new JButton("<");
-//        // 버튼 서식
-//        backButton.setOpaque(false);
-//        backButton.setContentAreaFilled(false); // 배경
-//        backButton.setBackground(Color.black);
-//        backButton.setBorderPainted(false); // 배경
-////        backButton.setForeground(Color.WHITE); // 글자색
-//        backButton.setFocusPainted(false); // 테두리
-//        backButton.setFont(new Font("Arial", Font.BOLD, 20)); // 폰트
-//        backButton.setBounds(0, 510, 50, 40); // set position and size
-//
-//        backButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                MainFrame mainFrame = new MainFrame(player);
-//                setVisible(false);
-//            }
-//        });
-//        panel.add(backButton);
-
-        // finally make the window visible
-//        pack();
-//        setResizable(false);
         setVisible(true);
 
-
     }
-
 }
