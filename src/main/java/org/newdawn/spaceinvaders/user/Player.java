@@ -3,6 +3,7 @@ package org.newdawn.spaceinvaders.user;
 import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.dataBase.DB;
+import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.theme.CatTheme;
 import org.newdawn.spaceinvaders.theme.DesertTheme;
 import org.newdawn.spaceinvaders.theme.SpaceTheme;
@@ -17,6 +18,7 @@ public class Player {
     private int characterId;
     private Theme theme;
     private Theme configTheme = new SpaceTheme();
+    private ShipEntity playerShip;
 
     public Player(){
         try {
@@ -30,6 +32,14 @@ public class Player {
         this.inventory = new Inventory();
         setCharacterId(this.characterId);
     }
+    public ShipEntity getPlayerShip() {
+        return this.playerShip;
+    }
+
+    public void setPlayerShip(ShipEntity playerShip) {
+        this.playerShip = playerShip;
+    }
+
     public void setGame(Game game){
         this.game = game;
     }

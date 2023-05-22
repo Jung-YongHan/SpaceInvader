@@ -1,5 +1,6 @@
 package org.newdawn.spaceinvaders.frame;
 
+import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.theme.CatTheme;
 import org.newdawn.spaceinvaders.theme.DesertTheme;
 import org.newdawn.spaceinvaders.theme.SpaceTheme;
@@ -15,6 +16,7 @@ public class ThemeFrame extends JFrame {
 
     private JButton backButton;
     private Player player;
+    private ShipEntity playerShip;
     private Theme theme;
 
     public ThemeFrame(Player player) {
