@@ -128,6 +128,7 @@ public class Game extends Canvas
 	public Game(JFrame frame, Player player) throws FirebaseAuthException {
 		container = frame;
 		this.player = player;
+		this.theme = player.getTheme();
 //
 ////		// create a frame to contain our game
 ////		container = new JFrame("Space Invaders 102");

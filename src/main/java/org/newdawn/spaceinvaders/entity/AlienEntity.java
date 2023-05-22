@@ -39,6 +39,12 @@ public class AlienEntity extends Entity {
 	 */
 	public AlienEntity(Game game,int x,int y, Player player) {
 		super(player.getTheme().getAlienEntityImage(),x,y);
+
+		frames[0] = sprite;
+		frames[1] = sprite;
+		frames[2] = sprite;
+		frames[3] = sprite;
+
 		this.game = game;
 		dx = -moveSpeed;
 	}

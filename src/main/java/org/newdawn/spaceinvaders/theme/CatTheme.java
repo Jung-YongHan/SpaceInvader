@@ -5,7 +5,11 @@ import org.newdawn.spaceinvaders.user.Player;
 public class CatTheme extends Theme{
 
     @Override
-    public String getImageFolderPath() {
-        return path + "Cat/";
+    public String getBackGroundImageFolderPath() {
+        return path1 + "Cat/";
+    }
+    @Override
+    public String getEntityImageFolderPath() {
+        return path2 + "Cat/";
     }
 }
