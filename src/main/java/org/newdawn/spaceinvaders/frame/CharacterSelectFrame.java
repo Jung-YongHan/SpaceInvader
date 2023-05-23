@@ -1,19 +1,12 @@
 package org.newdawn.spaceinvaders.frame;
 
 import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.Skin.AstronautSkin;
-import org.newdawn.spaceinvaders.Skin.CatSkin;
-import org.newdawn.spaceinvaders.Skin.ShipSkin;
-import org.newdawn.spaceinvaders.Skin.Skin;
 import org.newdawn.spaceinvaders.user.Player;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
 public class CharacterSelectFrame extends JFrame{
 
@@ -25,7 +18,7 @@ public class CharacterSelectFrame extends JFrame{
     private int iconY = 200;
     private int[] buttonX = {140, 390, 640};
     private int buttonY = 350;
-    private String[] iconImage = {"ship.png", "ship2.png", "ship3.png"};
+    private String[] iconImage = {"ship.png", "ship.png", "ship3.png"};
     private JButton backButton;
     private Player player;
     private ShipEntity playerShip;

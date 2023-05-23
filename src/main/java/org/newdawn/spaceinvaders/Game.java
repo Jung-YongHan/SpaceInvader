@@ -202,8 +202,8 @@ public class Game extends Canvas
 	// 민재형 이부분 캐릭터 사진 변경임
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this,"sprites/ship/ship.png",370,500);
-		ImageIcon i = new ImageIcon("ship.png");
+		ship = new ShipEntity(this,this.player.getSkin().getShipImage(),370,500, this.player);
+//		ImageIcon i = new ImageIcon("ship.png");
 		entities.add(ship);
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -516,12 +516,6 @@ public class Game extends Canvas
 
 		try {
 			background = ImageIO.read(new File(this.theme.getBackgroundImage()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			CharacterSkin = ImageIO.read(new File(this.skin.getShipImage()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

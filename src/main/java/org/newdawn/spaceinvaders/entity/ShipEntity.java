@@ -4,6 +4,7 @@ import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.Skin.Skin;
 import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.SpriteStore;
+import org.newdawn.spaceinvaders.user.Player;
 
 /**
  * The entity that represents the players ship
@@ -19,6 +20,7 @@ public class ShipEntity extends Entity {
 	private long SHIELD_DURATION = 5000;
 	private String normalImage = "sprites/ship/ship.png";
 	private String shieldedImage = "sprites/ship/shieldShip.png";
+	private Player player;
 	private Skin skin;
 
 
@@ -34,9 +36,10 @@ public class ShipEntity extends Entity {
 	 * @param x The initial x location of the player's ship
 	 * @param y The initial y location of the player's ship
 	 */
-	public ShipEntity(Game game,String ref,int x,int y) {
+	public ShipEntity(Game game,String ref,int x,int y, Player player) {
 		super(ref,x,y);
 		this.game = game;
+		this.player = player;
 		this.shieldActive = false;
 	}
 
@@ -111,7 +114,7 @@ public class ShipEntity extends Entity {
 	}
 	public void setNormalImage() {
 		try {
-			Sprite sprite = SpriteStore.get().getSprite(normalImage);
+			Sprite sprite = SpriteStore.get().getSprite(player.getSkin().getShipImage());
 			setSprite(sprite);
 		} catch (Exception e) {
 			System.out.println("Failed to load normal image: " + e.getMessage());
@@ -120,7 +123,7 @@ public class ShipEntity extends Entity {
 
 	public void setShieldedImage() {
 		try {
-			Sprite sprite = SpriteStore.get().getSprite(shieldedImage);
+			Sprite sprite = SpriteStore.get().getSprite(player.getSkin().getShipShieldImage());
 			setSprite(sprite);
 		} catch (Exception e) {
 			System.out.println("Failed to load shielded image: " + e.getMessage());
