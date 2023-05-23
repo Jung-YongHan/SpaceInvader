@@ -32,7 +32,14 @@ public class ShipEntity extends Entity {
 		this.game = game;
 		this.shieldActive = false;
 	}
-	
+
+	//캐릭터의 이미지를 설정하는 메소드
+	public void setShipImage(String imagePath) {
+		this.normalImage = imagePath;
+		setNormalImage();
+	}
+
+
 	/**
 	 * Request that the ship move itself based on an elapsed ammount of
 	 * time

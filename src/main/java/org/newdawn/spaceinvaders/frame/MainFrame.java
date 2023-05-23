@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.frame;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Player;
 import org.newdawn.spaceinvaders.dataBase.Rank;
@@ -33,9 +34,10 @@ public class MainFrame extends JFrame{
     private JButton shopButton;
     private JButton RankButton;
     private Player player;
-    private JButton rankButton;
+    private JButton CharacterSelectButton;
     private JButton gameintroduction;
     private Theme theme;
+
 
 
     public MainFrame(Player player) {
@@ -176,30 +178,25 @@ public class MainFrame extends JFrame{
 
 
 
-//        // Rank 버튼 (임시)
-//        rankButton = new JButton("Rank");
-//        // 버튼 서식
-//        rankButton.setOpaque(false);
-//        rankButton.setContentAreaFilled(false); // 배경
-//        rankButton.setBorderPainted(false); // 배경
-//        rankButton.setForeground(Color.WHITE); // 글자색
-//        rankButton.setFocusPainted(false); // 테두리
-//        rankButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-//        rankButton.setBounds(700, 500, 100, 50);
-//
-//        rankButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                // 마이페이지 넘어가는 로직
-//                try {
-//                    Rank rankPage = new Rank(player);
-//                } catch (FirebaseAuthException ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//                setVisible(false);
-//            }
-//        });
-//        getContentPane().add(rankButton);
+        CharacterSelectButton = new JButton("Character");
+        CharacterSelectButton.setOpaque(false);
+        CharacterSelectButton.setContentAreaFilled(false); // 배경
+        CharacterSelectButton.setBorderPainted(false); // 배경
+        CharacterSelectButton.setForeground(Color.WHITE); // 글자색
+        CharacterSelectButton.setFocusPainted(false); // 테두리
+        CharacterSelectButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
+        CharacterSelectButton.setBounds(700, 500, 100, 50);
+
+        CharacterSelectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Move to Character Select Frame
+                CharacterSelectFrame characterSelectFrame = new CharacterSelectFrame(player, player.getPlayerShip());
+                setVisible(false);
+            }
+        });
+        getContentPane().add(CharacterSelectButton);
+
 
 
         setVisible(true);
