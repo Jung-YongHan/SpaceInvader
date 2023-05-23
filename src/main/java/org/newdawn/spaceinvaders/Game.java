@@ -491,7 +491,7 @@ public class Game extends Canvas
 
 		for (int i = 0; i < bulletCount; i++) {
 			int bulletX = ship.getX() + 10 - (bulletCount - 1) * spaceBetweenBullets / 2 + i * spaceBetweenBullets;
-			ShotEntity shot = new ShotEntity(this, "sprites/shot/shot.png", bulletX, ship.getY() - 30);
+			ShotEntity shot = new ShotEntity(this, this.player.getSkin().getShipShotImage(), bulletX, ship.getY() - 30);
 			entities.add(shot);
 		}
 	}
