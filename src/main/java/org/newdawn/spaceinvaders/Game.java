@@ -22,25 +22,11 @@ import org.newdawn.spaceinvaders.item.AddBulletItem;
 import org.newdawn.spaceinvaders.item.HealItem;
 import org.newdawn.spaceinvaders.item.SpeedUpItem;
 import org.newdawn.spaceinvaders.theme.*;
+import org.newdawn.spaceinvaders.Skin.*;
+
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
 
-
-/**
- * The main hook of our game. This class with both act as a manager
- * for the display and central mediator for the game logic. 
- *
- * Display management will consist of a loop that cycles round all
- * entities in the game asking them to move and then drawing them
- * in the appropriate place. With the help of an inner class it
- * will also allow the player to control the main ship.
- *
- * As a mediator it will be informed when entities within our game
- * detect events (e.g. alient killed, played died) and will take
- * appropriate game actions.
- *
- * @author Kevin Glass
- */
 public class Game extends Canvas
 {
 	private int timer;
@@ -84,6 +70,7 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 	private Image background;
+	private Image CharacterSkin;
 	private JButton backButton;
 	private int currentLevel;
 	private int level;
@@ -119,6 +106,7 @@ public class Game extends Canvas
 
 	private DB db;
 	private Theme theme;
+	private Skin skin;
 
 
 
@@ -129,6 +117,7 @@ public class Game extends Canvas
 		container = frame;
 		this.player = player;
 		this.theme = player.getTheme();
+		this.skin = player.getSkin();
 //
 ////		// create a frame to contain our game
 ////		container = new JFrame("Space Invaders 102");
@@ -527,6 +516,12 @@ public class Game extends Canvas
 
 		try {
 			background = ImageIO.read(new File(this.theme.getBackgroundImage()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			CharacterSkin = ImageIO.read(new File(this.skin.getShipImage()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

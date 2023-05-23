@@ -1,7 +1,10 @@
 package org.newdawn.spaceinvaders.frame;
 
-import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
+import org.newdawn.spaceinvaders.Skin.AstronautSkin;
+import org.newdawn.spaceinvaders.Skin.CatSkin;
+import org.newdawn.spaceinvaders.Skin.ShipSkin;
+import org.newdawn.spaceinvaders.Skin.Skin;
 import org.newdawn.spaceinvaders.user.Player;
 
 import javax.imageio.ImageIO;
@@ -14,7 +17,7 @@ import java.io.IOException;
 
 public class CharacterSelectFrame extends JFrame{
 
-    final int buttonCount = 3; //버튼 갯수
+    final int buttonCount = 3; // 버튼 개수
     private JButton[] selectButton;
     private JLabel[] characterIcon;
     private int iconSize = 128;
@@ -25,22 +28,22 @@ public class CharacterSelectFrame extends JFrame{
     private String[] iconImage = {"ship.png", "ship2.png", "ship3.png"};
     private JButton backButton;
     private Player player;
-
     private ShipEntity playerShip;
 
     public CharacterSelectFrame(Player player, ShipEntity playerShip) {
         super("Character Select");
 
         this.player = player;
+        this.playerShip = playerShip;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
 
-        setContentPane(new JPanel(){
+        setContentPane(new JPanel() {
             @Override
-            public void paintComponent(Graphics g){
-                Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
+            public void paintComponent(Graphics g) {
+                Image backgroundImage = new ImageIcon(player.getSkin().getShipImage()).getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 repaint();
             }
@@ -49,40 +52,31 @@ public class CharacterSelectFrame extends JFrame{
         setIgnoreRepaint(false);
         getContentPane().setLayout(null);
 
-        // character 아이콘
-        characterIcon = new JLabel[buttonCount];
-        for(int i=0; i<buttonCount; i++){
-            characterIcon[i] = new JLabel();
-            characterIcon[i].setBounds(iconX[i], iconY, iconSize, iconSize);
-            characterIcon[i].setOpaque(false);
-            try {
-                characterIcon[i].setIcon(new ImageIcon(ImageIO.read(new File("src/main/resources/characterIcon/" + iconImage[i]))));
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-            getContentPane().add(characterIcon[i]);
-        }
+//        // 캐릭터 아이콘
+//        characterIcon = new JLabel[buttonCount];
+//        for (int i = 0; i < buttonCount; i++) {
+//            characterIcon[i] = new JLabel();
+//            characterIcon[i].setBounds(iconX[i], iconY, iconSize, iconSize);
+//            characterIcon[i].setOpaque(false);
+//            try {
+//                characterIcon[i].setIcon(new ImageIcon(ImageIO.read(new File("src/main/resources/characterIcon/" + iconImage[i]))));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            getContentPane().add(characterIcon[i]);
+//        }
 
-
-        this.playerShip = playerShip;
         // select 버튼
         selectButton = new JButton[buttonCount];
-        for(int i=0; i<buttonCount; i++){
-            selectButton[i] = new JButton("Select");
+        for (int i = 0; i < buttonCount; i++) {
+            selectButton[i] = createSkinSelectButton(i);
             selectButton[i].setOpaque(true);
             selectButton[i].setBackground(Color.BLACK);
             selectButton[i].setForeground(Color.WHITE);
             selectButton[i].setFocusPainted(false);
-            selectButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20));
+            selectButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 25));
             selectButton[i].setBounds(buttonX[i], buttonY, 80, 30);
             getContentPane().add(selectButton[i]);
-
-            final int index = i;
-            selectButton[i].addActionListener(e -> {
-                selectCharacter(index);
-                playerShip.setShipImage("sprites/ship/" + iconImage[index]); // 캐릭터 이미지 설정
-                repaint();
-            });
         }
 
         // back 버튼
@@ -106,9 +100,18 @@ public class CharacterSelectFrame extends JFrame{
 
         setVisible(true);
     }
-
-    private void selectCharacter(int characterIndex) {
-        // 로직 추가 : 선택된 캐릭터에 따라서 게임의 다른 부분에 영향을 줄 수 있도록 코드를 추가하십시오.
-        System.out.println("Character " + (characterIndex + 1) + " has been selected.");
+    private JButton createSkinSelectButton(int index) {
+        JButton button = new JButton("Select");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int response = JOptionPane.showConfirmDialog(null, "해당 스킨을 설정하겠습니까?", "스킨 설정", JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                    player.setSkin(index);
+                    repaint();
+                }
+            }
+        });
+        return button;
     }
 }
