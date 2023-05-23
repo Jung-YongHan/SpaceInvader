@@ -2,6 +2,10 @@ package org.newdawn.spaceinvaders.user;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Skin.AstronautSkin;
+import org.newdawn.spaceinvaders.Skin.CatSkin;
+import org.newdawn.spaceinvaders.Skin.ShipSkin;
+import org.newdawn.spaceinvaders.Skin.Skin;
 import org.newdawn.spaceinvaders.dataBase.DB;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.theme.CatTheme;
@@ -19,6 +23,7 @@ public class Player {
     private Theme theme;
     private Theme configTheme = new SpaceTheme();
     private ShipEntity playerShip;
+    private Skin configSkin = new ShipSkin();
 
     public Player(){
         try {
@@ -70,6 +75,7 @@ public class Player {
                 break;
         }
     }
+
     public Theme getTheme() {
         return this.configTheme;
     }
@@ -77,4 +83,21 @@ public class Player {
     public Inventory getInventory() {
         return this.inventory;
     }
+
+
+    public void setSkin(int SkinId) {
+        switch (SkinId) {
+            case 1:
+                this.configSkin = new CatSkin();
+                break;
+            case 2:
+                this.configSkin = new AstronautSkin();
+                break;
+            default:
+                this.configSkin = new ShipSkin();
+                break;
+        }
+    }
+    public Skin getSkin() {return this.configSkin;}
+
 }

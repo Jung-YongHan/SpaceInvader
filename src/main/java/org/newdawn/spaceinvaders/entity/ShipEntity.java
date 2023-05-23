@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Skin.Skin;
 import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.SpriteStore;
 
@@ -18,6 +19,12 @@ public class ShipEntity extends Entity {
 	private long SHIELD_DURATION = 5000;
 	private String normalImage = "sprites/ship/ship.png";
 	private String shieldedImage = "sprites/ship/shieldShip.png";
+	private Skin skin;
+
+
+	public Skin getSkin() {
+		return skin;
+	}
 
 	/**
 	 * Create a new entity to represent the players ship
@@ -119,4 +126,6 @@ public class ShipEntity extends Entity {
 			System.out.println("Failed to load shielded image: " + e.getMessage());
 		}
 	}
+
+
 }
