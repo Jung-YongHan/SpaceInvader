@@ -41,6 +41,8 @@ public class ShipEntity extends Entity {
 		this.game = game;
 		this.player = player;
 		this.shieldActive = false;
+
+		if (player.getSelectedSkinId() == 1) {health=4;} else if (player.getSelectedSkinId() == 2) {health=5;}
 	}
 
 	//캐릭터의 이미지를 설정하는 메소드
@@ -129,6 +131,5 @@ public class ShipEntity extends Entity {
 			System.out.println("Failed to load shielded image: " + e.getMessage());
 		}
 	}
-
 
 }

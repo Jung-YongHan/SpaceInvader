@@ -13,10 +13,5 @@ public class Main {
         LoginPage loginPage = new LoginPage();
 
         File f = new File("src/main/resources/sprites/ship/ship.png");
-        if(f.exists() && !f.isDirectory()) {
-            System.out.println("File exists");
-        } else {
-            System.out.println("File doesn't exist");
-        }
     }
 }

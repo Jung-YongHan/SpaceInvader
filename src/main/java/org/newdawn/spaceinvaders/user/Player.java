@@ -24,6 +24,8 @@ public class Player {
     private ShipEntity playerShip;
     private Skin configSkin = new SpaceSkin();
 
+    private int selectedSkinId; // 스킨 ID를 저장하기 위한 필드 추가
+
     public Player(){
         try {
             this.db = new DB();
@@ -83,19 +85,26 @@ public class Player {
         return this.inventory;
     }
 
-
     public void setSkin(int skinId) {
         switch (skinId) {
             case 1:
                 this.configSkin = new CatSkin();
+                selectedSkinId =1;
                 break;
             case 2:
                 this.configSkin = new AstronautSkin();
+                selectedSkinId =2;
                 break;
             default:
                 this.configSkin = new SpaceSkin();
+                selectedSkinId =0;
                 break;
         }
+    }
+
+    // 현재 선택된 스킨 ID를 반환하는 메소드 추가
+    public int getSelectedSkinId() {
+        return selectedSkinId;
     }
     public Skin getSkin() {return this.configSkin;}
 
