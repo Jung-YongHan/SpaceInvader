@@ -45,7 +45,7 @@ public class Game extends Canvas
 	/** The time at which last fired a shot */
 	private long lastFire = 0;
 	/** The interval between our players shot (ms) */
-	private double firingInterval = 500;
+	private double firingInterval = 200;
 	/** The number of aliens left on the screen */
 	private int alienCount;
 
@@ -247,6 +247,9 @@ public class Game extends Canvas
 				}
 			}
 		}
+
+		if (player.getSelectedSkinId() == 1) {bulletCount=2; moveSpeed=100;firingInterval=700;}
+		else if (player.getSelectedSkinId() ==2) {bulletCount=3; moveSpeed=150;firingInterval=2000;}
 	}
 	public ShipEntity getShip(){
 		return ship;

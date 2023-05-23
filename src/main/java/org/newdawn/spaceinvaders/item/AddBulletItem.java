@@ -12,6 +12,7 @@ public class AddBulletItem extends Item {
         coins = 0;
     }
 
+
     @Override
     public void useItem(Game game) {
         if (inventory.getItemCount(this.getName()) > 0) {
