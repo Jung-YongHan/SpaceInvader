@@ -17,14 +17,6 @@ public class GameFrame extends JFrame{
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
 
-        setContentPane(new JPanel(){
-            @Override
-            public void paintComponent(Graphics g){
-                Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
-                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-            }
-        });
-
         // get hold the content of the frame and set up the resolution of the game
         JPanel panel = (JPanel) getContentPane();
         panel.setPreferredSize(new Dimension(800,600));
