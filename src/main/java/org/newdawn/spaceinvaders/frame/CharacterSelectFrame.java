@@ -3,22 +3,25 @@ package org.newdawn.spaceinvaders.frame;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.user.Player;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class CharacterSelectFrame extends JFrame{
 
     final int buttonCount = 3; // 버튼 개수
     private JButton[] selectButton;
-    private JLabel[] characterIcon;
+    private JLabel[] characterIcon; // 이미지를 표시할 JLabel 배열
     private int iconSize = 128;
     private int[] iconX = {100, 350, 600};
     private int iconY = 200;
     private int[] buttonX = {140, 390, 640};
     private int buttonY = 350;
-    private String[] iconImage = {"ship.png", "ship.png", "ship3.png"};
+    private String[] iconImage = {"src/main/resources/sprites/ship/space/", "src/main/resources/sprites/ship/cat/", "src/main/resources/sprites/ship/astronaut/"};
     private JButton backButton;
     private Player player;
     private ShipEntity playerShip;
@@ -36,7 +39,7 @@ public class CharacterSelectFrame extends JFrame{
         setContentPane(new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
-                Image backgroundImage = new ImageIcon(player.getSkin().getShipImage()).getImage();
+                Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 repaint();
             }
@@ -45,31 +48,34 @@ public class CharacterSelectFrame extends JFrame{
         setIgnoreRepaint(false);
         getContentPane().setLayout(null);
 
-//        // 캐릭터 아이콘
-//        characterIcon = new JLabel[buttonCount];
-//        for (int i = 0; i < buttonCount; i++) {
-//            characterIcon[i] = new JLabel();
-//            characterIcon[i].setBounds(iconX[i], iconY, iconSize, iconSize);
-//            characterIcon[i].setOpaque(false);
-//            try {
-//                characterIcon[i].setIcon(new ImageIcon(ImageIO.read(new File("src/main/resources/characterIcon/" + iconImage[i]))));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            getContentPane().add(characterIcon[i]);
-//        }
+        characterIcon = new JLabel[buttonCount];
+        for (int i = 0; i < buttonCount; i++) {
+            characterIcon[i] = new JLabel();
+            characterIcon[i].setBounds(iconX[i], iconY, iconSize, iconSize);
+            try {
+                ImageIcon imageIcon = new ImageIcon(ImageIO.read(new File(iconImage[i]+"ship.png")));
+                Image image = imageIcon.getImage();
+                Image scaledImage = image.getScaledInstance(iconSize, iconSize, java.awt.Image.SCALE_SMOOTH);  // 스케일링
+                characterIcon[i].setIcon(new ImageIcon(scaledImage));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            getContentPane().add(characterIcon[i]);
+            getContentPane().setComponentZOrder(characterIcon[i], 0); // 라벨을 버튼 위에 배치
+        }
+
+
 
         // select 버튼
         selectButton = new JButton[buttonCount];
         for (int i = 0; i < buttonCount; i++) {
             selectButton[i] = createSkinSelectButton(i);
-            selectButton[i].setOpaque(true);
-            selectButton[i].setBackground(Color.BLACK);
-            selectButton[i].setForeground(Color.WHITE);
-            selectButton[i].setFocusPainted(false);
-            selectButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 25));
+            selectButton[i].setOpaque(false);  // 버튼 투명하게 만들기
+            selectButton[i].setContentAreaFilled(false);
+            selectButton[i].setBorderPainted(false);
             selectButton[i].setBounds(buttonX[i], buttonY, 80, 30);
             getContentPane().add(selectButton[i]);
+            getContentPane().setComponentZOrder(selectButton[i], 1); // 버튼을 라벨 아래에 배치
         }
 
         // back 버튼
