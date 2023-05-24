@@ -177,7 +177,7 @@ public class MainFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Move to Character Select Frame
-                CharacterSelectFrame characterSelectFrame = new CharacterSelectFrame(player, player.getPlayerShip());
+                new CharacterSelectFrame(player);
                 setVisible(false);
             }
         });
