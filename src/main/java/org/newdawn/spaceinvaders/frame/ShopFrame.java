@@ -69,22 +69,7 @@ public class ShopFrame extends JFrame{
     }
 
     private void setFrameLayout() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
-        setSize(800, 600);
-        setLocationRelativeTo(null); // 창을 화면 중앙에 배치
-
-        // get hold the content of the frame and set up the resolution of the game
-        setContentPane(new JPanel(){
-            @Override
-            public void paintComponent(Graphics g){
-                Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
-                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-                repaint();
-            }
-        });
-
-        setIgnoreRepaint(false);
-        getContentPane().setLayout(null);
+        FrameHelper.setFrameLayout(this, new ImageIcon(player.getTheme().getBackgroundImage()));
     }
 
     private void loadContent() {

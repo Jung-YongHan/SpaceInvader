@@ -4,6 +4,25 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FrameHelper {
+
+    public static void setFrameLayout(JFrame frame, ImageIcon imageIcon) {
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
+        frame.setSize(800, 600);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null); // 창을 화면 중앙에 배치
+
+        frame.setContentPane(new JPanel(){
+            @Override
+            public void paintComponent(Graphics g){
+                Image backgroundImage = imageIcon.getImage();
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                repaint();
+            }
+        });
+
+        frame.getContentPane().setLayout(null);
+    }
+
     public static JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.setOpaque(false);

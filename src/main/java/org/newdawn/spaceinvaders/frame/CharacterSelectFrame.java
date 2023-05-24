@@ -33,21 +33,7 @@ public class CharacterSelectFrame extends JFrame{
     }
 
     private void setFrameLayout() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 600);
-        setLocationRelativeTo(null);
-
-        setContentPane(new JPanel() {
-            @Override
-            public void paintComponent(Graphics g) {
-                Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
-                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-                repaint();
-            }
-        });
-
-        setIgnoreRepaint(false);
-        getContentPane().setLayout(null);
+        FrameHelper.setFrameLayout(this, new ImageIcon(player.getTheme().getBackgroundImage()));
     }
 
     private void loadContent() {

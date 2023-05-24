@@ -27,14 +27,7 @@ public class RegisterFrame extends JFrame {
     }
 
     private void setFrameLayout() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
-        setSize(800, 600);
-        setResizable(false);
-        setLocationRelativeTo(null); // 창을 화면 중앙에 배치
-
-        // get hold the content of the frame and set up the resolution of the game
-//        getContentPane().setPreferredSize(new Dimension(800,600));
-        getContentPane().setLayout(null);
+        FrameHelper.setFrameLayout(this, new ImageIcon("src/main/resources/background/white.png"));
     }
 
     private void loadContent() {
