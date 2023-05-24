@@ -6,8 +6,8 @@ import com.google.firebase.auth.FirebaseAuthException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import static javax.swing.SwingConstants.CENTER;
 
 public class MyPageFrame extends JFrame{
     private JLabel titleLabel;
@@ -53,46 +53,35 @@ public class MyPageFrame extends JFrame{
         titleLabel = new JLabel("MyPage");
         titleLabel.setForeground(Color.WHITE); // 기본 글씨 색을 검은색으로 설정합니다.
         titleLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 35));
-        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setHorizontalAlignment(CENTER);
         titleLabel.setBounds(300, 100, 200, 55);
         getContentPane().add(titleLabel);
 
         // 버튼 추가
         backButton = FrameHelper.createBackButton();
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame(player);
-                setVisible(false);
-            }
+        backButton.addActionListener(e -> {
+            new MainFrame(player);
+            setVisible(false);
         });
         getContentPane().add(backButton);
 
         highScoreLabel = new JLabel();
-        db.getHighScore(highScore -> {
-            highScoreLabel.setText("최고 점수: " + highScore);
-        });
+        db.getHighScore(highScore -> highScoreLabel.setText("최고 점수: " + highScore));
         highScoreLabel.setForeground(Color.WHITE);
         highScoreLabel.setBounds(300, 220, 200, 30);
 
         playCountLabel = new JLabel();
-        db.getHighScore(count -> {
-            playCountLabel.setText("누적 플레이 수: " + count);
-        });
+        db.getHighScore(count -> playCountLabel.setText("누적 플레이 수: " + count));
         playCountLabel.setForeground(Color.WHITE);
         playCountLabel.setBounds(300, 270, 200, 30);
 
         playTimeLabel = new JLabel();
-        db.getPlayTime(time -> {
-            playTimeLabel.setText("누적 플레이 시간: " + time);
-        });
+        db.getPlayTime(time -> playTimeLabel.setText("누적 플레이 시간: " + time));
         playTimeLabel.setForeground(Color.WHITE);
         playTimeLabel.setBounds(300, 320, 200, 30);
 
         coinLabel = new JLabel();
-        db.getCoin(coin -> {
-            coinLabel.setText("코인: " + coin);
-        });
+        db.getCoin(coin -> coinLabel.setText("코인: " + coin));
         coinLabel.setForeground(Color.WHITE);
         coinLabel.setBounds(300, 370, 200, 30);
 
