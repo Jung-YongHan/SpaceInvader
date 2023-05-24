@@ -1,7 +1,6 @@
 package org.newdawn.spaceinvaders.frame;
 
 import org.newdawn.spaceinvaders.dataBase.DB;
-import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Player;
 import com.google.firebase.auth.FirebaseAuthException;
 
@@ -11,21 +10,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class MyPageFrame extends JFrame{
     private JLabel titleLabel;
-
     private JButton backButton;
-
-    private Player player;
     private DB db;
     private JLabel highScoreLabel;
     private JLabel playCountLabel;
     private JLabel playTimeLabel;
     private JLabel coinLabel;
-    private Theme theme;
+    private Player player;
 
     public MyPageFrame(Player player) throws FirebaseAuthException {
         super("MyPage");
-        db = new DB();
+        setFrameLayout();
+        loadContent();
+        setVisible(true);
 
+        db = new DB();
+    }
+
+    private void setFrameLayout() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
@@ -42,7 +44,9 @@ public class MyPageFrame extends JFrame{
 
         setIgnoreRepaint(false);
         getContentPane().setLayout(null);
+    }
 
+    private void loadContent() {
         // titleLabel 추가
         titleLabel = new JLabel("MyPage");
         titleLabel.setForeground(Color.WHITE); // 기본 글씨 색을 검은색으로 설정합니다.
@@ -70,18 +74,6 @@ public class MyPageFrame extends JFrame{
             }
         });
         getContentPane().add(backButton);
-
-        LoadContent();
-
-
-        // finally make the window visible
-//         pack();
-//         setResizable(false);
-        setVisible(true);
-
-    }
-
-    public void LoadContent() {
 
         highScoreLabel = new JLabel();
         db.getHighScore(highScore -> {
