@@ -418,6 +418,7 @@ public class Game extends Canvas
 	 * - Checking Input
 	 * <p>
 	 */
+
 	public void gameLoop() {
 		long lastLoopTime = SystemTimer.getTime();
 
@@ -489,15 +490,15 @@ public class Game extends Canvas
 				}
 				if (level == 4) {
 					if (timer % 50 == 0) {
-						AddObstacle();
+						ObstacleEntity.addObstacle(this, this.theme, this.entities, this.level);
 					}
 				} else if (level == 5) {
 					if (timer % 20 == 0) {
-						AddObstacle();
+						ObstacleEntity.addObstacle(this, this.theme, this.entities, this.level);
 					}
 				} else if (level == 6) {
 					if (timer % 20 == 0) {
-						AddObstacle();
+						ObstacleEntity.addObstacle(this, this.theme, this.entities, this.level);
 					}
 				}
 			}
@@ -600,15 +601,6 @@ public class Game extends Canvas
 	 *
 	 * @author Kevin Glass
 	 */
-
-	/** 장애물 */
-	public void AddObstacle() {
-		ObstacleEntity obstacle = new ObstacleEntity(this, this.theme.getObstacleImage(), (int) (Math.random() * 750), 10);
-		entities.add(obstacle);
-		if(level == 4) obstacle.setMoveSpeed(500);
-		else if(level == 5) obstacle.setMoveSpeed(800);
-		else if(level == 6) obstacle.setMoveSpeed(800);
-	}
 
 	/** 레벨 선택 */
 	public void setLevel(int level){
