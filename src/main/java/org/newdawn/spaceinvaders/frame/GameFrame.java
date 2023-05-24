@@ -7,9 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame{
-    private JButton backButton;
-    private Theme theme;
-
     public GameFrame(Player player) {
         // create a frame to contain our game
         super("Space Invaders 102");

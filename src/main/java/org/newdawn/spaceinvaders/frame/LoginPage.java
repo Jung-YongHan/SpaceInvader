@@ -22,7 +22,6 @@ public class LoginPage extends JFrame{
     private String id = null;
     private String pw = null;
     private Player player;
-
     static String userName = null;
 
     public LoginPage() {

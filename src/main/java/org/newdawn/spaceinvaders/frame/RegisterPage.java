@@ -20,7 +20,6 @@ public class RegisterPage extends JFrame {
     private JPasswordField userNameField;
     private JButton addAccountButton;
     private JButton backButton;
-    private Player player;
     public RegisterPage() {
         super("RegisterPage");
         setFrameLayout();

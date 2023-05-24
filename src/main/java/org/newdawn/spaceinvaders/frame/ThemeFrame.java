@@ -13,11 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class ThemeFrame extends JFrame {
     private JButton[] skinSelectButton;
-
     private JButton backButton;
     private Player player;
-    private ShipEntity playerShip;
-    private Theme theme;
 
     public ThemeFrame(Player player) {
         super("Configuration");

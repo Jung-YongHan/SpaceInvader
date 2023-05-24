@@ -25,6 +25,7 @@ public class MyPageFrame extends JFrame{
         setVisible(true);
 
         db = new DB();
+        this.player = player;
     }
 
     private void setFrameLayout() {

@@ -14,7 +14,6 @@ public class StageFrame extends JFrame{
     private Player player;
     private final int levels = 5;
     private JButton backButton;
-    private Theme theme;
 
     public StageFrame(Player player) {
         super("Stage Page");

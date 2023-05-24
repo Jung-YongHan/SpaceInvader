@@ -38,8 +38,6 @@ public class MainFrame extends JFrame{
     private JButton CharacterSelectButton;
     private JButton gameintroduction;
 
-
-
     public MainFrame(Player player) {
         super("Main Page");
         setFrameLayout();
