@@ -1,12 +1,10 @@
 package org.newdawn.spaceinvaders.frame;
 
-import org.newdawn.spaceinvaders.user.Player;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame{
-    public GameFrame(Player player) {
+    public GameFrame() {
         // create a frame to contain our game
         super("Space Invaders 102");
         setFrameLayout();
