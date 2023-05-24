@@ -1,7 +1,6 @@
 package org.newdawn.spaceinvaders.frame;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.item.*;
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
@@ -10,7 +9,6 @@ import org.newdawn.spaceinvaders.Shop;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ public class ShopFrame extends JFrame{
     private JLabel playerCoins;
     private Shop shop;
     private Player player;
-    private Game game;
     private Inventory inventory;
     private AddBulletItem addBulletItem;
     private HealItem healItem;
@@ -109,13 +106,10 @@ public class ShopFrame extends JFrame{
             buyButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 25));
             buyButton[i].setBounds(buttonX[i], buttonY, 80, 30);
             final int index = i;
-            buyButton[i].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Item item = items.get(index);
-                    shop.sellItem(item, player);
-                    updatePlayerCoins();
-                }
+            buyButton[i].addActionListener(e -> {
+                Item item = items.get(index);
+                shop.sellItem(item, player);
+                updatePlayerCoins();
             });
             getContentPane().add(buyButton[i]);
         }
@@ -123,16 +117,13 @@ public class ShopFrame extends JFrame{
 
         // Back 버튼
         backButton = FrameHelper.createBackButton();
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame(player);
-                setVisible(false);
-            }
+        backButton.addActionListener(e -> {
+            new MainFrame(player);
+            setVisible(false);
         });
         getContentPane().add(backButton);
 
-        playerCoins = new JLabel("Coins: " + String.valueOf(player.getCoins()));
+        playerCoins = new JLabel("Coins: " + player.getCoins());
         playerCoins.setOpaque(false);
         playerCoins.setForeground(Color.WHITE);
         playerCoins.setFont(new Font("Arial", Font.BOLD, 20));
@@ -141,7 +132,7 @@ public class ShopFrame extends JFrame{
     }
 
     public void updatePlayerCoins() {
-        playerCoins.setText("Coins: " + String.valueOf(player.getCoins()));
+        playerCoins.setText("Coins: " + player.getCoins());
     }
 }
 
