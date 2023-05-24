@@ -34,19 +34,22 @@ public class MainFrame extends JFrame{
     private JButton startButton;
     private JButton myPageButton;
     private JButton shopButton;
-    private JButton RankButton;
     private Player player;
     private JButton CharacterSelectButton;
     private JButton gameintroduction;
-    private Theme theme;
 
 
 
     public MainFrame(Player player) {
         super("Main Page");
+        setFrameLayout();
+        loadContent();
+        setVisible(true);
 
         this.player = player;
+    }
 
+    private void setFrameLayout() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setResizable(false);
@@ -65,7 +68,10 @@ public class MainFrame extends JFrame{
         setIgnoreRepaint(false);
 
         getContentPane().setLayout(null);
+    }
 
+    private void loadContent() {
+        // Title
         titleLabel = new JLabel("SpaceInvaders ");
         titleLabel.setFont(new Font("Broadway", Font.BOLD + Font.ITALIC, 70));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -78,9 +84,8 @@ public class MainFrame extends JFrame{
         titleShadow.setForeground(Color.DARK_GRAY); // 글자색
         titleShadow.setBounds(3, 103, 800,100);
 
-        // 버튼 추가
+        // Start 버튼
         startButton = new JButton("Start");
-        // 버튼 서식
         startButton.setOpaque(false);
         startButton.setContentAreaFilled(false); // 배경
         startButton.setBorderPainted(false); // 배경
@@ -88,17 +93,16 @@ public class MainFrame extends JFrame{
         startButton.setFocusPainted(false); // 테두리
         startButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         startButton.setBounds(0, 300, 200, 50);
-
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StageFrame stageFrame = new StageFrame(player);
+                StageFrame stageFrame = new StageFrame(player); // Stage 선택 창
                 setVisible(false);
             }
         });
 
+        // MyPage 버튼
         myPageButton = new JButton("MyPage");
-        // 버튼 서식
         myPageButton.setOpaque(false);
         myPageButton.setContentAreaFilled(false); // 배경
         myPageButton.setBorderPainted(false); // 배경
@@ -106,11 +110,9 @@ public class MainFrame extends JFrame{
         myPageButton.setFocusPainted(false); // 테두리
         myPageButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         myPageButton.setBounds(200, 300, 200, 50);
-
         myPageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 마이페이지 넘어가는 로직
                 try {
                     MyPageFrame myPageFrame = new MyPageFrame(player);
                 } catch (FirebaseAuthException ex) {
@@ -120,8 +122,8 @@ public class MainFrame extends JFrame{
             }
         });
 
+        // Shop 버튼
         shopButton = new JButton("Shop");
-        // 버튼 서식
         shopButton.setOpaque(false);
         shopButton.setContentAreaFilled(false); // 배경
         shopButton.setBorderPainted(false); // 배경
@@ -129,7 +131,6 @@ public class MainFrame extends JFrame{
         shopButton.setFocusPainted(false); // 테두리
         shopButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         shopButton.setBounds(400, 300, 200, 50);
-
         shopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -141,40 +142,31 @@ public class MainFrame extends JFrame{
                 setVisible(false);
             }
         });
-        // Add a JPanel to contain the button
-        JPanel buttonPanel = new JPanel();
-        getContentPane().add(buttonPanel);
 
-        // Create a button to open the image change panel
+        // Game Introduction 버튼
         gameintroduction = new JButton("게임 설명");
-        // 버튼 서식
         gameintroduction.setOpaque(false);
         gameintroduction.setContentAreaFilled(false); // 배경
         gameintroduction.setBorderPainted(false); // 외곽선
         gameintroduction.setForeground(Color.WHITE); // 글자색
         gameintroduction.setFocusPainted(false); // 테두리
-        buttonPanel.add(gameintroduction);
-        // Add action listener to the button
+        gameintroduction.setBounds(600, 300, 200, 50);
         gameintroduction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameIntroductionDialog();
-
             }
         });
 
-
-        gameintroduction.setBounds(600, 300, 200, 50);
-
+        // Theme 설정 버튼
         themeConfig = new JButton("Config");
-        // 버튼 서식
         themeConfig.setOpaque(false);
         themeConfig.setContentAreaFilled(false); // 배경
         themeConfig.setBorderPainted(false); // 배경
         themeConfig.setForeground(Color.WHITE); // 글자색
         themeConfig.setFocusPainted(false); // 테두리
-        themeConfig.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트 buttonPanel.add(themeConfig);
-        // Add action listener to the button
+        themeConfig.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트 buttonPanel.add(themeConfig)
+        themeConfig.setBounds(300, 350, 200, 50);
         themeConfig.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -183,18 +175,7 @@ public class MainFrame extends JFrame{
             }
         });
 
-        themeConfig.setBounds(300, 350, 200, 50);
-
-        getContentPane().add(startButton);
-        getContentPane().add(myPageButton);
-        getContentPane().add(shopButton);
-        getContentPane().add(gameintroduction);
-        getContentPane().add(themeConfig);
-        getContentPane().add(titleLabel);
-        getContentPane().add(titleShadow);
-
-
-
+        // Character 설정 버튼
         CharacterSelectButton = new JButton("Character");
         CharacterSelectButton.setOpaque(false);
         CharacterSelectButton.setContentAreaFilled(false); // 배경
@@ -203,7 +184,6 @@ public class MainFrame extends JFrame{
         CharacterSelectButton.setFocusPainted(false); // 테두리
         CharacterSelectButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         CharacterSelectButton.setBounds(700, 500, 100, 50);
-
         CharacterSelectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -212,11 +192,16 @@ public class MainFrame extends JFrame{
                 setVisible(false);
             }
         });
+
+        // 패널에 버튼 추가
+        getContentPane().add(startButton);
+        getContentPane().add(myPageButton);
+        getContentPane().add(shopButton);
+        getContentPane().add(gameintroduction);
+        getContentPane().add(themeConfig);
+        getContentPane().add(titleLabel);
+        getContentPane().add(titleShadow);
         getContentPane().add(CharacterSelectButton);
-
-
-
-        setVisible(true);
     }
 
     private void gameIntroductionDialog() {
