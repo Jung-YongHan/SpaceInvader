@@ -28,6 +28,8 @@ import javax.swing.text.StyleConstants;
 
 
 public class MainFrame extends JFrame{
+    private JLabel titleLabel;
+    private JLabel titleShadow;
     private JButton themeConfig;
     private JButton startButton;
     private JButton myPageButton;
@@ -63,6 +65,19 @@ public class MainFrame extends JFrame{
         setIgnoreRepaint(false);
 
         getContentPane().setLayout(null);
+
+        titleLabel = new JLabel("SpaceInvaders ");
+        titleLabel.setFont(new Font("Broadway", Font.BOLD + Font.ITALIC, 70));
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setForeground(Color.WHITE); // 글자색
+        titleLabel.setBounds(0, 100, 800,100);
+
+        titleShadow = new JLabel("SpaceInvaders ");
+        titleShadow.setFont(new Font("Broadway", Font.BOLD + Font.ITALIC, 70));
+        titleShadow.setHorizontalAlignment(SwingConstants.CENTER);
+        titleShadow.setForeground(Color.DARK_GRAY); // 글자색
+        titleShadow.setBounds(3, 103, 800,100);
+
         // 버튼 추가
         startButton = new JButton("Start");
         // 버튼 서식
@@ -175,6 +190,8 @@ public class MainFrame extends JFrame{
         getContentPane().add(shopButton);
         getContentPane().add(gameintroduction);
         getContentPane().add(themeConfig);
+        getContentPane().add(titleLabel);
+        getContentPane().add(titleShadow);
 
 
 

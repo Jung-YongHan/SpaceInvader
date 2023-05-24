@@ -5,11 +5,11 @@ import org.newdawn.spaceinvaders.user.Player;
 public abstract class Theme {
     protected Player player;
 
-    protected String backgroundImage = "Background.png";
+    protected String backgroundImage = "stage1Background.jpg";
     protected String alienEntityImage = "alien.png";
     protected String bossEntityImage = "bossAlien";
     protected String obstacleImage = "obstacle.png";
-    protected String path1 = "src/main/resources/background/";
+    protected String path1 = "src/main/resources/Background/";
     protected String path2 = "background/";
 
     public abstract String getBackGroundImageFolderPath();
