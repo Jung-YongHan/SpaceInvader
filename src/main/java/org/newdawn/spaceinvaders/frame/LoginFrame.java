@@ -7,9 +7,10 @@ import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static javax.swing.SwingConstants.CENTER;
 
 public class LoginFrame extends JFrame{
     private JLabel idLabel;
@@ -22,7 +23,7 @@ public class LoginFrame extends JFrame{
     private String id = null;
     private String pw = null;
     private Player player;
-    static String userName = null;
+    static String userName;
 
     public LoginFrame() {
         super("Login");
@@ -38,7 +39,7 @@ public class LoginFrame extends JFrame{
     private void loadContent() {
         // 아이디 입력 필드
         idLabel = new JLabel("ID");
-        idLabel.setHorizontalAlignment(JLabel.CENTER);
+        idLabel.setHorizontalAlignment(CENTER);
         idLabel.setBounds(280, 240, 60, 30);
         idField = new JTextField(10);
         idField.setBounds(340, 240, 160, 30);
@@ -47,7 +48,7 @@ public class LoginFrame extends JFrame{
 
         // 비밀번호 입력 필드
         nameLabel = new JLabel("Name");
-        nameLabel.setHorizontalAlignment(JLabel.CENTER);
+        nameLabel.setHorizontalAlignment(CENTER);
         nameLabel.setBounds(280, 280, 60, 30);
         pwField = new JPasswordField(10);
         pwField.setBounds(340, 280, 160, 30);
@@ -56,7 +57,7 @@ public class LoginFrame extends JFrame{
 
         // loninButton 클릭 시 조건에 따른 message
         message = new JLabel("");
-        message.setHorizontalAlignment(JLabel.CENTER);
+        message.setHorizontalAlignment(CENTER);
         message.setBounds(300, 415, 200, 30);
         getContentPane().add(message);
 
@@ -66,19 +67,16 @@ public class LoginFrame extends JFrame{
         loginButton.setBackground(Color.WHITE); // 배경색
         loginButton.setFont(new Font("Arial", Font.PLAIN, 15)); // 폰트
         loginButton.setBounds(300, 330, 200, 35);
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 로그인 버튼을 클릭한 경우
-                if (e.getSource() == loginButton) {
-                    id = idField.getText();
-                    pw = new String(pwField.getPassword());
+        loginButton.addActionListener(e -> {
+            // 로그인 버튼을 클릭한 경우
+            if (e.getSource() == loginButton) {
+                id = idField.getText();
+                pw = new String(pwField.getPassword());
 
-                    if (id.isEmpty() || pw.isEmpty()) {
-                        message.setText("ID 또는 PW를 입력하세요");
-                    } else {
-                        getDataByEmail();
-                    }
+                if (id.isEmpty() || pw.isEmpty()) {
+                    message.setText("ID 또는 PW를 입력하세요");
+                } else {
+                    getDataByEmail();
                 }
             }
         });
@@ -90,12 +88,9 @@ public class LoginFrame extends JFrame{
         registerButton.setBackground(Color.WHITE); // 배경색
         registerButton.setFont(new Font("Arial", Font.PLAIN, 15)); // 폰트
         registerButton.setBounds(300, 370, 200, 35);
-        registerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new RegisterFrame();
-                dispose();
-            }
+        registerButton.addActionListener(e -> {
+            new RegisterFrame();
+            dispose();
         });
         getContentPane().add(registerButton);
     }
@@ -112,7 +107,7 @@ public class LoginFrame extends JFrame{
             if (userName.equals(String.valueOf(pwField.getPassword()))){
                 JOptionPane.showMessageDialog(null, "Hello" + " " + email);
                 player = new Player();
-                MainFrame mainFrame = new MainFrame(player);
+                new MainFrame(player);
                 setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.");
