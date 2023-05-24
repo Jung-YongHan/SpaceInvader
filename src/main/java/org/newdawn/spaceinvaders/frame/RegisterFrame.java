@@ -6,10 +6,10 @@ import com.google.firebase.auth.UserRecord;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static javax.swing.SwingConstants.CENTER;
 
 public class RegisterFrame extends JFrame {
     private JLabel titleLabel;
@@ -34,13 +34,13 @@ public class RegisterFrame extends JFrame {
         // Title Label
         titleLabel = new JLabel("Register");
         titleLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 35));
-        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setHorizontalAlignment(CENTER);
         titleLabel.setBounds(300, 170, 200, 55);
         getContentPane().add(titleLabel);
 
         // 이메일 입력 필드
         emailLabel = new JLabel("Email");
-        emailLabel.setHorizontalAlignment(JLabel.CENTER);
+        emailLabel.setHorizontalAlignment(CENTER);
         emailLabel.setBounds(280, 240, 60, 30);
         getContentPane().add(emailLabel);
         emailField = new JTextField(10);
@@ -49,7 +49,7 @@ public class RegisterFrame extends JFrame {
 
         // 비밀번호 입력 필드
         userNameLabel = new JLabel("Name");
-        userNameLabel.setHorizontalAlignment(JLabel.CENTER);
+        userNameLabel.setHorizontalAlignment(CENTER);
         userNameLabel.setBounds(280, 280, 60, 30);
         getContentPane().add(userNameLabel);
         userNameField = new JPasswordField(10);
@@ -62,27 +62,23 @@ public class RegisterFrame extends JFrame {
         addAccountButton.setBackground(Color.WHITE); // 배경색
         addAccountButton.setFont(new Font("Arial", Font.PLAIN, 15)); // 폰트
         addAccountButton.setBounds(300, 330, 200, 35);
-        addAccountButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        addAccountButton.addActionListener(e -> {
+            try {
+                UserRecord.CreateRequest request = new UserRecord.CreateRequest()
+                        .setEmail(emailField.getText())
+                        .setEmailVerified(false)
+                        .setDisplayName(String.valueOf(userNameField.getPassword()));
 
-                try {
-                    UserRecord.CreateRequest request = new UserRecord.CreateRequest()
-                            .setEmail(emailField.getText())
-                            .setEmailVerified(false)
-                            .setDisplayName(String.valueOf(userNameField.getPassword()));
-
-                    FirebaseAuth.getInstance().createUser(request);
-                    Logger.getLogger(RegisterFrame.class.getName()).log(Level.INFO, "SUCCESS");
-                    JOptionPane.showMessageDialog(null, "SUCCESS");
-                }
-                catch (FirebaseAuthException ex){
-                    Logger.getLogger(RegisterFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                new LoginFrame();
-                dispose();
+                FirebaseAuth.getInstance().createUser(request);
+                Logger.getLogger(RegisterFrame.class.getName()).log(Level.INFO, "SUCCESS");
+                JOptionPane.showMessageDialog(null, "SUCCESS");
             }
+            catch (FirebaseAuthException ex){
+                Logger.getLogger(RegisterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            new LoginFrame();
+            dispose();
         });
         getContentPane().add(addAccountButton);
 
@@ -94,12 +90,9 @@ public class RegisterFrame extends JFrame {
         backButton.setFocusPainted(false); // 테두리
         backButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         backButton.setBounds(0, 500, 100, 20); // set position and size
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LoginFrame loginPage = new LoginFrame();
-                setVisible(false);
-            }
+        backButton.addActionListener(e -> {
+            new LoginFrame();
+            setVisible(false);
         });
         getContentPane().add(backButton);
     }
