@@ -4,8 +4,6 @@ import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ThemeFrame extends JFrame {
     private JButton[] skinSelectButton;
@@ -40,26 +38,20 @@ public class ThemeFrame extends JFrame {
 
         // 버튼 추가
         backButton = FrameHelper.createBackButton();
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame(player);
-                setVisible(false);
-            }
+        backButton.addActionListener(e -> {
+            new MainFrame(player);
+            setVisible(false);
         });
         getContentPane().add(backButton);
     }
 
     private JButton createSkinSelectButton(int index) {
         JButton button = new JButton("Select");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int response = JOptionPane.showConfirmDialog(null, "해당 테마를 설정하겠습니까?", "테마 설정", JOptionPane.YES_NO_OPTION);
-                if (response == JOptionPane.YES_OPTION) {
-                    player.setTheme(index);
-                    repaint();
-                }
+        button.addActionListener(e -> {
+            int response = JOptionPane.showConfirmDialog(null, "해당 테마를 설정하겠습니까?", "테마 설정", JOptionPane.YES_NO_OPTION);
+            if (response == JOptionPane.YES_OPTION) {
+                player.setTheme(index);
+                repaint();
             }
         });
         return button;
