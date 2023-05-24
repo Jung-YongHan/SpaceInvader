@@ -18,7 +18,6 @@ public class Rank extends JFrame {
     private JLabel scoreLabel;
     private Player player;
     private DB db;
-//    private HashMap<String, Integer> userData = new HashMap<>();
 
     public Rank(Player player) throws FirebaseAuthException {
 
@@ -26,7 +25,6 @@ public class Rank extends JFrame {
         this.player = player;
         db = new DB();
         loadRank();
-//        db.storeScore(50);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
@@ -78,12 +76,7 @@ public class Rank extends JFrame {
         scoreLabel.setBounds(200, 200, 400, 50);
         getContentPane().add(scoreLabel);
 
-        // finally make the window visible
-//         pack();
-//         setResizable(false);
         setVisible(true);
-
-
 
     }
 
@@ -109,10 +102,5 @@ public class Rank extends JFrame {
                 System.out.println("failed");
             }
         });
-    }
-
-    public void displayScore(int timer, int alienKill) {
-        // 점수를 GUI에 표시하는 코드를 여기에 작성합니다.
-        scoreLabel.setText("Time: " + timer + ", Alien Kills: " + alienKill);
     }
 }

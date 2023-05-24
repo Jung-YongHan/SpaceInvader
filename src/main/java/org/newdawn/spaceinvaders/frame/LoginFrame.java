@@ -119,11 +119,6 @@ public class LoginFrame extends JFrame{
         }
     }
 
-    public String getUserEmail() throws FirebaseAuthException {
-        UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(idField.getText());
-        return userRecord.getEmail();
-    }
-
     private void recoverUserData(String uid){
         UserRecord userRecord = null;
         try {

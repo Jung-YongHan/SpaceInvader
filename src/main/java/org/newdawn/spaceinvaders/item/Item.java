@@ -8,14 +8,12 @@ public abstract class Item {
     protected Game game;
     protected String name;
     protected int coins;
-
     public Item(Inventory inventory){
         this.inventory = inventory;
     }
     public int getPrice() {
         return coins;
     }
-
     public String getName() {
         return name;
     }

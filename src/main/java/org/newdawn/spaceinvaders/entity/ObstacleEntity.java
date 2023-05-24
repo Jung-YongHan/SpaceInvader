@@ -1,5 +1,9 @@
 package org.newdawn.spaceinvaders.entity;
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.theme.Theme;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The entity that represents the players ship
@@ -68,6 +72,14 @@ public class ObstacleEntity extends Entity {
 
     public void setMoveSpeed(int moveSpeed){
         dy = moveSpeed;
+    }
+
+    public static void addObstacle(Game game, Theme theme, List<Entity> entities, int level) {
+        ObstacleEntity obstacle = new ObstacleEntity(game, theme.getObstacleImage(), (int) (Math.random() * 750), 10);
+        entities.add(obstacle);
+        if(level == 4) obstacle.setMoveSpeed(500);
+        else if(level == 5) obstacle.setMoveSpeed(800);
+        else if(level == 6) obstacle.setMoveSpeed(800);
     }
 
     /**

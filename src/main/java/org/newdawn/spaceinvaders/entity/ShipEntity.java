@@ -1,7 +1,6 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.Skin.Skin;
 import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.SpriteStore;
 import org.newdawn.spaceinvaders.user.Player;
@@ -18,15 +17,7 @@ public class ShipEntity extends Entity {
 	private boolean shieldActive;
 	private long shieldStartTime;
 	private long SHIELD_DURATION = 5000;
-	private String normalImage = "sprites/ship/ship.png";
-	private String shieldedImage = "sprites/ship/shieldShip.png";
 	private Player player;
-	private Skin skin;
-
-
-	public Skin getSkin() {
-		return skin;
-	}
 
 	/**
 	 * Create a new entity to represent the players ship
@@ -45,19 +36,13 @@ public class ShipEntity extends Entity {
 		if (player.getSelectedSkinId() == 1) {health=4;} else if (player.getSelectedSkinId() == 2) {health=5;}
 	}
 
-	//캐릭터의 이미지를 설정하는 메소드
-	public void setShipImage(String imagePath) {
-		this.normalImage = imagePath;
-		setNormalImage();
-	}
-
-
 	/**
 	 * Request that the ship move itself based on an elapsed ammount of
 	 * time
 	 * 
 	 * @param delta The time that has elapsed since last move (ms)
 	 */
+	@Override
 	public void move(long delta) {
 		// if we're moving left and have reached the left hand side
 		// of the screen, don't move

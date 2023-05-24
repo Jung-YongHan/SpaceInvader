@@ -19,7 +19,6 @@ public class Player {
     private Inventory inventory;
     private Game game;
     private int characterId;
-    private Theme theme;
     private Theme configTheme = new SpaceTheme();
     private ShipEntity playerShip;
     private Skin configSkin = new SpaceSkin();
