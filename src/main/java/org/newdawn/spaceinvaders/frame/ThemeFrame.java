@@ -1,16 +1,12 @@
 package org.newdawn.spaceinvaders.frame;
 
-import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.theme.CatTheme;
-import org.newdawn.spaceinvaders.theme.DesertTheme;
-import org.newdawn.spaceinvaders.theme.SpaceTheme;
-import org.newdawn.spaceinvaders.theme.Theme;
 import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 public class ThemeFrame extends JFrame {
     private JButton[] skinSelectButton;
     private JButton backButton;

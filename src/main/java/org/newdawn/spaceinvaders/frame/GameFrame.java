@@ -1,6 +1,5 @@
 package org.newdawn.spaceinvaders.frame;
 
-import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;

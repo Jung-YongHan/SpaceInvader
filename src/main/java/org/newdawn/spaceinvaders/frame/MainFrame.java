@@ -1,20 +1,12 @@
 package org.newdawn.spaceinvaders.frame;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Player;
-import org.newdawn.spaceinvaders.dataBase.Rank;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,7 +17,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-
 
 public class MainFrame extends JFrame{
     private JLabel titleLabel;

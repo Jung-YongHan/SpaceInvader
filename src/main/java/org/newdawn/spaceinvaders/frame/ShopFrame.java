@@ -2,9 +2,7 @@ package org.newdawn.spaceinvaders.frame;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.dataBase.DB;
 import org.newdawn.spaceinvaders.item.*;
-import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
 import org.newdawn.spaceinvaders.Shop;

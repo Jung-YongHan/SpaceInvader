@@ -2,13 +2,13 @@ package org.newdawn.spaceinvaders.frame;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 public class StageFrame extends JFrame{
     private JButton[] levelButton;
     private Player player;

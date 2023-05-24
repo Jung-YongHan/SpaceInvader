@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 public class MyPageFrame extends JFrame{
     private JLabel titleLabel;
     private JButton backButton;
