@@ -21,9 +21,14 @@ public class ThemeFrame extends JFrame {
 
     public ThemeFrame(Player player) {
         super("Configuration");
+        setFrameLayout();
+        loadContent();
+        setVisible(true);
 
         this.player = player;
+    }
 
+    private void setFrameLayout() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
@@ -40,7 +45,9 @@ public class ThemeFrame extends JFrame {
 
         setIgnoreRepaint(false);
         getContentPane().setLayout(null);
+    }
 
+    private void loadContent() {
         skinSelectButton = new JButton[3];
         for (int i = 0; i < skinSelectButton.length; i++) {
             skinSelectButton[i] = createSkinSelectButton(i);
@@ -72,17 +79,6 @@ public class ThemeFrame extends JFrame {
             }
         });
         getContentPane().add(backButton);
-
-//        add(spaceThemeButton);
-//        add(jungleThemeButton);
-//        add(desertThemeButton);
-
-
-        // finally make the window visible
-//         pack();
-//         setResizable(false);
-        setVisible(true);
-
     }
 
     private JButton createSkinSelectButton(int index) {
