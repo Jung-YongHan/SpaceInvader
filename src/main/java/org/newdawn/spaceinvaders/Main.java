@@ -9,7 +9,5 @@ public class Main {
     public static void main(String argv[]) {
         new FirebaseAdminSDK().initFirebase();
         LoginFrame loginPage = new LoginFrame();
-
-        File f = new File("src/main/resources/sprites/ship/ship.png");
     }
 }
