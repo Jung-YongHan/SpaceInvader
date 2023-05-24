@@ -70,8 +70,6 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 	private Image background;
-	private Image CharacterSkin;
-	private JButton backButton;
 	private int currentLevel;
 	private int level;
 	/** item관련 변수 */
@@ -118,37 +116,15 @@ public class Game extends Canvas
 		this.player = player;
 		this.theme = player.getTheme();
 		this.skin = player.getSkin();
-//
-////		// create a frame to contain our game
-////		container = new JFrame("Space Invaders 102");
-////
-////		// get hold the content of the frame and set up the resolution of the game
-////		JPanel panel = (JPanel) container.getContentPane();
-////		panel.setPreferredSize(new Dimension(800,600));
-////		panel.setLayout(null);
-//
 		// setup our canvas size and put it into the content of the frame
 		setBounds(0,0,800,600);
 		container.getContentPane().add(this);
-//
-//		// Tell AWT not to bother repainting our canvas since we're
-//		// going to do that our self in accelerated mode
-//		setIgnoreRepaint(true);
-//
-//		// finally make the window visible
-//		container.pack();
-//		container.setResizable(false);
-//		container.setVisible(true);
-
-		// add a listener to respond to the user closing the window. If they
-		// do we'd like to exit the game
 
 		container.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
-
 
 		// add a key input system (defined below) to our canvas
 		// so we can respond to key pressed
@@ -203,7 +179,6 @@ public class Game extends Canvas
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
 		ship = new ShipEntity(this,this.player.getSkin().getShipImage(),370,500, this.player);
-//		ImageIcon i = new ImageIcon("ship.png");
 		entities.add(ship);
 
 		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
@@ -333,18 +308,12 @@ public class Game extends Canvas
 	/**
 	 * Notification that the player has died.
 	 */
-
-
-
 	public void notifyDeath() {
 		message = "Level "+level+", Score :"+ alienkill	;
 		waitingForKeyPress = true;
 		updatePlayInfo(timer, coinCount);
-		coinCount = 0;
-//		updateHighScore();
 		alienkill=0;
 		coinCount = 0;
-	   //Rank.setScore((alienkill/(timer/1000)));
 	}
 
 	/**
@@ -380,72 +349,12 @@ public class Game extends Canvas
 		db.updateCoin(coin);
 		coinCount = 0;
 	}
-
-//	public void increasePlayCount() {
-//		myRef.runTransaction(new Transaction.Handler() {
-//		@Override
-//		public Transaction.Result doTransaction(MutableData mutableData) {
-//			Integer playCount = mutableData.child("playCount").getValue(Integer.class);
-//			if (playCount == null) {
-//				mutableData.child("playCount").setValue(1);
-//			} else {
-//				mutableData.child("playCount").setValue(playCount + 1);
-//			}
-//			return Transaction.success(mutableData);
-//		}
-//
-//		@Override
-//		public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-//			if (databaseError != null) {
-//				System.out.println("Transaction failed.");
-//			} else {
-//				System.out.println("Transaction completed.");
-//			}
-//		}
-//	});
-//	}
-
-	private int playtime;
-	private int playCount;
 	private int score = 0;
-	private int highScore;
-
-	// myframe에서 Playcount,highscore 접근을 위해 getter 메소드 사용
-//	public int getPlayCount() {
-//		playCount = db.getPlayCount();
-//		return playCount;
-//	}
-
-//	public int getHighScore() {
-//		db.getHighScore(score -> {
-//			return score;
-//		});
-////		highScore = db.getHighScore();
-////		return highScore;
-//	}
-
-	public int getScore() {
-		return score;
-	}
-
-
-	/**
-	 * Notification that an alien has been killed
-	 */
-
-
-
-
-
-
-	//코인
 	private int coinCount = 0;
 	public void increaseCoinCount() {
 		coinCount++;
 		System.out.println("Coin Count: " + coinCount); // 콘솔에 현재 코인 개수를 출력합니다.
 	}
-
-
 
 	public void notifyAlienKilled(Entity alienEntity) {
 		// reduce the alien count, if there are none left, the player has won!
@@ -476,7 +385,6 @@ public class Game extends Canvas
 			}
 		}
 	}
-
 
 	/**
 	 * Attempt to fire a shot from the player. Its called "try"
@@ -509,9 +417,7 @@ public class Game extends Canvas
 	 * - Updating game events
 	 * - Checking Input
 	 * <p>
-	 */String pathname;
-
-
+	 */
 	public void gameLoop() {
 		long lastLoopTime = SystemTimer.getTime();
 
@@ -546,8 +452,6 @@ public class Game extends Canvas
 			// Get hold of a graphics context for the accelerated
 			// surface and blank it out
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-//			g.setColor(Color.black);
-//			g.fillRect(0,0,800,600);
 
 			// 아이템 커맨드 입력
 			if (useAddBulletItemPressed) {
@@ -646,8 +550,6 @@ public class Game extends Canvas
 				//타이머(스코어) 0 초기화
 				timer =0;
 			}
-//			//타이머 표시
-//			g.drawString("타이머 "+String.valueOf(timer/100),720,30);
 
 			//죽인 에일리언 표시
 			g.setColor(Color.white);

@@ -11,16 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class MyPageFrame extends JFrame{
     private JLabel titleLabel;
-
     private JButton backButton;
-
-    private Player player;
     private DB db;
     private JLabel highScoreLabel;
     private JLabel playCountLabel;
     private JLabel playTimeLabel;
     private JLabel coinLabel;
-    private Theme theme;
 
     public MyPageFrame(Player player) throws FirebaseAuthException {
         super("MyPage");
@@ -73,10 +69,6 @@ public class MyPageFrame extends JFrame{
 
         LoadContent();
 
-
-        // finally make the window visible
-//         pack();
-//         setResizable(false);
         setVisible(true);
 
     }

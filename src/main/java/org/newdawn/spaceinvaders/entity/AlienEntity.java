@@ -2,11 +2,6 @@ package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.Sprite;
-import org.newdawn.spaceinvaders.SpriteStore;
-import org.newdawn.spaceinvaders.theme.CatTheme;
-import org.newdawn.spaceinvaders.theme.DesertTheme;
-import org.newdawn.spaceinvaders.theme.SpaceTheme;
-import org.newdawn.spaceinvaders.theme.Theme;
 import org.newdawn.spaceinvaders.user.Player;
 
 /**
@@ -27,12 +22,10 @@ public class AlienEntity extends Entity {
 	private long frameDuration = 250;
 	/** The current frame of animation being displayed */
 	private int frameNumber;
-	private Theme theme;
-	private Player player;
 
 	/**
 	 * Create a new alien entity
-	 * 
+	 *
 	 * @param game The game in which this entity is being created
 	 * @param x The initial x location of this alien
 	 * @param y The initial y location of this alien
@@ -51,7 +44,7 @@ public class AlienEntity extends Entity {
 
 	/**
 	 * Request that this alien moved based on time elapsed
-	 * 
+	 *
 	 * @param delta The time that has elapsed since last move
 	 */
 	public void move(long delta) {

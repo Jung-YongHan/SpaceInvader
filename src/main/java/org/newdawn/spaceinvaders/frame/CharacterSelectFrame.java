@@ -64,8 +64,6 @@ public class CharacterSelectFrame extends JFrame{
             getContentPane().setComponentZOrder(characterIcon[i], 0); // 라벨을 버튼 위에 배치
         }
 
-
-
         // select 버튼
         selectButton = new JButton[buttonCount];
         for (int i = 0; i < buttonCount; i++) {

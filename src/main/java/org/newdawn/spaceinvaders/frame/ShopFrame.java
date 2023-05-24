@@ -47,7 +47,6 @@ public class ShopFrame extends JFrame{
     private String[] iconImage = {"bullet.png", "health.png", "speed.png", "shield.png", "reloadspeedup.png"};
     private String[] iconName = {"Add Bullets", "Heal", "Speed Up", "Shield", "ReLoad Speed Up"};
     private DB db;
-    private Theme theme;
 
     public ShopFrame(Player player) throws FirebaseAuthException {
         super("Shop");
@@ -156,7 +155,7 @@ public class ShopFrame extends JFrame{
             }
         });
 
-        playerCoins = new JLabel("Coins: " + String.valueOf(player.getCoins()));
+        playerCoins = new JLabel("Coins: " + player.getCoins());
         playerCoins.setOpaque(false);
         playerCoins.setForeground(Color.WHITE);
         playerCoins.setFont(new Font("Arial", Font.BOLD, 20));
@@ -168,7 +167,7 @@ public class ShopFrame extends JFrame{
         setVisible(true);
     }
     public void updatePlayerCoins() {
-        playerCoins.setText("Coins: " + String.valueOf(player.getCoins()));
+        playerCoins.setText("Coins: " + player.getCoins());
     }
 }
 

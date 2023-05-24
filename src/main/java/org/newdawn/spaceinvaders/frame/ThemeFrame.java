@@ -1,9 +1,6 @@
 package org.newdawn.spaceinvaders.frame;
 
 import org.newdawn.spaceinvaders.entity.ShipEntity;
-import org.newdawn.spaceinvaders.theme.CatTheme;
-import org.newdawn.spaceinvaders.theme.DesertTheme;
-import org.newdawn.spaceinvaders.theme.SpaceTheme;
 import org.newdawn.spaceinvaders.theme.Theme;
 import org.newdawn.spaceinvaders.user.Player;
 
@@ -16,8 +13,6 @@ public class ThemeFrame extends JFrame {
 
     private JButton backButton;
     private Player player;
-    private ShipEntity playerShip;
-    private Theme theme;
 
     public ThemeFrame(Player player) {
         super("Configuration");
@@ -73,14 +68,6 @@ public class ThemeFrame extends JFrame {
         });
         getContentPane().add(backButton);
 
-//        add(spaceThemeButton);
-//        add(jungleThemeButton);
-//        add(desertThemeButton);
-
-
-        // finally make the window visible
-//         pack();
-//         setResizable(false);
         setVisible(true);
 
     }

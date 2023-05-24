@@ -42,20 +42,6 @@ public class FirebaseAdminSDK {
                 }
             });
 
-//
-//            // Get reference to the database
-//            FirebaseDatabase database = FirebaseDatabase.getInstance();
-//            DatabaseReference ref = database.getReference("path/to/data");
-//
-//            // Define data structure
-//            Map<String, Object> userData = new HashMap<>();
-//            userData.put("name", "John");
-//            userData.put("age", 30);
-//
-//            // Store data to the database
-//            ref.setValueAsync(userData);
-//
-
         } catch (IOException e) {
             Logger.getLogger(FirebaseAdminSDK.class.getName()).log(Level.SEVERE, null, e);
         }

@@ -1,7 +1,6 @@
 package org.newdawn.spaceinvaders.item;
 
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.user.Inventory;
 
 public class HealItem extends Item{

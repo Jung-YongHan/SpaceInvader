@@ -43,15 +43,6 @@ public class LoginPage extends JFrame{
         });
         getContentPane().setLayout(null);
 
-//        JLabel titleLabel = new JLabel("Login");
-////        titleLabel.setForeground(Color.BLACK); // 글자색
-////        titleLabel.setOpaque(true);
-////        titleLabel.setBackground(Color.);
-//        titleLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 35));
-//        titleLabel.setHorizontalAlignment(JLabel.CENTER);
-//        titleLabel.setBounds(300, 170, 200, 55);
-//        getContentPane().add(titleLabel);
-
         // 아이디 입력 필드
         idLabel = new JLabel("ID");
         idLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -79,11 +70,7 @@ public class LoginPage extends JFrame{
         loginButton = new JButton("Login");
         // 버튼 서식
         loginButton.setOpaque(false);
-//        loginButton.setContentAreaFilled(false); // 배경
         loginButton.setBackground(Color.WHITE); // 배경색
-//        loginButton.setBorderPainted(false); // 외곽선
-//        loginButton.setForeground(Color.WHITE); // 글자색
-//        loginButton.setFocusPainted(false); // 테두리
         loginButton.setFont(new Font("Arial", Font.PLAIN, 15)); // 폰트
         loginButton.setBounds(300, 330, 200, 35);
         loginButton.addActionListener(new ActionListener() {
@@ -108,11 +95,7 @@ public class LoginPage extends JFrame{
         registerButton = new JButton("Register");
         // 버튼 서식
         registerButton.setOpaque(false);
-//        registerButton.setContentAreaFilled(false); // 배경
         registerButton.setBackground(Color.WHITE); // 배경색
-//        registerButton.setBorderPainted(false); // 외곽선
-//        registerButton.setForeground(Color.WHITE); // 글자색
-//        registerButton.setFocusPainted(false); // 테두리
         registerButton.setFont(new Font("Arial", Font.PLAIN, 15)); // 폰트
         registerButton.setBounds(300, 370, 200, 35);
         registerButton.addActionListener(new ActionListener() {
@@ -149,11 +132,6 @@ public class LoginPage extends JFrame{
         } catch (FirebaseAuthException ex) {
             Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public String getUserEmail() throws FirebaseAuthException {
-        UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(idField.getText());
-        return userRecord.getEmail();
     }
 
     private void recoverUserData(String uid){

@@ -1,6 +1,5 @@
 package org.newdawn.spaceinvaders.entity;
 
-import org.newdawn.spaceinvaders.SpriteStore;
 import org.newdawn.spaceinvaders.Game;
 
 public class CoinEntity extends Entity {

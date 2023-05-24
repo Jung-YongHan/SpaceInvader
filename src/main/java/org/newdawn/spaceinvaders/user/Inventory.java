@@ -33,19 +33,11 @@ public class Inventory {
         return items.get(item);
     }
 
-
     public void addItem(String item) {
         items.put(item, getItemCount(item)+1);
     }
 
     public void removeItem(String item) {
         items.put(item, getItemCount(item)-1);
-    }
-
-    public HashMap<String, Integer> getItems() {
-        return items;
-    }
-    public void setItemList(HashMap<String, Integer> items) {
-        this.items = items;
     }
 }

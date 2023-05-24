@@ -5,7 +5,6 @@ import com.google.firebase.database.*;
 import org.newdawn.spaceinvaders.frame.LoginPage;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +16,6 @@ public class DB {
     public static Object score = 0;
     private Integer playCount = 0;
     private Integer playTime = 0;
-    private Integer highScore = 0;
     private Integer firstPlaceScore = 0;
 
     public DB() throws FirebaseAuthException {
@@ -41,23 +39,6 @@ public class DB {
         });
     }
 
-//    public Integer getHighScore() {
-//        userRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.child("highScore").getValue() != null) {
-//                    highScore = dataSnapshot.child("highScore").getValue(Integer.class);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                System.out.println("The read failed: " + databaseError.getCode());
-//            }
-//        });
-//        return highScore;
-//    }
-
     public void storeHighScore(int score) {
         getHighScore(highScore -> {
             Integer currentHighScore = highScore;
@@ -74,62 +55,6 @@ public class DB {
                 }
             });
         });
-    }
-
-    public Object getFirstPlaceScore() {
-        // Rank 불러오기
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users");
-
-        // 상위 10명의 사용자 가져오기
-        Query topScoresQuery = myRef.orderByChild("score").limitToLast(1);
-        topScoresQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    firstPlaceScore = Math.toIntExact(dataSnapshot.child("score").getValue(Long.class));
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // 처리할 오류 처리
-            }
-        });
-        return firstPlaceScore;
-    }
-
-    public void readHighScore(){
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Logger.getLogger(DB.class.getName()).log(Level.INFO, "data read");
-                score = dataSnapshot.getValue();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Logger.getLogger(DB.class.getName()).log(Level.INFO, "data read");
-            }
-        });
-    }
-
-    public int getPlayCount() {
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("playCount").getValue() != null) {
-                    playCount = dataSnapshot.child("playCount").getValue(Integer.class);
-                    System.out.println("count " + playCount);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
-        System.out.println("return " + playCount);
-        return playCount;
     }
 
     public void getPlayCount(Consumer<Integer> callback) {
@@ -216,23 +141,6 @@ public class DB {
         });
     }
 
-    public int getPlayTime() {
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("playTime").getValue() != null) {
-                    playTime = dataSnapshot.child("playTime").getValue(Integer.class);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
-        return playTime;
-    }
-
     public void updateCoin(int newCoin) {
         userRef.runTransaction(new Transaction.Handler() {
             @Override
@@ -274,27 +182,4 @@ public class DB {
             }
         });
     }
-
-//    public void updateGameData(int time, int coin) {
-//        Map<String, Object> updates = new HashMap<>();
-//        updates.put("playCount", 1 + getPlayCount());
-//        updates.put("playTime", time + getPlayTime());
-//        updates.put("coin", coin);
-//
-//        userRef.updateChildren(updates, new DatabaseReference.CompletionListener() {
-//            @Override
-//            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-//                if (databaseError != null) {
-//                    System.out.println("Update failed.");
-//                } else {
-//                    System.out.println("Update succeeded.");
-//                }
-//            }
-//        });
-//    }
-
-//    public Object returnData(){
-//        return score;
-//    }
-
 }
