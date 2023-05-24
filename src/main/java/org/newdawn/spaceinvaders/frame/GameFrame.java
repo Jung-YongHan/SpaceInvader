@@ -5,7 +5,6 @@ import java.awt.*;
 
 public class GameFrame extends JFrame{
     public GameFrame() {
-        // create a frame to contain our game
         super("Space Invaders 102");
         setFrameLayout();
         setVisible(true);

@@ -24,11 +24,11 @@ public class CharacterSelectFrame extends JFrame{
 
     public CharacterSelectFrame(Player player) {
         super("Character Select");
+        this.player = player;
+
         setFrameLayout();
         loadContent();
         setVisible(true);
-
-        this.player = player;
     }
 
     private void setFrameLayout() {

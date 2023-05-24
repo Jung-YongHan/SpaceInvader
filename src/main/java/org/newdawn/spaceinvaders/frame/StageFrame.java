@@ -15,11 +15,11 @@ public class StageFrame extends JFrame{
 
     public StageFrame(Player player) {
         super("Stage Page");
+        this.player = player;
+
         setFrameLayout();
         loadContent();
         setVisible(true);
-
-        this.player = player;
     }
 
     private void setFrameLayout() {

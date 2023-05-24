@@ -12,11 +12,11 @@ public class ThemeFrame extends JFrame {
 
     public ThemeFrame(Player player) {
         super("Configuration");
+        this.player = player;
+
         setFrameLayout();
         loadContent();
         setVisible(true);
-
-        this.player = player;
     }
 
     private void setFrameLayout() {

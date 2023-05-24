@@ -41,7 +41,6 @@ public class ShopFrame extends JFrame{
     private ArrayList<Item> items = new ArrayList<>();
     private String[] iconImage = {"bullet.png", "health.png", "speed.png", "shield.png", "reloadspeedup.png"};
     private String[] iconName = {"Add Bullets", "Heal", "Speed Up", "Shield", "ReLoad Speed Up"};
-    private DB db;
 
     public ShopFrame(Player player) throws FirebaseAuthException {
         super("Shop");

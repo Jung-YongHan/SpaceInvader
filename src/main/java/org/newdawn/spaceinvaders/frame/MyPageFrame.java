@@ -21,12 +21,12 @@ public class MyPageFrame extends JFrame{
 
     public MyPageFrame(Player player) throws FirebaseAuthException {
         super("MyPage");
+        db = new DB();
+        this.player = player;
+
         setFrameLayout();
         loadContent();
         setVisible(true);
-
-        db = new DB();
-        this.player = player;
     }
 
     private void setFrameLayout() {
