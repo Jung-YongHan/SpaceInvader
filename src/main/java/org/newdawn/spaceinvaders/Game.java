@@ -15,7 +15,7 @@ import javax.swing.*;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.*;
 import org.newdawn.spaceinvaders.dataBase.DB;
-import org.newdawn.spaceinvaders.frame.LoginPage;
+import org.newdawn.spaceinvaders.frame.LoginFrame;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.item.*;
 import org.newdawn.spaceinvaders.item.AddBulletItem;
@@ -146,7 +146,7 @@ public class Game extends Canvas
 		reLoadSpeedItem = new ReLoadSpeedUpItem(inventory);
 		shieldItem = new ShieldItem(inventory);
 
-		myRef = FirebaseDatabase.getInstance().getReference("users").child(LoginPage.getUserName());
+		myRef = FirebaseDatabase.getInstance().getReference("users").child(LoginFrame.getUserName());
 		db = new DB();
 
 		// initialise the entities in our game so there's something

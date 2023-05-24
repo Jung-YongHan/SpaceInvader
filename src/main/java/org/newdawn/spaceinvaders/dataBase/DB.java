@@ -2,7 +2,7 @@ package org.newdawn.spaceinvaders.dataBase;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.*;
-import org.newdawn.spaceinvaders.frame.LoginPage;
+import org.newdawn.spaceinvaders.frame.LoginFrame;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public class DB {
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private final DatabaseReference userRef = db.getReference("users").child(LoginPage.getUserName());
+    private final DatabaseReference userRef = db.getReference("users").child(LoginFrame.getUserName());
 
     public static Object score = 0;
     private Integer playCount = 0;

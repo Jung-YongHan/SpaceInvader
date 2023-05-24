@@ -1,20 +1,18 @@
 package org.newdawn.spaceinvaders.frame;
 
-import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.user.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
 public class CharacterSelectFrame extends JFrame{
 
-    final int buttonCount = 3; // 버튼 개수
+    private final int buttonCount = 3; // 버튼 개수
     private JButton[] selectButton;
+    private JButton backButton;
     private JLabel[] characterIcon; // 이미지를 표시할 JLabel 배열
     private int iconSize = 128;
     private int[] iconX = {100, 350, 600};
@@ -22,32 +20,22 @@ public class CharacterSelectFrame extends JFrame{
     private int[] buttonX = {140, 390, 640};
     private int buttonY = 350;
     private String[] iconImage = {"src/main/resources/sprites/ship/space/", "src/main/resources/sprites/ship/cat/", "src/main/resources/sprites/ship/astronaut/"};
-    private JButton backButton;
     private Player player;
-    private ShipEntity playerShip;
 
-    public CharacterSelectFrame(Player player, ShipEntity playerShip) {
+    public CharacterSelectFrame(Player player) {
         super("Character Select");
-
         this.player = player;
-        this.playerShip = playerShip;
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
-        setLocationRelativeTo(null);
+        setFrameLayout();
+        loadContent();
+        setVisible(true);
+    }
 
-        setContentPane(new JPanel() {
-            @Override
-            public void paintComponent(Graphics g) {
-                Image backgroundImage = new ImageIcon(player.getTheme().getBackgroundImage()).getImage();
-                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-                repaint();
-            }
-        });
+    private void setFrameLayout() {
+        FrameHelper.setFrameLayout(this, new ImageIcon(player.getTheme().getBackgroundImage()));
+    }
 
-        setIgnoreRepaint(false);
-        getContentPane().setLayout(null);
-
+    private void loadContent() {
         characterIcon = new JLabel[buttonCount];
         for (int i = 0; i < buttonCount; i++) {
             characterIcon[i] = new JLabel();
@@ -77,36 +65,21 @@ public class CharacterSelectFrame extends JFrame{
         }
 
         // back 버튼
-        backButton = new JButton("Back");
-        backButton.setOpaque(false);
-        backButton.setContentAreaFilled(false); // 배경
-        backButton.setBorderPainted(false); // 배경
-        backButton.setForeground(Color.WHITE); // 글자색
-        backButton.setFocusPainted(false); // 테두리
-        backButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        backButton.setBounds(0, 500, 100, 20); // set position and size
-        getContentPane().add(backButton);
-
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame(player);
-                setVisible(false);
-            }
+        backButton = FrameHelper.createBackButton();
+        backButton.addActionListener(e -> {
+            new MainFrame(player);
+            setVisible(false);
         });
-
-        setVisible(true);
+        getContentPane().add(backButton);
     }
+
     private JButton createSkinSelectButton(int index) {
         JButton button = new JButton("Select");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int response = JOptionPane.showConfirmDialog(null, "해당 스킨을 설정하겠습니까?", "스킨 설정", JOptionPane.YES_NO_OPTION);
-                if (response == JOptionPane.YES_OPTION) {
-                    player.setSkin(index);
-                    repaint();
-                }
+        button.addActionListener(e -> {
+            int response = JOptionPane.showConfirmDialog(null, "해당 스킨을 설정하겠습니까?", "스킨 설정", JOptionPane.YES_NO_OPTION);
+            if (response == JOptionPane.YES_OPTION) {
+                player.setSkin(index);
+                repaint();
             }
         });
         return button;

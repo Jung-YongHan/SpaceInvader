@@ -1,11 +1,11 @@
 package org.newdawn.spaceinvaders;
 
 import org.newdawn.spaceinvaders.dataBase.FirebaseAdminSDK;
-import org.newdawn.spaceinvaders.frame.LoginPage;
+import org.newdawn.spaceinvaders.frame.LoginFrame;
 
 public class Main {
     public static void main(String argv[]) {
         new FirebaseAdminSDK().initFirebase();
-        LoginPage loginPage = new LoginPage();
+        LoginFrame loginPage = new LoginFrame();
     }
 }
