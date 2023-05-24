@@ -11,7 +11,7 @@ import java.awt.event.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class LoginPage extends JFrame{
+public class LoginFrame extends JFrame{
     private JLabel idLabel;
     private JLabel nameLabel;
     private JTextField idField;
@@ -24,7 +24,7 @@ public class LoginPage extends JFrame{
     private Player player;
     static String userName = null;
 
-    public LoginPage() {
+    public LoginFrame() {
         super("Login");
         setFrameLayout();
         loadContent();
@@ -107,7 +107,7 @@ public class LoginPage extends JFrame{
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new RegisterPage();
+                new RegisterFrame();
                 dispose();
             }
         });
@@ -134,7 +134,7 @@ public class LoginPage extends JFrame{
 
             recoverUserData(uid);
         } catch (FirebaseAuthException ex) {
-            Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RegisterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -148,8 +148,8 @@ public class LoginPage extends JFrame{
         try {
             userRecord = FirebaseAuth.getInstance().getUser(uid);
 
-            Logger.getLogger(LoginPage.class.getName()).log(Level.INFO, "유저 데이터를 성공적으로 Fetch:");
-            Logger.getLogger(LoginPage.class.getName()).log(Level.INFO, userRecord.getUid());
+            Logger.getLogger(LoginFrame.class.getName()).log(Level.INFO, "유저 데이터를 성공적으로 Fetch:");
+            Logger.getLogger(LoginFrame.class.getName()).log(Level.INFO, userRecord.getUid());
         } catch (FirebaseAuthException e) {
             e.printStackTrace();
         }

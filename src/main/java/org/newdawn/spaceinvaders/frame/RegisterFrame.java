@@ -3,7 +3,6 @@ package org.newdawn.spaceinvaders.frame;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
-import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class RegisterPage extends JFrame {
+public class RegisterFrame extends JFrame {
     private JLabel titleLabel;
     private JLabel emailLabel;
     private JLabel userNameLabel;
@@ -20,7 +19,7 @@ public class RegisterPage extends JFrame {
     private JPasswordField userNameField;
     private JButton addAccountButton;
     private JButton backButton;
-    public RegisterPage() {
+    public RegisterFrame() {
         super("RegisterPage");
         setFrameLayout();
         loadContent();
@@ -81,14 +80,14 @@ public class RegisterPage extends JFrame {
                             .setDisplayName(String.valueOf(userNameField.getPassword()));
 
                     FirebaseAuth.getInstance().createUser(request);
-                    Logger.getLogger(RegisterPage.class.getName()).log(Level.INFO, "SUCCESS");
+                    Logger.getLogger(RegisterFrame.class.getName()).log(Level.INFO, "SUCCESS");
                     JOptionPane.showMessageDialog(null, "SUCCESS");
                 }
                 catch (FirebaseAuthException ex){
-                    Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RegisterFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                new LoginPage();
+                new LoginFrame();
                 dispose();
             }
         });
@@ -105,7 +104,7 @@ public class RegisterPage extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LoginPage loginPage = new LoginPage();
+                LoginFrame loginPage = new LoginFrame();
                 setVisible(false);
             }
         });
