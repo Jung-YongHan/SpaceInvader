@@ -6,8 +6,6 @@ import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class StageFrame extends JFrame{
     private JButton[] levelButton;
@@ -40,38 +38,29 @@ public class StageFrame extends JFrame{
             levelButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 30)); // 폰트
             levelButton[i].setBounds(130*i+50, 250, 150, 60);
             final int level = i+1;
-            levelButton[i].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // 해당 스테이지로 넘어가는 액션
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Game game = null;
-                            try {
-                                game = new Game(new GameFrame(), player);
-                            } catch (FirebaseAuthException ex) {
-                                throw new RuntimeException(ex);
-                            }
-                            game.setLevel(level);
-                            game.gameLoop();
-                        }
-                    });
-                    thread.start();
-                    setVisible(false);
-                }
+            levelButton[i].addActionListener(e -> {
+                // 해당 스테이지로 넘어가는 액션
+                Thread thread = new Thread(() -> {
+                    Game game;
+                    try {
+                        game = new Game(new GameFrame(), player);
+                    } catch (FirebaseAuthException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    game.setLevel(level);
+                    game.gameLoop();
+                });
+                thread.start();
+                setVisible(false);
             });
             getContentPane().add(levelButton[i]);
         }
 
         // Back 버튼
         backButton = FrameHelper.createBackButton();
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame(player);
-                setVisible(false);
-            }
+        backButton.addActionListener(e -> {
+            new MainFrame(player);
+            setVisible(false);
         });
         getContentPane().add(backButton);
     }
