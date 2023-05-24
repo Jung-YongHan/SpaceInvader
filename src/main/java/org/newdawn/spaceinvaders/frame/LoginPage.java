@@ -26,8 +26,13 @@ public class LoginPage extends JFrame{
     static String userName = null;
 
     public LoginPage() {
-        // Window Setting
         super("Login");
+        setFrameLayout();
+        loadContent();
+        setVisible(true);
+    }
+
+    private void setFrameLayout() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setResizable(false);
@@ -41,17 +46,11 @@ public class LoginPage extends JFrame{
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         });
+
         getContentPane().setLayout(null);
+    }
 
-//        JLabel titleLabel = new JLabel("Login");
-////        titleLabel.setForeground(Color.BLACK); // 글자색
-////        titleLabel.setOpaque(true);
-////        titleLabel.setBackground(Color.);
-//        titleLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 35));
-//        titleLabel.setHorizontalAlignment(JLabel.CENTER);
-//        titleLabel.setBounds(300, 170, 200, 55);
-//        getContentPane().add(titleLabel);
-
+    private void loadContent() {
         // 아이디 입력 필드
         idLabel = new JLabel("ID");
         idLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -70,6 +69,7 @@ public class LoginPage extends JFrame{
         getContentPane().add(nameLabel);
         getContentPane().add(pwField);
 
+        // loninButton 클릭 시 조건에 따른 message
         message = new JLabel("");
         message.setHorizontalAlignment(JLabel.CENTER);
         message.setBounds(300, 415, 200, 30);
@@ -77,13 +77,8 @@ public class LoginPage extends JFrame{
 
         // 로그인 버튼
         loginButton = new JButton("Login");
-        // 버튼 서식
         loginButton.setOpaque(false);
-//        loginButton.setContentAreaFilled(false); // 배경
         loginButton.setBackground(Color.WHITE); // 배경색
-//        loginButton.setBorderPainted(false); // 외곽선
-//        loginButton.setForeground(Color.WHITE); // 글자색
-//        loginButton.setFocusPainted(false); // 테두리
         loginButton.setFont(new Font("Arial", Font.PLAIN, 15)); // 폰트
         loginButton.setBounds(300, 330, 200, 35);
         loginButton.addActionListener(new ActionListener() {
@@ -106,13 +101,8 @@ public class LoginPage extends JFrame{
 
         // 회원가입 버튼
         registerButton = new JButton("Register");
-        // 버튼 서식
         registerButton.setOpaque(false);
-//        registerButton.setContentAreaFilled(false); // 배경
         registerButton.setBackground(Color.WHITE); // 배경색
-//        registerButton.setBorderPainted(false); // 외곽선
-//        registerButton.setForeground(Color.WHITE); // 글자색
-//        registerButton.setFocusPainted(false); // 테두리
         registerButton.setFont(new Font("Arial", Font.PLAIN, 15)); // 폰트
         registerButton.setBounds(300, 370, 200, 35);
         registerButton.addActionListener(new ActionListener() {
@@ -123,8 +113,6 @@ public class LoginPage extends JFrame{
             }
         });
         getContentPane().add(registerButton);
-
-        setVisible(true);
     }
 
     private void getDataByEmail(){
