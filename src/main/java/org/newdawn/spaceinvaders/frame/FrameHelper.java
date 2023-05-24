@@ -3,10 +3,16 @@ package org.newdawn.spaceinvaders.frame;
 import javax.swing.*;
 import java.awt.*;
 
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
 public class FrameHelper {
 
+    private FrameHelper() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void setFrameLayout(JFrame frame, ImageIcon imageIcon) {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         frame.setSize(800, 600);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null); // 창을 화면 중앙에 배치

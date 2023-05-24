@@ -1,6 +1,5 @@
 package org.newdawn.spaceinvaders.frame;
 
-import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.user.Player;
 
 import javax.imageio.ImageIO;
