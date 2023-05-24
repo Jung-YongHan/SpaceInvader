@@ -55,7 +55,25 @@ public class ShopFrame extends JFrame{
         this.player = player;
         inventory = player.getInventory();
         db = new DB();
+        shop = new Shop(player);
+        addBulletItem = new AddBulletItem(inventory);
+        healItem = new HealItem(inventory);
+        speedUpItem = new SpeedUpItem(inventory);
+        shieldItem = new ShieldItem(inventory);
+        reLoadSpeedUpItem = new ReLoadSpeedUpItem(inventory);
 
+        items.add(addBulletItem);
+        items.add(healItem);
+        items.add(speedUpItem);
+        items.add(shieldItem);
+        items.add(reLoadSpeedUpItem);
+
+        setFrameLayout();
+        loadContent();
+        setVisible(true);
+    }
+
+    private void setFrameLayout() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
@@ -71,10 +89,10 @@ public class ShopFrame extends JFrame{
         });
 
         setIgnoreRepaint(false);
-
-        // set layout manager to null
         getContentPane().setLayout(null);
+    }
 
+    private void loadContent() {
         // item 아이콘
         itemIcon = new JLabel[itemCount];
         for(int i=0; i<itemCount; i++){
@@ -100,20 +118,7 @@ public class ShopFrame extends JFrame{
             getContentPane().add(itemName[i]);
         }
 
-        shop = new Shop(player);
-        addBulletItem = new AddBulletItem(inventory);
-        healItem = new HealItem(inventory);
-        speedUpItem = new SpeedUpItem(inventory);
-        shieldItem = new ShieldItem(inventory);
-        reLoadSpeedUpItem = new ReLoadSpeedUpItem(inventory);
-
-        items.add(addBulletItem);
-        items.add(healItem);
-        items.add(speedUpItem);
-        items.add(shieldItem);
-        items.add(reLoadSpeedUpItem);
-
-        // buy 버튼
+        // Buy 버튼
         buyButton = new JButton[itemCount];
         for(int i=0; i<itemCount; i++){
             buyButton[i] = new JButton("Buy");
@@ -123,8 +128,6 @@ public class ShopFrame extends JFrame{
             buyButton[i].setFocusPainted(false);
             buyButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 25));
             buyButton[i].setBounds(buttonX[i], buttonY, 80, 30);
-            getContentPane().add(buyButton[i]);
-
             final int index = i;
             buyButton[i].addActionListener(new ActionListener() {
                 @Override
@@ -134,10 +137,11 @@ public class ShopFrame extends JFrame{
                     updatePlayerCoins();
                 }
             });
+            getContentPane().add(buyButton[i]);
         }
 
 
-        // back 버튼
+        // Back 버튼
         backButton = new JButton("Back");
         backButton.setOpaque(false);
         backButton.setContentAreaFilled(false); // 배경
@@ -146,8 +150,6 @@ public class ShopFrame extends JFrame{
         backButton.setFocusPainted(false); // 테두리
         backButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         backButton.setBounds(0, 500, 100, 20); // set position and size
-        getContentPane().add(backButton);
-
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -155,6 +157,7 @@ public class ShopFrame extends JFrame{
                 setVisible(false);
             }
         });
+        getContentPane().add(backButton);
 
         playerCoins = new JLabel("Coins: " + String.valueOf(player.getCoins()));
         playerCoins.setOpaque(false);
@@ -162,11 +165,8 @@ public class ShopFrame extends JFrame{
         playerCoins.setFont(new Font("Arial", Font.BOLD, 20));
         playerCoins.setBounds(620, 500, 200, 20);
         getContentPane().add(playerCoins);
-
-
-        // finally make the window visible
-        setVisible(true);
     }
+
     public void updatePlayerCoins() {
         playerCoins.setText("Coins: " + String.valueOf(player.getCoins()));
     }
