@@ -54,16 +54,7 @@ public class ThemeFrame extends JFrame {
         }
 
         // 버튼 추가
-        backButton = new JButton("Back");
-        // 버튼 서식
-        backButton.setOpaque(false);
-        backButton.setContentAreaFilled(false); // 배경
-        backButton.setBorderPainted(false); // 배경
-        backButton.setForeground(Color.WHITE); // 글자색
-        backButton.setFocusPainted(false); // 테두리
-        backButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
-        backButton.setBounds(0, 500, 100, 20); // set position and size
-
+        backButton = FrameHelper.createBackButton();
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
