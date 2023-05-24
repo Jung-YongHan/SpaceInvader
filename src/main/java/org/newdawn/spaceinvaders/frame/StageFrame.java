@@ -18,9 +18,14 @@ public class StageFrame extends JFrame{
 
     public StageFrame(Player player) {
         super("Stage Page");
+        setFrameLayout();
+        loadContent();
+        setVisible(true);
 
         this.player = player;
+    }
 
+    private void setFrameLayout() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
@@ -36,9 +41,10 @@ public class StageFrame extends JFrame{
         });
 
         setIgnoreRepaint(false);
-
         getContentPane().setLayout(null);
+    }
 
+    private void loadContent() {
         levelButton = new JButton[levels];
         for(int i=0; i<5; i++){
             levelButton[i] = new JButton("Level " + (i+1));
@@ -71,11 +77,10 @@ public class StageFrame extends JFrame{
                     setVisible(false);
                 }
             });
-
             getContentPane().add(levelButton[i]);
         }
 
-
+        // Back 버튼
         backButton = new JButton("Back");
         backButton.setOpaque(false);
         backButton.setContentAreaFilled(false); // 배경
@@ -84,7 +89,6 @@ public class StageFrame extends JFrame{
         backButton.setFocusPainted(false); // 테두리
         backButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         backButton.setBounds(0, 500, 100, 20);
-        getContentPane().add(backButton);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -92,7 +96,6 @@ public class StageFrame extends JFrame{
                 setVisible(false);
             }
         });
-
-        setVisible(true);
+        getContentPane().add(backButton);
     }
 }
