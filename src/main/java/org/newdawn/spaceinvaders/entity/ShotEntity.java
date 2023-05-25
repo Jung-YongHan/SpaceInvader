@@ -36,6 +36,7 @@ public class ShotEntity extends Entity {
 	 * 
 	 * @param delta The time that has elapsed since last move
 	 */
+	@Override
 	public void move(long delta) {
 		// proceed with normal move
 		super.move(delta);
@@ -50,7 +51,7 @@ public class ShotEntity extends Entity {
 	 * Notification that this shot has collided with another
 	 * entity
 	 * 
-	 * @parma other The other entity with which we've collided
+	 * @param other The other entity with which we've collided
 	 */
 	public void collidedWith(Entity other) {
 		// prevents double kills, if we've already hit something,

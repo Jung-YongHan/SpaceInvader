@@ -2,7 +2,6 @@ package org.newdawn.spaceinvaders.entity;
 import org.newdawn.spaceinvaders.Game;
 import org.newdawn.spaceinvaders.theme.Theme;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +40,7 @@ public class ObstacleEntity extends Entity {
      *
      * @param delta The time that has elapsed since last move (ms)
      */
+    @Override
     public void move(long delta) {
         // since the move tells us how much time has passed
         // by we can use it to drive the animation, however
@@ -57,6 +57,8 @@ public class ObstacleEntity extends Entity {
         super.move(delta);
 
     }
+
+    @Override
     public void doLogic() {
         // swap over horizontal movement and move down the
         // screen a bit

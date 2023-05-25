@@ -11,6 +11,9 @@ import com.dnsalias.java.timer.AdvancedTimer;
  * @author Kevin Glass
  */
 public class SystemTimer {
+	private SystemTimer() {
+		throw new IllegalStateException("Utility Class");
+	}
 	/** Our link into the GAGE timer library */
 	private static AdvancedTimer timer = new AdvancedTimer();
 	/** The number of "timer ticks" per second */

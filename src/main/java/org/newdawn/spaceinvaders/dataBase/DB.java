@@ -5,23 +5,16 @@ import com.google.firebase.database.*;
 import org.newdawn.spaceinvaders.frame.LoginFrame;
 
 import java.util.HashMap;
-import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.function.IntConsumer;
 
 public class DB {
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
     private final DatabaseReference userRef = db.getReference("users").child(LoginFrame.getUserName());
 
-    public static Object score = 0;
-    private Integer playCount = 0;
-    private Integer playTime = 0;
-    private Integer firstPlaceScore = 0;
-
     public DB() throws FirebaseAuthException {
     }
 
-    public void getHighScore(Consumer<Integer> callback) {
+    public void getHighScore(IntConsumer callback) {
         userRef.child("highScore").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -41,23 +34,19 @@ public class DB {
 
     public void storeHighScore(int score) {
         getHighScore(highScore -> {
-            Integer currentHighScore = highScore;
             HashMap<String, Object> users = new HashMap<>();
-            users.put("highScore", Math.max(currentHighScore, score));
-            this.userRef.updateChildren(users, new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                    if (databaseError != null) {
-                        System.out.println("Data could not be updated: " + databaseError.getMessage());
-                    } else {
-                        System.out.println("Data updated successfully.");
-                    }
+            users.put("highScore", Math.max(highScore, score));
+            this.userRef.updateChildren(users, (databaseError, databaseReference) -> {
+                if (databaseError != null) {
+                    System.out.println("Data could not be updated: " + databaseError.getMessage());
+                } else {
+                    System.out.println("Data updated successfully.");
                 }
             });
         });
     }
 
-    public void getPlayCount(Consumer<Integer> callback) {
+    public void getPlayCount(IntConsumer callback) {
         userRef.child("playCount").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -123,7 +112,7 @@ public class DB {
         });
     }
 
-    public void getPlayTime(Consumer<Integer> callback) {
+    public void getPlayTime(IntConsumer callback) {
         userRef.child("playTime").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -165,7 +154,7 @@ public class DB {
         });
     }
 
-    public void getCoin(Consumer<Integer> callback) {
+    public void getCoin(IntConsumer callback) {
         userRef.child("coin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -22,6 +22,7 @@ public class BossAlienEntity extends Entity{
         dx = -moveSpeed;
     }
 
+    @Override
     public void move(long delta) {
         // if we have reached the left hand side of the screen and
         // are moving left then request a logic update
@@ -38,6 +39,7 @@ public class BossAlienEntity extends Entity{
         super.move(delta);
     }
 
+    @Override
     public void doLogic() {
         // swap over horizontal movement and move down the
         // screen a bit

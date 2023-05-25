@@ -10,6 +10,7 @@ public class CoinEntity extends Entity {
         this.game = game;
     }
 
+    @Override
     public void move(long delta) {
         // 코인이 아래로 떨어지도록 dy 값을 설정
         setVerticalMovement(100);
