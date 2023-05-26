@@ -6,6 +6,6 @@ import org.newdawn.spaceinvaders.frame.LoginFrame;
 public class Main {
     public static void main(String argv[]) {
         new FirebaseAdminSDK().initFirebase();
-        LoginFrame loginPage = new LoginFrame();
+        new LoginFrame();
     }
 }

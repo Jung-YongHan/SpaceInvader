@@ -7,9 +7,8 @@ import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
+
+import static javax.swing.SwingConstants.CENTER;
 
 public class Rank extends JFrame {
 
@@ -26,7 +25,7 @@ public class Rank extends JFrame {
         db = new DB();
         loadRank();
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // JFrame 닫히면 프로그램 종료
         setSize(800, 600);
         setResizable(false);
         setLocationRelativeTo(null); // 창을 화면 중앙에 배치
@@ -35,7 +34,7 @@ public class Rank extends JFrame {
         setContentPane(new JPanel(){
             @Override
             public void paintComponent(Graphics g){
-                Image backgroundImage = new ImageIcon("src/main/resources/background/Background.png").getImage();
+                Image backgroundImage = new ImageIcon("src/main/resources/background/mainBackground.png").getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         });
@@ -46,7 +45,7 @@ public class Rank extends JFrame {
         titleLabel = new JLabel("Rank");
         titleLabel.setForeground(Color.WHITE); // 기본 글씨 색을 검은색으로 설정합니다.
         titleLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 35));
-        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setHorizontalAlignment(CENTER);
         titleLabel.setBounds(300, 100, 200, 55);
         getContentPane().add(titleLabel);
 
@@ -61,12 +60,9 @@ public class Rank extends JFrame {
         BackButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
         BackButton.setBounds(0, 0, 100, 50);
 
-        BackButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame mainFrame = new MainFrame(player);
-                setVisible(false);
-            }
+        BackButton.addActionListener(e -> {
+            new MainFrame(player);
+            setVisible(false);
         });
         getContentPane().add(BackButton);
 
