@@ -17,14 +17,11 @@ import com.google.firebase.database.*;
 import org.newdawn.spaceinvaders.dataBase.DB;
 import org.newdawn.spaceinvaders.frame.LoginFrame;
 import org.newdawn.spaceinvaders.entity.*;
-import org.newdawn.spaceinvaders.item.*;
-import org.newdawn.spaceinvaders.item.AddBulletItem;
-import org.newdawn.spaceinvaders.item.HealItem;
-import org.newdawn.spaceinvaders.item.SpeedUpItem;
 import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.Skin.*;
 
 import org.newdawn.spaceinvaders.user.Inventory;
+import org.newdawn.spaceinvaders.user.ItemManager;
 import org.newdawn.spaceinvaders.user.Player;
 
 public class Game extends Canvas
@@ -75,33 +72,11 @@ public class Game extends Canvas
 	/** item관련 변수 */
 	private Player player;
 	private Inventory inventory;
-	private AddBulletItem addBulletItem;
+	private ItemManager itemManager;
 	private int bulletCount = 1;
 	private int spaceBetweenBullets = 30;
-	private HealItem healItem;
-	private SpeedUpItem speedUpItem;
-	private ReLoadSpeedUpItem reLoadSpeedItem;
-	private ShieldItem shieldItem;
-
+	private long lastItemUsed = 0;
 	private DatabaseReference myRef;
-	private boolean useAddBulletItemPressed = false;
-	private boolean useHealItemPressed = false;
-	private boolean useSpeedUpItemPressed = false;
-	private boolean useShieldItemPressed = false;
-	private boolean useReLoadSpeedItemPressed = false;
-	private boolean qKeyPressed = false;
-	private boolean wKeyPressed = false;
-	private boolean eKeyPressed = false;
-	private boolean rKeyPressed = false;
-	private boolean tKeyPressed = false;
-	private long lastAddBulletItemUse = 0;
-	private long lastHealItemUse = 0;
-	private long lastSpeedUpItemUse = 0;
-	private long lastShieldItemUse = 0;
-	private long lastReLoadSpeedItemUse = 0;
-
-	private static final long ITEM_USE_INTERVAL = 3000;
-
 	private DB db;
 	private Theme theme;
 	private Skin skin;
@@ -140,11 +115,7 @@ public class Game extends Canvas
 
 		inventory = player.getInventory();
 
-		addBulletItem  = new AddBulletItem(inventory);
-		healItem = new HealItem(inventory);
-		speedUpItem = new SpeedUpItem(inventory);
-		reLoadSpeedItem = new ReLoadSpeedUpItem(inventory);
-		shieldItem = new ShieldItem(inventory);
+		itemManager = new ItemManager(this.player);
 
 		myRef = FirebaseDatabase.getInstance().getReference("users").child(LoginFrame.getUserName());
 		db = new DB();
@@ -175,6 +146,7 @@ public class Game extends Canvas
 	 * entitiy will be added to the overall list of entities in the game.
 	 */
 	int alienkill=0;
+
 	// 민재형 이부분 캐릭터 사진 변경임
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
@@ -223,48 +195,11 @@ public class Game extends Canvas
 			}
 		}
 
-		if (player.getSelectedSkinId() == 1) {bulletCount=2; moveSpeed=100;firingInterval=700;}
-		else if (player.getSelectedSkinId() ==2) {bulletCount=3; moveSpeed=150;firingInterval=2000;}
+		if (player.getSelectedSkinId() == 1) {bulletCount=2; moveSpeed=100;firingInterval=700;} else if (player.getSelectedSkinId() ==2) {bulletCount=3; moveSpeed=150;firingInterval=2000;}
 	}
+
 	public ShipEntity getShip(){
 		return ship;
-	}
-	private void useAddBulletItem() {
-		if(inventory.getItemCount(addBulletItem.getName()) > 0) {
-			addBulletItem.useItem(this);
-			System.out.println("총알 증가!");
-		}
-	}
-
-	private void useHealItem() {
-		if(inventory.getItemCount(healItem.getName()) > 0) {
-			healItem.useItem(this);
-			System.out.println("체력 증가");
-		}
-	}
-
-	private void useSpeedUpItem() {
-		if(inventory.getItemCount(speedUpItem.getName()) > 0) {
-			speedUpItem.useItem(this);
-			System.out.println("속도 증가!");
-		}
-	}
-	private void useShieldItem() {
-		if(inventory.getItemCount(shieldItem.getName()) > 0) {
-			shieldItem.useItem(this);
-			System.out.println("실드 착용!");
-		}
-	}
-
-	private void useReLoadSpeedItem() {
-		if (inventory.getItemCount(reLoadSpeedItem.getName()) > 0) {
-			reLoadSpeedItem.useItem(this);
-			System.out.println("발사 속도 증가!");
-		}
-	}
-
-	private boolean canUseItem(long lastItemUse) {
-		return System.currentTimeMillis() - lastItemUse >= ITEM_USE_INTERVAL;
 	}
 
 	public ShipEntity getEntity(){
@@ -274,18 +209,23 @@ public class Game extends Canvas
 	public void setSpeed(double moveSpeed){
 		this.moveSpeed = moveSpeed;
 	}
+
 	public double getSpeed() {
 		return moveSpeed;
 	}
+
 	public void setFireSpeed(double firingInterval){
 		this.firingInterval = firingInterval;
 	}
+
 	public double getFireSpeed(){
 		return firingInterval;
 	}
+
 	public void increaseBulletCount() {
 		bulletCount++;
 	}
+
 	/**
 	 * Notification from a game entity that the logic of the game
 	 * should be run at the next opportunity (normally as a result of some
@@ -309,7 +249,7 @@ public class Game extends Canvas
 	 * Notification that the player has died.
 	 */
 	public void notifyDeath() {
-		message = "Level "+level+", Score :"+ alienkill	;
+		message = "Level "+level+", Score :"+ alienkill;
 		waitingForKeyPress = true;
 		updatePlayInfo(timer, coinCount);
 		alienkill=0;
@@ -349,8 +289,8 @@ public class Game extends Canvas
 		db.updateCoin(coin);
 		coinCount = 0;
 	}
-	private int score = 0;
 	private int coinCount = 0;
+
 	public void increaseCoinCount() {
 		coinCount++;
 		System.out.println("Coin Count: " + coinCount); // 콘솔에 현재 코인 개수를 출력합니다.
@@ -453,28 +393,6 @@ public class Game extends Canvas
 			// Get hold of a graphics context for the accelerated
 			// surface and blank it out
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-
-			// 아이템 커맨드 입력
-			if (useAddBulletItemPressed) {
-				useAddBulletItem();
-				useAddBulletItemPressed = false;
-			}
-			if (useHealItemPressed) {
-				useHealItem();
-				useHealItemPressed = false;
-			}
-			if (useSpeedUpItemPressed) {
-				useSpeedUpItem();
-				useSpeedUpItemPressed = false;
-			}
-			if (useShieldItemPressed) {
-				useShieldItem();
-				useShieldItemPressed = false;
-			}
-			if (useReLoadSpeedItemPressed) {
-				useReLoadSpeedItem();
-				useReLoadSpeedItemPressed = false;
-			}
 
 			// draw the background image
 			if (background != null) {
@@ -616,6 +534,7 @@ public class Game extends Canvas
 		 * The number of key presses we've had while waiting for an "any key" press
 		 */
 		private int pressCount = 1;
+		private char keyName;
 
 		/**
 		 * Notification from AWT that a key has been pressed. Note that
@@ -624,13 +543,24 @@ public class Game extends Canvas
 		 *
 		 * @param e The details of the key that was pressed
 		 */
+
+		public char getKeyName(KeyEvent e) {
+			switch (e.getKeyCode()) {
+				case KeyEvent.VK_Q: return 'q';
+				case KeyEvent.VK_W: return 'w';
+				case KeyEvent.VK_E: return 'e';
+				case KeyEvent.VK_R: return 'r';
+				case KeyEvent.VK_T: return 't';
+				default: return '\0';
+			}
+		}
+
 		public void keyPressed(KeyEvent e) {
 			// if we're waiting for an "any key" typed then we don't
 			// want to do anything with just a "press"
 			if (waitingForKeyPress) {
 				return;
 			}
-
 
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				leftPressed = true;
@@ -648,45 +578,17 @@ public class Game extends Canvas
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				firePressed = true;
 			}
-			if (e.getKeyCode() == KeyEvent.VK_Q && !qKeyPressed) {
-				if (canUseItem(lastAddBulletItemUse)) {
-					useAddBulletItemPressed = true;
-					lastAddBulletItemUse = System.currentTimeMillis();
-					qKeyPressed = true;
+			if (e.getKeyCode() == KeyEvent.VK_Q || e.getKeyCode() == KeyEvent.VK_W ||
+					e.getKeyCode() == KeyEvent.VK_E || e.getKeyCode() == KeyEvent.VK_R ||
+					e.getKeyCode() == KeyEvent.VK_T) {
+				keyName = getKeyName(e);
+				if(itemManager.canUseItem(lastItemUsed)){
+					itemManager.useItem(keyName, Game.this);
+					lastItemUsed = System.currentTimeMillis();
 				}
-			}
-			if (e.getKeyCode() == KeyEvent.VK_W && !wKeyPressed) {
-				if (canUseItem(lastHealItemUse)) {
-					useHealItemPressed = true;
-					lastHealItemUse = System.currentTimeMillis();
-					wKeyPressed = true;
-				}
-			}
-			if (e.getKeyCode() == KeyEvent.VK_E && !eKeyPressed) {
-				if (canUseItem(lastSpeedUpItemUse)) {
-					useSpeedUpItemPressed = true;
-					lastSpeedUpItemUse = System.currentTimeMillis();
-					eKeyPressed = true;
-				}
-			}
-			if (e.getKeyCode() == KeyEvent.VK_R && !rKeyPressed) {
-				if (canUseItem(lastShieldItemUse)) {
-					useShieldItemPressed = true;
-					lastShieldItemUse = System.currentTimeMillis();
-					rKeyPressed = true;
-				}
-			}
-			if (e.getKeyCode() == KeyEvent.VK_T && !tKeyPressed) {
-				if (canUseItem(lastReLoadSpeedItemUse)) {
-					useReLoadSpeedItemPressed = true;
-					lastReLoadSpeedItemUse = System.currentTimeMillis();
-					tKeyPressed = true;
-				}
-			}
-			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-				// 메인페이지로 돌아가
 			}
 		}
+
 
 		/**
 		 * Notification from AWT that a key has been released.
@@ -717,37 +619,6 @@ public class Game extends Canvas
 				firePressed = false;
 				new Sound("sound/hitSound.wav");
 			}
-			if (e.getKeyCode() == KeyEvent.VK_Q) {
-				if (e.getKeyCode() == KeyEvent.VK_Q) {
-					qKeyPressed = false;
-					useAddBulletItemPressed = false;
-				}
-			}
-			if (e.getKeyCode() == KeyEvent.VK_W) {
-				if (e.getKeyCode() == KeyEvent.VK_W) {
-					wKeyPressed = false;
-					useHealItemPressed = false;
-				}
-			}
-			if (e.getKeyCode() == KeyEvent.VK_E) {
-				if (e.getKeyCode() == KeyEvent.VK_E) {
-					eKeyPressed = false;
-					useSpeedUpItemPressed = false;
-				}
-			}
-			if (e.getKeyCode() == KeyEvent.VK_R) {
-				if (e.getKeyCode() == KeyEvent.VK_R) {
-					rKeyPressed = false;
-					useShieldItemPressed = false;
-				}
-			}
-			if (e.getKeyCode() == KeyEvent.VK_T) {
-				if (e.getKeyCode() == KeyEvent.VK_T) {
-					tKeyPressed = false;
-					useReLoadSpeedItemPressed = false;
-				}
-			}
-
 		}
 
 		/**
@@ -781,13 +652,4 @@ public class Game extends Canvas
 			}
 		}
 	}
-
-
-	/**
-	 * The entry point into the game. We'll simply create an
-	 * instance of class which will start the display and game
-	 * loop.
-	 *
-	 * @param argv The arguments that are passed into our game
-	 */
 }
