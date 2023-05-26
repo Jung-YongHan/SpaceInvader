@@ -1,6 +1,6 @@
 package org.newdawn.spaceinvaders;
 
-import org.newdawn.spaceinvaders.dataBase.FirebaseAdminSDK;
+import org.newdawn.spaceinvaders.database.FirebaseAdminSDK;
 import org.newdawn.spaceinvaders.frame.LoginFrame;
 
 public class Main {

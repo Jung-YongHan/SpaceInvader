@@ -1,7 +1,7 @@
 package org.newdawn.spaceinvaders;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import org.newdawn.spaceinvaders.dataBase.DB;
+import org.newdawn.spaceinvaders.database.DB;
 import org.newdawn.spaceinvaders.item.AddBulletItem;
 import org.newdawn.spaceinvaders.item.HealItem;
 import org.newdawn.spaceinvaders.item.Item;

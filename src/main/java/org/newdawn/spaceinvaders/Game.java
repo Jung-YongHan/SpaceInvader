@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import org.newdawn.spaceinvaders.dataBase.DB;
+import org.newdawn.spaceinvaders.database.DB;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.user.ItemManager;
 import org.newdawn.spaceinvaders.user.Player;
