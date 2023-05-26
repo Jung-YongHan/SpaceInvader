@@ -82,7 +82,6 @@ public class Game extends Canvas
 	private Skin skin;
 
 
-
 	/**
 	 * Construct our game and set it running.
 	 */
@@ -289,6 +288,7 @@ public class Game extends Canvas
 		db.updateCoin(coin);
 		coinCount = 0;
 	}
+
 	private int coinCount = 0;
 
 	public void increaseCoinCount() {
@@ -534,7 +534,6 @@ public class Game extends Canvas
 		 * The number of key presses we've had while waiting for an "any key" press
 		 */
 		private int pressCount = 1;
-		private char keyName;
 
 		/**
 		 * Notification from AWT that a key has been pressed. Note that
@@ -545,13 +544,21 @@ public class Game extends Canvas
 		 */
 
 		public char getKeyName(KeyEvent e) {
-			switch (e.getKeyCode()) {
-				case KeyEvent.VK_Q: return 'q';
-				case KeyEvent.VK_W: return 'w';
-				case KeyEvent.VK_E: return 'e';
-				case KeyEvent.VK_R: return 'r';
-				case KeyEvent.VK_T: return 't';
-				default: return '\0';
+			return switch (e.getKeyCode()) {
+				case KeyEvent.VK_Q -> 'q' ;
+				case KeyEvent.VK_W -> 'w' ;
+				case KeyEvent.VK_E -> 'e' ;
+				case KeyEvent.VK_R -> 'r' ;
+				case KeyEvent.VK_T -> 't' ;
+				default -> '\0' ;
+			};
+		}
+
+		public void handleItemKeyEvent(KeyEvent e) {
+			char keyName = getKeyName(e);
+			if (itemManager.canUseItem(lastItemUsed)) {
+				itemManager.useItem(keyName, Game.this);
+				lastItemUsed = System.currentTimeMillis();
 			}
 		}
 
@@ -562,33 +569,18 @@ public class Game extends Canvas
 				return;
 			}
 
-			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-				leftPressed = true;
-			}
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				rightPressed = true;
-			}
-			// 위아래 키 이벤트를 처리하는 코드를 추가합니다.
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				ship.setVerticalMovement(-moveSpeed);
-			}
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				ship.setVerticalMovement(moveSpeed);
-			}
-			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				firePressed = true;
-			}
-			if (e.getKeyCode() == KeyEvent.VK_Q || e.getKeyCode() == KeyEvent.VK_W ||
-					e.getKeyCode() == KeyEvent.VK_E || e.getKeyCode() == KeyEvent.VK_R ||
-					e.getKeyCode() == KeyEvent.VK_T) {
-				keyName = getKeyName(e);
-				if(itemManager.canUseItem(lastItemUsed)){
-					itemManager.useItem(keyName, Game.this);
-					lastItemUsed = System.currentTimeMillis();
+			switch (e.getKeyCode()) {
+				case KeyEvent.VK_LEFT -> leftPressed = true;
+				case KeyEvent.VK_RIGHT -> rightPressed = true;
+				case KeyEvent.VK_UP -> ship.setVerticalMovement(-moveSpeed);
+				case KeyEvent.VK_DOWN -> ship.setVerticalMovement(moveSpeed);
+				case KeyEvent.VK_SPACE -> firePressed = true;
+				case KeyEvent.VK_Q, KeyEvent.VK_W, KeyEvent.VK_E, KeyEvent.VK_R, KeyEvent.VK_T -> handleItemKeyEvent(e);
+				default -> {
 				}
+				// do nothing
 			}
 		}
-
 
 		/**
 		 * Notification from AWT that a key has been released.
@@ -596,28 +588,23 @@ public class Game extends Canvas
 		 * @param e The details of the key that was released
 		 */
 		public void keyReleased(KeyEvent e) {
-			// if we're waiting for an "any key" typed then we don't E
+			// if we're waiting for an "any key" typed then we don't
 			// want to do anything with just a "released"
 			if (waitingForKeyPress) {
 				return;
 			}
 
-			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-				leftPressed = false;
-			}
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				rightPressed = false;
-			}
-			// 위아래 키 이벤트를 처리하는 코드를 추가합니다.
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				ship.setVerticalMovement(0);
-			}
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				ship.setVerticalMovement(0);
-			}
-			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				firePressed = false;
-				new Sound("sound/hitSound.wav");
+			switch (e.getKeyCode()) {
+				case KeyEvent.VK_LEFT -> leftPressed = false;
+				case KeyEvent.VK_RIGHT -> rightPressed = false;
+				case KeyEvent.VK_UP, KeyEvent.VK_DOWN -> ship.setVerticalMovement(0);
+				case KeyEvent.VK_SPACE -> {
+					firePressed = false;
+					new Sound("sound/hitSound.wav");
+				}
+				default -> {
+				}
+				// do nothing
 			}
 		}
 
