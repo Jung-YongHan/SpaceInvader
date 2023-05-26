@@ -7,7 +7,6 @@ public abstract class Theme {
 
     protected String backgroundImage = "background.png";
     protected String alienEntityImage = "alien.png";
-    protected String bossEntityImage = "bossAlien";
     protected String obstacleImage = "obstacle.png";
     protected String contentRootPath = "src/main/resources/theme/";
     protected String sourceRootPath = "theme/";
@@ -16,9 +15,6 @@ public abstract class Theme {
     public abstract String getEntityImageFolderPath();
     public String getBackgroundImage(){ return getBackGroundImageFolderPath() + backgroundImage; }
     public String getAlienEntityImage(){ return getEntityImageFolderPath() + alienEntityImage; }
-    public String getBossEntityImage(){
-        return getBackGroundImageFolderPath() + bossEntityImage;
-    }
     public String getObstacleImage(){
         return getEntityImageFolderPath() + obstacleImage;
     }
