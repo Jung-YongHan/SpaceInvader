@@ -34,7 +34,7 @@ public class Rank extends JFrame {
         setContentPane(new JPanel(){
             @Override
             public void paintComponent(Graphics g){
-                Image backgroundImage = new ImageIcon("src/main/resources/background/Background.png").getImage();
+                Image backgroundImage = new ImageIcon("src/main/resources/background/mainBackground.png").getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         });
