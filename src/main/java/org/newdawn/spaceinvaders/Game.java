@@ -11,30 +11,23 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.database.*;
 import org.newdawn.spaceinvaders.dataBase.DB;
-import org.newdawn.spaceinvaders.frame.LoginFrame;
 import org.newdawn.spaceinvaders.entity.*;
-import org.newdawn.spaceinvaders.theme.*;
-import org.newdawn.spaceinvaders.Skin.*;
-
-import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.ItemManager;
 import org.newdawn.spaceinvaders.user.Player;
 
 public class Game extends Canvas
 {
 	private int timer;
-	/** The stragey that allows us to use accelerate page flipping */
+	/** The strategy that allows us to use accelerate page flipping */
 	private BufferStrategy strategy;
 	/** True if the game is currently "running", i.e. the game loop is looping */
 	private boolean gameRunning = true;
-	/** The list of all the entities that exist in our game */
-	private ArrayList entities = new ArrayList();
+
+	private ArrayList<Entity> entities = new ArrayList<>();
 	/** The list of entities that need to be removed from the game this loop */
-	private ArrayList removeList = new ArrayList();
+	private ArrayList<Entity> removeList = new ArrayList<>();
 	/** The entity representing the player */
 	private ShipEntity ship;
 	/** The speed at which the player's ship should move (pixels/sec) */
@@ -69,36 +62,31 @@ public class Game extends Canvas
 	private Image background;
 	private int currentLevel;
 	private int level;
-	/** item관련 변수 */
+	/** item 관련 변수 */
 	private Player player;
-	private Inventory inventory;
 	private ItemManager itemManager;
 	private int bulletCount = 1;
 	private int spaceBetweenBullets = 30;
 	private long lastItemUsed = 0;
-	private DatabaseReference myRef;
 	private DB db;
-	private Theme theme;
-	private Skin skin;
 
 
 	/**
 	 * Construct our game and set it running.
 	 */
 	public Game(JFrame frame, Player player) throws FirebaseAuthException {
-		container = frame;
-		this.player = player;
-		this.theme = player.getTheme();
-		this.skin = player.getSkin();
-		// setup our canvas size and put it into the content of the frame
-		setBounds(0,0,800,600);
-		container.getContentPane().add(this);
+			container = frame;
+			this.player = player;
+			// setup our canvas size and put it into the content of the frame
+			setBounds(0,0,800,600);
+			container.getContentPane().add(this);
 
-		container.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
+			container.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					System.exit(0);
+				}
+			});
 
 		// add a key input system (defined below) to our canvas
 		// so we can respond to key pressed
@@ -112,11 +100,8 @@ public class Game extends Canvas
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
 
-		inventory = player.getInventory();
-
 		itemManager = new ItemManager(this.player);
 
-		myRef = FirebaseDatabase.getInstance().getReference("users").child(LoginFrame.getUserName());
 		db = new DB();
 
 		// initialise the entities in our game so there's something
@@ -130,7 +115,7 @@ public class Game extends Canvas
 	 * create a new set.
 	 */
 	private void startGame() {
-		// clear out any existing entities and intialise a new set
+		// clear out any existing entities and initialise a new set
 		entities.clear();
 		initEntities();
 
@@ -142,9 +127,9 @@ public class Game extends Canvas
 
 	/**
 	 * Initialise the starting state of the entities (ship and aliens). Each
-	 * entitiy will be added to the overall list of entities in the game.
+	 * entity will be added to the overall list of entities in the game.
 	 */
-	int alienkill=0;
+	int alienKill =0;
 
 	// 민재형 이부분 캐릭터 사진 변경임
 	private void initEntities() {
@@ -248,10 +233,10 @@ public class Game extends Canvas
 	 * Notification that the player has died.
 	 */
 	public void notifyDeath() {
-		message = "Level "+level+", Score :"+ alienkill;
+		message = "Level "+level+", Score :"+ alienKill;
 		waitingForKeyPress = true;
 		updatePlayInfo(timer, coinCount);
-		alienkill=0;
+		alienKill =0;
 		coinCount = 0;
 	}
 
@@ -260,10 +245,10 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Level " + level + ", Score :" + alienkill;
+		message = "Level " + level + ", Score :" + alienKill;
 		waitingForKeyPress = true;
-		db.storeHighScore(alienkill);
-		alienkill = 0;
+		db.storeHighScore(alienKill);
+		alienKill = 0;
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -300,7 +285,7 @@ public class Game extends Canvas
 		// reduce the alien count, if there are none left, the player has won!
 		alienCount--;
 
-		alienkill ++;
+		alienKill++;
 		if (alienCount == 0) {
 			notifyWin();
 		}
@@ -317,7 +302,7 @@ public class Game extends Canvas
 		// if there are still some aliens left then they all need to get faster, so
 		// speed up all the existing aliens
 		for (int i=0;i<entities.size();i++) {
-			Entity entity = (Entity) entities.get(i);
+			Entity entity = entities.get(i);
 
 			if (entity instanceof AlienEntity) {
 				// speed up by 2%
@@ -365,7 +350,7 @@ public class Game extends Canvas
 		new Sound("sound/bgm.wav");
 
 		try {
-			background = ImageIO.read(new File(this.theme.getBackgroundImage()));
+			background = ImageIO.read(new File(player.getTheme().getBackgroundImage()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -402,29 +387,18 @@ public class Game extends Canvas
 			// cycle round asking each entity to move itself
 			if (!waitingForKeyPress) {
 				for (int i=0;i<entities.size();i++) {
-					Entity entity = (Entity) entities.get(i);
-
+					Entity entity = entities.get(i);
 					entity.move(delta);
 				}
-				if (level == 4) {
-					if (timer % 50 == 0) {
-						ObstacleEntity.addObstacle(this, this.theme, this.entities, this.level);
-					}
-				} else if (level == 5) {
-					if (timer % 20 == 0) {
-						ObstacleEntity.addObstacle(this, this.theme, this.entities, this.level);
-					}
-				} else if (level == 6) {
-					if (timer % 20 == 0) {
-						ObstacleEntity.addObstacle(this, this.theme, this.entities, this.level);
-					}
+				if ((level == 4 && timer % 50 == 0) || (level == 5 && timer % 20 == 0) || (level == 6 && timer % 20 == 0)) {
+					ObstacleEntity.addObstacle(this, player.getTheme(), this.entities, this.level);
 				}
 			}
 
 
 			// cycle round drawing all the entities we have in the game
 			for (int i=0;i<entities.size();i++) {
-				Entity entity = (Entity) entities.get(i);
+				Entity entity = entities.get(i);
 
 				entity.draw(g);
 			}
@@ -434,8 +408,8 @@ public class Game extends Canvas
 			// both entities that the collision has occured
 			for (int p=0;p<entities.size();p++) {
 				for (int s=p+1;s<entities.size();s++) {
-					Entity me = (Entity) entities.get(p);
-					Entity him = (Entity) entities.get(s);
+					Entity me = entities.get(p);
+					Entity him = entities.get(s);
 
 					if (me.collidesWith(him)) {
 						me.collidedWith(him);
@@ -453,7 +427,7 @@ public class Game extends Canvas
 			// their personal logic should be considered.
 			if (logicRequiredThisLoop) {
 				for (int i=0;i<entities.size();i++) {
-					Entity entity = (Entity) entities.get(i);
+					Entity entity = entities.get(i);
 					entity.doLogic();
 				}
 
@@ -472,8 +446,8 @@ public class Game extends Canvas
 
 			//죽인 에일리언 표시
 			g.setColor(Color.white);
-			g.drawString("죽인 에일리언"+String.valueOf(alienkill),30,30);
-			g.drawString("HP: " + String.valueOf(ship.getHP()), 720, 30);
+			g.drawString("죽인 에일리언" + alienKill, 30, 30);
+			g.drawString("HP: " + ship.getHP(), 720, 30);
 
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over
@@ -482,7 +456,7 @@ public class Game extends Canvas
 
 			// resolve the movement of the ship. First assume the ship
 			// isn't moving. If either cursor key is pressed then
-			// update the movement appropraitely
+			// update the movement appropriately
 			ship.setHorizontalMovement(0);
 
 			if ((leftPressed) && (!rightPressed)) {
@@ -515,7 +489,7 @@ public class Game extends Canvas
 	 *
 	 * This has been implemented as an inner class more through
 	 * habbit then anything else. Its perfectly normal to implement
-	 * this as seperate class if slight less convienient.
+	 * this as seperate class if slight less convenient.
 	 *
 	 * @author Kevin Glass
 	 */
@@ -562,6 +536,7 @@ public class Game extends Canvas
 			}
 		}
 
+		@Override
 		public void keyPressed(KeyEvent e) {
 			// if we're waiting for an "any key" typed then we don't
 			// want to do anything with just a "press"
@@ -587,6 +562,7 @@ public class Game extends Canvas
 		 *
 		 * @param e The details of the key that was released
 		 */
+		@Override
 		public void keyReleased(KeyEvent e) {
 			// if we're waiting for an "any key" typed then we don't
 			// want to do anything with just a "released"
@@ -614,6 +590,7 @@ public class Game extends Canvas
 		 *
 		 * @param e The details of the key that was typed.
 		 */
+		@Override
 		public void keyTyped(KeyEvent e) {
 			// if we're waiting for a "any key" type then
 			// check if we've recieved any recently. We may
