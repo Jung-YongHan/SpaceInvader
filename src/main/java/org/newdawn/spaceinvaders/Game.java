@@ -126,7 +126,7 @@ public class Game extends Canvas
 	 * Initialise the starting state of the entities (ship and aliens). Each
 	 * entity will be added to the overall list of entities in the game.
 	 */
-	int alienkill =0;
+	int alienKill =0;
 
 	private void initEntities() {
 		createShip();
@@ -134,6 +134,8 @@ public class Game extends Canvas
 		db.getPlayCount(count -> {
 			if (count != 0 && count % 5 == 0) {
 				setLevel(6);
+			} else {
+				setLevel(currentLevel);
 			}
 			createAliens();
 		});
@@ -219,10 +221,10 @@ public class Game extends Canvas
 	 * Notification that the player has died.
 	 */
 	public void notifyDeath() {
-		message = "Level "+level+", Score :"+ alienkill;
+		message = "Level "+level+", Score :"+ alienKill;
 		waitingForKeyPress = true;
 		updatePlayInfo(timer, coinCount);
-		alienkill=0;
+		alienKill =0;
 		coinCount = 0;
 	}
 
@@ -231,10 +233,10 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Level " + level + ", Score :" + alienkill;
+		message = "Level " + level + ", Score :" + alienKill;
 		waitingForKeyPress = true;
-		db.storeHighScore(alienkill);
-		alienkill = 0;
+		db.storeHighScore(alienKill);
+		alienKill = 0;
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -260,8 +262,6 @@ public class Game extends Canvas
 		coinCount = 0;
 	}
 
-	private int coinCount = 0;
-
 	public void increaseCoinCount() {
 		coinCount++;
 		System.out.println("Coin Count: " + coinCount); // 콘솔에 현재 코인 개수를 출력합니다.
@@ -271,7 +271,7 @@ public class Game extends Canvas
 	public void notifyAlienKilled(Entity alienEntity) {
 		// reduce the alien count, if there are none left, the player has won!
 		alienCount--;
-		alienkill++;
+		alienKill++;
 
 		if (alienCount == 0) {
 			notifyWin();
@@ -433,7 +433,7 @@ public class Game extends Canvas
 
 			//죽인 에일리언 표시
 			g.setColor(Color.white);
-			g.drawString("죽인 에일리언" + alienkill, 30, 30);
+			g.drawString("죽인 에일리언" + alienKill, 30, 30);
 			g.drawString("HP: " + ship.getHP(), 720, 30);
 
 			// finally, we've completed drawing so clear up the graphics
