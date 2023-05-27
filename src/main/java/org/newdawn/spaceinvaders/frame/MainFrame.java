@@ -84,7 +84,7 @@ public class MainFrame extends JFrame{
         });
 
         // Game Introduction 버튼
-        gameIntroduction = new JButton("게임 설명");
+        gameIntroduction = new JButton("Introduction");
         FrameHelper.setButtonFormat(gameIntroduction);
         gameIntroduction.setBounds(600, 300, 200, 50);
         gameIntroduction.addActionListener(e -> gameIntroductionDialog());
