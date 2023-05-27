@@ -4,15 +4,11 @@ import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.user.Player;
 
 import javax.swing.*;
-import java.awt.*;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+import java.awt.*;
 
 public class MainFrame extends JFrame{
     private JLabel titleLabel;
