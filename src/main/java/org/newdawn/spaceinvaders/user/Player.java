@@ -6,7 +6,7 @@ import org.newdawn.spaceinvaders.Skin.AstronautSkin;
 import org.newdawn.spaceinvaders.Skin.CatSkin;
 import org.newdawn.spaceinvaders.Skin.SpaceSkin;
 import org.newdawn.spaceinvaders.Skin.Skin;
-import org.newdawn.spaceinvaders.dataBase.DB;
+import org.newdawn.spaceinvaders.database.DB;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.theme.CatTheme;
 import org.newdawn.spaceinvaders.theme.DesertTheme;
