@@ -15,7 +15,7 @@ public class CharacterSelectFrame extends JFrame{
     private JButton backButton;
     private JLabel[] characterIcon; // JLabel array to display images
     private int iconSize = 128;
-    private int[] iconX = {120, 380, 600};
+    private int[] iconX = {100, 370, 590};
     private int iconY = 200;
     private int[] buttonX = {120, 360, 600};
     private int buttonY = 350;
@@ -79,10 +79,12 @@ public class CharacterSelectFrame extends JFrame{
         selectButton = new JButton[buttonCount];
         for (int i = 0; i < buttonCount; i++) {
             selectButton[i] = createSkinSelectButton(i);
-            selectButton[i].setOpaque(false);  // 버튼 투명하게 만들기
-            selectButton[i].setContentAreaFilled(false);
-            selectButton[i].setBorderPainted(false);
-            selectButton[i].setBounds(buttonX[i], buttonY, 120, 30);
+            selectButton[i].setOpaque(true); // 배경색을 변경할 수 있도록 설정
+            selectButton[i].setBackground(Color.BLACK); // 배경색을 검은색으로 설정
+            selectButton[i].setForeground(Color.WHITE); // 전경색(글자색)을 흰색으로 설정
+            selectButton[i].setFocusPainted(false); // 포커스 그림을 그리지 않도록 설정
+            selectButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트를 Arial, 볼드체 + 이탤릭체, 크기 20으로 설정
+            selectButton[i].setBounds(buttonX[i], buttonY, 80, 30); // 버튼의 위치와 크기를 설정
             getContentPane().add(selectButton[i]);
             getContentPane().setComponentZOrder(selectButton[i], 1); // 버튼을 라벨 아래에 배치
         }
