@@ -9,6 +9,7 @@ public class ThemeFrame extends JFrame {
     private JButton[] skinSelectButton;
     private JButton backButton;
     private Player player;
+    private final String[] buttonNames = {"Space", "Cafe", "Dessert"};
 
     public ThemeFrame(Player player) {
         super("Thema");
@@ -61,9 +62,9 @@ public class ThemeFrame extends JFrame {
     }
 
     private JButton createSkinSelectButton(int index) {
-        JButton button = new JButton("Select");
+        JButton button = new JButton(buttonNames[index]);
         button.addActionListener(e -> {
-            int response = JOptionPane.showConfirmDialog(null, "해당 테마를 설정하겠습니까?", "테마 설정", JOptionPane.YES_NO_OPTION);
+            int response = JOptionPane.showConfirmDialog(null, buttonNames[index] + " 테마를 설정하겠습니까?", "테마 설정", JOptionPane.YES_NO_OPTION);
             if (response == JOptionPane.YES_OPTION) {
                 player.setTheme(index);
                 repaint();

@@ -90,7 +90,7 @@ public class MainFrame extends JFrame{
         gameIntroduction.addActionListener(e -> gameIntroductionDialog());
 
         // Theme 설정 버튼
-        themeConfig = new JButton("Thema");
+        themeConfig = new JButton("Theme");
         FrameHelper.setButtonFormat(themeConfig);
         themeConfig.setBounds(300, 350, 200, 50);
         themeConfig.addActionListener(e -> {
