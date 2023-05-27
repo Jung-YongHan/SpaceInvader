@@ -90,7 +90,7 @@ public class MainFrame extends JFrame{
         gameIntroduction.addActionListener(e -> gameIntroductionDialog());
 
         // Theme 설정 버튼
-        themeConfig = new JButton("Config");
+        themeConfig = new JButton("Theme");
         FrameHelper.setButtonFormat(themeConfig);
         themeConfig.setBounds(300, 350, 200, 50);
         themeConfig.addActionListener(e -> {
@@ -99,7 +99,7 @@ public class MainFrame extends JFrame{
         });
 
         // Character 설정 버튼
-        characterSelectButton = new JButton("Select");
+        characterSelectButton = new JButton("Character");
         FrameHelper.setButtonFormat(characterSelectButton);
         characterSelectButton.setBounds(600, 500, 200, 50);
         characterSelectButton.addActionListener(e -> {
@@ -123,7 +123,9 @@ public class MainFrame extends JFrame{
                 1. 코인 획득 방법 : 몬스터 피격시 일정 확률로 코인이 drop 됩니다.
                 2. 상점 이용 방법 : 획득한 코인은 DB에 저장됩니다. 저장된 코인으로 아이템을 구매하세요!
                 3. Level 시스템 : 총 5가지의 단계로 게임은 구성되어 있습니다.
-                4. Login 시스템 : 당신의 고유 아이디로 게임의 정보를 저장하고 플레이하세요!""";
+                4. Login 시스템 : 당신의 고유 아이디로 게임의 정보를 저장하고 플레이하세요!
+                5. Mypage 확인 : Mypage에서 당신의 게임 기록 및 코인 개수를 확일할 수 있습니다.
+                6. 캐릭터 선택 : 능력치가 다른 3가지 캐릭터 중 한가지를 선택할 수 있습니다.""";
         String highlightedText = "Introduction";
 
         JTextPane introductionPane = new JTextPane();
