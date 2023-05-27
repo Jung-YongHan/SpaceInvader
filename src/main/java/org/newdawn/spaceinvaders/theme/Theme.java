@@ -4,7 +4,6 @@ import org.newdawn.spaceinvaders.user.Player;
 
 public abstract class Theme {
     protected Player player;
-
     protected String backgroundImage = "background.png";
     protected String alienEntityImage = "alien.png";
     protected String obstacleImage = "obstacle.png";
