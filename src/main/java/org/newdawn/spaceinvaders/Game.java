@@ -12,8 +12,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import org.newdawn.spaceinvaders.Skin.Character;
+import org.newdawn.spaceinvaders.Skin.CharacterStatus;
 import org.newdawn.spaceinvaders.database.DB;
 import org.newdawn.spaceinvaders.entity.*;
+import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.ItemManager;
 import org.newdawn.spaceinvaders.user.Player;
 import org.slf4j.Logger;
@@ -32,12 +35,8 @@ public class Game extends Canvas
 	private ArrayList<Entity> removeList = new ArrayList<>();
 	/** The entity representing the player */
 	private ShipEntity ship;
-	/** The speed at which the player's ship should move (pixels/sec) */
-	private double moveSpeed = 300;
 	/** The time at which last fired a shot */
 	private long lastFire = 0;
-	/** The interval between our players shot (ms) */
-	private double firingInterval = 200;
 	/** The number of aliens left on the screen */
 	private int alienCount;
 	/** The message to display which waiting for a key press */
@@ -61,28 +60,34 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 	private Image background;
-	private int currentLevel;
 	private int level;
 	/** item 관련 변수 */
 	private Player player;
 	private ItemManager itemManager;
-	private int bulletCount = 1;
 	private int spaceBetweenBullets = 30;
 	private long lastItemUsed = 0;
 	private DB db;
+	private Theme theme;
+	private Character character;
+	private CharacterStatus characterStatus;
 	private int coinCount = 0;
 	private final Logger log = LoggerFactory.getLogger(getClass());
-
 
 	/**
 	 * Construct our game and set it running.
 	 */
 	public Game(JFrame frame, Player player) throws FirebaseAuthException {
-			container = frame;
-			this.player = player;
-			// setup our canvas size and put it into the content of the frame
-			setBounds(0,0,800,600);
-			container.getContentPane().add(this);
+		container = frame;
+		this.player = player;
+		this.theme = player.getTheme();
+		this.character = player.getCharacter();
+		this.characterStatus = new CharacterStatus(this.character);
+		this.itemManager = new ItemManager(this.player);
+		this.db = new DB();
+
+		// setup our canvas size and put it into the content of the frame
+		setBounds(0,0,800,600);
+		container.getContentPane().add(this);
 
 			container.addWindowListener(new WindowAdapter() {
 				@Override
@@ -103,10 +108,6 @@ public class Game extends Canvas
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
 
-		itemManager = new ItemManager(this.player);
-
-		db = new DB();
-
 		initEntities();
 	}
 
@@ -123,6 +124,8 @@ public class Game extends Canvas
 		leftPressed = false;
 		rightPressed = false;
 		firePressed = false;
+
+		waitingForKeyPress = false;
 	}
 
 	/**
@@ -137,8 +140,6 @@ public class Game extends Canvas
 		db.getPlayCount(count -> {
 			if (count != 0 && count % 5 == 0) {
 				setLevel(6);
-			} else {
-				setLevel(currentLevel);
 			}
 			createAliens();
 		});
@@ -147,8 +148,9 @@ public class Game extends Canvas
 
 	private void createShip() {
 		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this, this.player.getSkin().getShipImage(),370,500, this.player);
+		ship = new ShipEntity(this, this.character.getShipImage(),370,500, this.player, characterStatus);
 		entities.add(ship);
+		characterStatus.getShieldStatus().setShipEntity(ship);
 	}
 
 	private void createAliens() {
@@ -171,34 +173,6 @@ public class Game extends Canvas
 				alienCount++;
 			}
 		}
-	}
-
-	public ShipEntity getShip(){
-		return ship;
-	}
-
-	public ShipEntity getEntity(){
-		return (ShipEntity) entities.get(0);
-	}
-
-	public void setSpeed(double moveSpeed){
-		this.moveSpeed = moveSpeed;
-	}
-
-	public double getSpeed() {
-		return moveSpeed;
-	}
-
-	public void setFireSpeed(double firingInterval){
-		this.firingInterval = firingInterval;
-	}
-
-	public double getFireSpeed(){
-		return firingInterval;
-	}
-
-	public void increaseBulletCount() {
-		bulletCount++;
 	}
 
 	/**
@@ -308,16 +282,16 @@ public class Game extends Canvas
 	 */
 	public void tryToFire() {
 		// check that we have waiting long enough to fire
-		if (System.currentTimeMillis() - lastFire < firingInterval) {
+		if (System.currentTimeMillis() - lastFire < characterStatus.getFiringInterval()) {
 			return;
 		}
 
 		// if we waited long enough, create the shot entity, and record the time.
 		lastFire = System.currentTimeMillis();
 
-		for (int i = 0; i < bulletCount; i++) {
-			int bulletX = ship.getX() + 10 - (bulletCount - 1) * spaceBetweenBullets / 2 + i * spaceBetweenBullets;
-			ShotEntity shot = new ShotEntity(this, this.player.getSkin().getShipShotImage(), bulletX, ship.getY() - 30);
+ 		for (int i = 0; i < characterStatus.getBulletCount(); i++) {
+			int bulletX = ship.getX() + 10 - (characterStatus.getBulletCount() - 1) * spaceBetweenBullets / 2 + i * spaceBetweenBullets;
+			ShotEntity shot = new ShotEntity(this, this.character.getShipShotImage(), bulletX, ship.getY() - 30);
 			entities.add(shot);
 		}
 	}
@@ -378,6 +352,7 @@ public class Game extends Canvas
 			if (!waitingForKeyPress) {
 				for (int i=0;i<entities.size();i++) {
 					Entity entity = entities.get(i);
+
 					entity.move(delta);
 				}
 				if ((level == 4 && timer % 50 == 0) || (level == 5 && timer % 20 == 0) || (level == 6 && timer % 20 == 0)) {
@@ -437,7 +412,7 @@ public class Game extends Canvas
 			//죽인 에일리언 표시
 			g.setColor(Color.white);
 			g.drawString("죽인 에일리언" + alienKill, 30, 30);
-			g.drawString("HP: " + ship.getHP(), 720, 30);
+			g.drawString("HP: " + characterStatus.getHp(), 720, 30);
 
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over
@@ -450,9 +425,9 @@ public class Game extends Canvas
 			ship.setHorizontalMovement(0);
 
 			if ((leftPressed) && (!rightPressed)) {
-				ship.setHorizontalMovement(-moveSpeed);
+				ship.setHorizontalMovement(-characterStatus.getMoveSpeed());
 			} else if ((rightPressed) && (!leftPressed)) {
-				ship.setHorizontalMovement(moveSpeed);
+				ship.setHorizontalMovement(characterStatus.getMoveSpeed());
 			}
 
 			// if we're pressing fire, attempt to fire
@@ -467,7 +442,7 @@ public class Game extends Canvas
 			// us our final value to wait for
 			SystemTimer.sleep(lastLoopTime+10-SystemTimer.getTime());
 
-			ship.updateShieldStatus();
+			characterStatus.getShieldStatus().updateShieldStatus();
 		}
 	}
 
@@ -486,9 +461,6 @@ public class Game extends Canvas
 
 	/** 레벨 선택 */
 	public void setLevel(int level){
-		if (level != 6) {
-			this.currentLevel = level;
-		}
 		this.level = level;
 	}
 
@@ -521,7 +493,7 @@ public class Game extends Canvas
 		public void handleItemKeyEvent(KeyEvent e) {
 			char keyName = getKeyName(e);
 			if (itemManager.canUseItem(lastItemUsed)) {
-				itemManager.useItem(keyName, Game.this);
+				itemManager.useItem(keyName, characterStatus);
 				lastItemUsed = System.currentTimeMillis();
 			}
 		}
@@ -537,8 +509,8 @@ public class Game extends Canvas
 			switch (e.getKeyCode()) {
 				case KeyEvent.VK_LEFT -> leftPressed = true;
 				case KeyEvent.VK_RIGHT -> rightPressed = true;
-				case KeyEvent.VK_UP -> ship.setVerticalMovement(-moveSpeed);
-				case KeyEvent.VK_DOWN -> ship.setVerticalMovement(moveSpeed);
+				case KeyEvent.VK_UP -> ship.setVerticalMovement(-characterStatus.getMoveSpeed());
+				case KeyEvent.VK_DOWN -> ship.setVerticalMovement(characterStatus.getMoveSpeed());
 				case KeyEvent.VK_SPACE -> firePressed = true;
 				case KeyEvent.VK_Q, KeyEvent.VK_W, KeyEvent.VK_E, KeyEvent.VK_R, KeyEvent.VK_T -> handleItemKeyEvent(e);
 				default -> {
@@ -592,7 +564,6 @@ public class Game extends Canvas
 					// since we've now recieved our key typed
 					// event we can mark it as such and start
 					// our new game
-					waitingForKeyPress = false;
 					startGame();
 					pressCount = 0;
 				} else {

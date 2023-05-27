@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.item;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Skin.CharacterStatus;
 import org.newdawn.spaceinvaders.user.Inventory;
 
 public abstract class Item {
@@ -17,6 +18,6 @@ public abstract class Item {
     public String getName() {
         return name;
     }
-    public abstract void useItem(Game game);
+    public abstract void useItem(CharacterStatus characterStatus);
 }
 

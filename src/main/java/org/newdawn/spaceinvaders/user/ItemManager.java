@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.user;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Skin.CharacterStatus;
 
 import java.util.HashMap;
 
@@ -24,10 +25,10 @@ public class ItemManager {
         this.keyToItem.put('t', "ReLoadSpeedUpItem");
     }
 
-    public void useItem(char key, Game game) {
+    public void useItem(char key, CharacterStatus characterStatus) {
         String itemName = keyToItem.get(key);
         if (itemName != null) {
-            inventory.useItem(itemName, game);
+            inventory.useItem(itemName, characterStatus);
         }
     }
     public boolean canUseItem(long lastItemUse) {
