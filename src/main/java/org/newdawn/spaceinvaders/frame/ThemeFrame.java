@@ -11,7 +11,7 @@ public class ThemeFrame extends JFrame {
     private Player player;
 
     public ThemeFrame(Player player) {
-        super("Configuration");
+        super("Thema");
         this.player = player;
 
         setFrameLayout();

@@ -104,7 +104,7 @@ public class ShopFrame extends JFrame{
             buyButton[i].setBackground(Color.BLACK);
             buyButton[i].setForeground(Color.WHITE);
             buyButton[i].setFocusPainted(false);
-            buyButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 25));
+            buyButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20));
             buyButton[i].setBounds(buttonX[i], buttonY, 80, 30);
             final int index = i;
             buyButton[i].addActionListener(e -> {
