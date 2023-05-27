@@ -3,6 +3,8 @@ package org.newdawn.spaceinvaders.database;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.*;
 import org.newdawn.spaceinvaders.frame.LoginFrame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.function.IntConsumer;
@@ -10,6 +12,8 @@ import java.util.function.IntConsumer;
 public class DB {
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
     private final DatabaseReference userRef = db.getReference("users").child(LoginFrame.getUserName());
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
 
     public DB() throws FirebaseAuthException {
     }
@@ -27,7 +31,7 @@ public class DB {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
+                log.debug("The read failed: {}", databaseError.getCode());
             }
         });
     }
@@ -38,9 +42,9 @@ public class DB {
             users.put("highScore", Math.max(highScore, score));
             this.userRef.updateChildren(users, (databaseError, databaseReference) -> {
                 if (databaseError != null) {
-                    System.out.println("Data could not be updated: " + databaseError.getMessage());
+                    log.debug("Data could not be updated: {}", databaseError.getMessage());
                 } else {
-                    System.out.println("Data updated successfully.");
+                    log.debug("Data updated successfully.");
                 }
             });
         });
@@ -59,7 +63,7 @@ public class DB {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
+                log.debug("The read failed: {}", databaseError.getCode());
             }
         });
     }
@@ -80,9 +84,9 @@ public class DB {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 if (databaseError != null) {
-                    System.out.println("Transaction failed. - playCount");
+                    log.debug("Transaction failed. - playCount");
                 } else {
-                    System.out.println("Transaction completed. - playCount");
+                    log.debug("Transaction completed. - playCount");
                 }
             }
         });
@@ -104,9 +108,9 @@ public class DB {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 if (databaseError != null) {
-                    System.out.println("Transaction failed. - playTime");
+                    log.debug("Transaction failed. - playTime");
                 } else {
-                    System.out.println("Transaction completed. - playTime");
+                    log.debug("Transaction completed. - playTime");
                 }
             }
         });
@@ -125,7 +129,7 @@ public class DB {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
+                log.debug("The read failed: {}", databaseError.getCode());
             }
         });
     }
@@ -146,9 +150,9 @@ public class DB {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 if (databaseError != null) {
-                    System.out.println("Transaction failed. - coin");
+                    log.debug("Transaction failed. - coin");
                 } else {
-                    System.out.println("Transaction completed. - coin");
+                    log.debug("Transaction completed. - coin");
                 }
             }
         });
@@ -167,7 +171,7 @@ public class DB {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
+                log.debug("The read failed: {}", databaseError.getCode());
             }
         });
     }

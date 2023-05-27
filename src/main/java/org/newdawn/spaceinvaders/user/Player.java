@@ -28,9 +28,7 @@ public class Player {
     public Player(){
         try {
             this.db = new DB();
-            db.getCoin(coins -> {
-                this.setCoins(coins);
-            });
+            db.getCoin(this::setCoins);
         } catch (FirebaseAuthException e) {
             e.printStackTrace();
         }

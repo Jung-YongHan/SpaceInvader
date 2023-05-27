@@ -4,6 +4,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class FirebaseAdminSDK {
+    private final org.slf4j.Logger log = LoggerFactory.getLogger(getClass());
 
     public void initFirebase() {
 
@@ -34,7 +36,7 @@ public class FirebaseAdminSDK {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Object document = dataSnapshot.getValue();
-                    System.out.println(document);
+                    log.info("document: {}", document);
                 }
 
                 @Override

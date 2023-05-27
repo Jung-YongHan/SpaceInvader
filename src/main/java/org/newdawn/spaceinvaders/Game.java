@@ -16,6 +16,8 @@ import org.newdawn.spaceinvaders.database.DB;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.user.ItemManager;
 import org.newdawn.spaceinvaders.user.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Game extends Canvas
 {
@@ -69,6 +71,7 @@ public class Game extends Canvas
 	private long lastItemUsed = 0;
 	private DB db;
 	private int coinCount = 0;
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 
 	/**
@@ -264,7 +267,7 @@ public class Game extends Canvas
 
 	public void increaseCoinCount() {
 		coinCount++;
-		System.out.println("Coin Count: " + coinCount); // 콘솔에 현재 코인 개수를 출력합니다.
+		log.debug("Coin Count: {}", coinCount);
 	}
 
 	// 에일리언 처치 시 관련 함수

@@ -48,6 +48,7 @@ public class ShopFrame extends JFrame{
         this.player = player;
         inventory = player.getInventory();
         shop = new Shop(player);
+
         addBulletItem = new AddBulletItem(inventory);
         healItem = new HealItem(inventory);
         speedUpItem = new SpeedUpItem(inventory);
