@@ -71,7 +71,7 @@ public class Player {
         return this.inventory;
     }
 
-    public void setSkin(int skinId) {
+    public void setCharacter(int skinId) {
         switch (skinId) {
             case 1 -> {
                 this.configCharacter = new CatCharacter();
@@ -87,6 +87,6 @@ public class Player {
             }
         }
     }
-    public Character getSkin() {return this.configCharacter;}
+    public Character getCharacter() {return this.configCharacter;}
 
 }

@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders.dataBase;
+package org.newdawn.spaceinvaders.database;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.*;

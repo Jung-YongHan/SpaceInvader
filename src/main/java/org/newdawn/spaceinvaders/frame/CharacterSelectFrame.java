@@ -78,7 +78,7 @@ public class CharacterSelectFrame extends JFrame{
         button.addActionListener(e -> {
             int response = JOptionPane.showConfirmDialog(null, "해당 스킨을 설정하겠습니까?", "스킨 설정", JOptionPane.YES_NO_OPTION);
             if (response == JOptionPane.YES_OPTION) {
-                player.setSkin(index);
+                player.setCharacter(index);
                 repaint();
             }
         });

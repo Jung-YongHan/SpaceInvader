@@ -1,6 +1,6 @@
 package org.newdawn.spaceinvaders.frame;
 
-import org.newdawn.spaceinvaders.dataBase.DB;
+import org.newdawn.spaceinvaders.database.DB;
 import org.newdawn.spaceinvaders.user.Player;
 import com.google.firebase.auth.FirebaseAuthException;
 

@@ -14,7 +14,7 @@ import javax.swing.*;
 import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Skin.Character;
 import org.newdawn.spaceinvaders.Skin.CharacterStatus;
-import org.newdawn.spaceinvaders.dataBase.DB;
+import org.newdawn.spaceinvaders.database.DB;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.user.ItemManager;
@@ -23,14 +23,14 @@ import org.newdawn.spaceinvaders.user.Player;
 public class Game extends Canvas
 {
 	private int timer;
-	/** The stragey that allows us to use accelerate page flipping */
+	/** The strategy that allows us to use accelerate page flipping */
 	private BufferStrategy strategy;
 	/** True if the game is currently "running", i.e. the game loop is looping */
 	private boolean gameRunning = true;
-	/** The list of all the entities that exist in our game */
-	private ArrayList<Entity> entities = new ArrayList();
+
+	private ArrayList<Entity> entities = new ArrayList<>();
 	/** The list of entities that need to be removed from the game this loop */
-	private ArrayList<Entity> removeList = new ArrayList();
+	private ArrayList<Entity> removeList = new ArrayList<>();
 	/** The entity representing the player */
 	private ShipEntity ship;
 	/** The time at which last fired a shot */
@@ -59,7 +59,7 @@ public class Game extends Canvas
 	private JFrame container;
 	private Image background;
 	private int level;
-	/** item관련 변수 */
+	/** item 관련 변수 */
 	private Player player;
 	private ItemManager itemManager;
 	private int spaceBetweenBullets = 30;
@@ -77,7 +77,7 @@ public class Game extends Canvas
 		container = frame;
 		this.player = player;
 		this.theme = player.getTheme();
-		this.character = player.getSkin();
+		this.character = player.getCharacter();
 		this.characterStatus = new CharacterStatus(this.character);
 		this.itemManager = new ItemManager(this.player);
 		this.db = new DB();
@@ -86,11 +86,12 @@ public class Game extends Canvas
 		setBounds(0,0,800,600);
 		container.getContentPane().add(this);
 
-		container.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
+			container.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					System.exit(0);
+				}
+			});
 
 		// add a key input system (defined below) to our canvas
 		// so we can respond to key pressed
@@ -112,7 +113,7 @@ public class Game extends Canvas
 	 * create a new set.
 	 */
 	private void startGame() {
-		// clear out any existing entities and intialise a new set
+		// clear out any existing entities and initialise a new set
 		entities.clear();
 		initEntities();
 
@@ -126,9 +127,9 @@ public class Game extends Canvas
 
 	/**
 	 * Initialise the starting state of the entities (ship and aliens). Each
-	 * entitiy will be added to the overall list of entities in the game.
+	 * entity will be added to the overall list of entities in the game.
 	 */
-	int alienkill=0;
+	int alienKill =0;
 
 	private void initEntities() {
 		createShip();
@@ -194,10 +195,10 @@ public class Game extends Canvas
 	 * Notification that the player has died.
 	 */
 	public void notifyDeath() {
-		message = "Level "+level+", Score :"+ alienkill;
+		message = "Level "+level+", Score :"+ alienKill;
 		waitingForKeyPress = true;
 		updatePlayInfo(timer, coinCount);
-		alienkill=0;
+		alienKill =0;
 		coinCount = 0;
 	}
 
@@ -206,10 +207,10 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Level " + level + ", Score :" + alienkill;
+		message = "Level " + level + ", Score :" + alienKill;
 		waitingForKeyPress = true;
-		db.storeHighScore(alienkill);
-		alienkill = 0;
+		db.storeHighScore(alienKill);
+		alienKill = 0;
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -244,7 +245,7 @@ public class Game extends Canvas
 	public void notifyAlienKilled(Entity alienEntity) {
 		// reduce the alien count, if there are none left, the player has won!
 		alienCount--;
-		alienkill++;
+		alienKill++;
 
 		if (alienCount == 0) {
 			notifyWin();
@@ -310,7 +311,7 @@ public class Game extends Canvas
 		new Sound("sound/bgm.wav");
 
 		try {
-			background = ImageIO.read(new File(this.theme.getBackgroundImage()));
+			background = ImageIO.read(new File(player.getTheme().getBackgroundImage()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -351,18 +352,8 @@ public class Game extends Canvas
 
 					entity.move(delta);
 				}
-				if (level == 4) {
-					if (timer % 50 == 0) {
-						ObstacleEntity.addObstacle(this, this.theme, this.entities, this.level);
-					}
-				} else if (level == 5) {
-					if (timer % 20 == 0) {
-						ObstacleEntity.addObstacle(this, this.theme, this.entities, this.level);
-					}
-				} else if (level == 6) {
-					if (timer % 20 == 0) {
-						ObstacleEntity.addObstacle(this, this.theme, this.entities, this.level);
-					}
+				if ((level == 4 && timer % 50 == 0) || (level == 5 && timer % 20 == 0) || (level == 6 && timer % 20 == 0)) {
+					ObstacleEntity.addObstacle(this, player.getTheme(), this.entities, this.level);
 				}
 			}
 
@@ -417,7 +408,7 @@ public class Game extends Canvas
 
 			//죽인 에일리언 표시
 			g.setColor(Color.white);
-			g.drawString("죽인 에일리언"+alienkill,30,30);
+			g.drawString("죽인 에일리언" + alienKill, 30, 30);
 			g.drawString("HP: " + characterStatus.getHp(), 720, 30);
 
 			// finally, we've completed drawing so clear up the graphics
@@ -427,7 +418,7 @@ public class Game extends Canvas
 
 			// resolve the movement of the ship. First assume the ship
 			// isn't moving. If either cursor key is pressed then
-			// update the movement appropraitely
+			// update the movement appropriately
 			ship.setHorizontalMovement(0);
 
 			if ((leftPressed) && (!rightPressed)) {
@@ -439,6 +430,7 @@ public class Game extends Canvas
 			// if we're pressing fire, attempt to fire
 			if (firePressed) {
 				tryToFire();
+
 			}
 
 			// we want each frame to take 10 milliseconds, to do this
@@ -459,7 +451,7 @@ public class Game extends Canvas
 	 *
 	 * This has been implemented as an inner class more through
 	 * habbit then anything else. Its perfectly normal to implement
-	 * this as seperate class if slight less convienient.
+	 * this as seperate class if slight less convenient.
 	 *
 	 * @author Kevin Glass
 	 */

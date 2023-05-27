@@ -76,7 +76,7 @@ public class ShipEntity extends Entity {
 
 	public void setNormalImage() {
 		try {
-			Sprite sprite = SpriteStore.get().getSprite(player.getSkin().getShipImage());
+			Sprite sprite = SpriteStore.get().getSprite(player.getCharacter().getShipImage());
 			setSprite(sprite);
 		} catch (Exception e) {
 			System.out.println("Failed to load normal image: " + e.getMessage());
@@ -85,7 +85,7 @@ public class ShipEntity extends Entity {
 
 	public void setShieldedImage() {
 		try {
-			Sprite sprite = SpriteStore.get().getSprite(player.getSkin().getShipShieldImage());
+			Sprite sprite = SpriteStore.get().getSprite(player.getCharacter().getShipShieldImage());
 			setSprite(sprite);
 		} catch (Exception e) {
 			System.out.println("Failed to load shielded image: " + e.getMessage());
