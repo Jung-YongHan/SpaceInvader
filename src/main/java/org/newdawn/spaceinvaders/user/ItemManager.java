@@ -28,7 +28,6 @@ public class ItemManager {
         String itemName = keyToItem.get(key);
         if (itemName != null) {
             inventory.useItem(itemName, game);
-            System.out.println(itemName + "사용!");
         }
     }
     public boolean canUseItem(long lastItemUse) {

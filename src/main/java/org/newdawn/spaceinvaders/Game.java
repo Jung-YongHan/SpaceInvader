@@ -11,16 +11,11 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.database.*;
 import org.newdawn.spaceinvaders.dataBase.DB;
-import org.newdawn.spaceinvaders.frame.LoginFrame;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.theme.*;
 import org.newdawn.spaceinvaders.Skin.*;
-
-import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.ItemManager;
 import org.newdawn.spaceinvaders.user.Player;
 
@@ -32,9 +27,9 @@ public class Game extends Canvas
 	/** True if the game is currently "running", i.e. the game loop is looping */
 	private boolean gameRunning = true;
 	/** The list of all the entities that exist in our game */
-	private ArrayList entities = new ArrayList();
+	private ArrayList<Entity> entities = new ArrayList();
 	/** The list of entities that need to be removed from the game this loop */
-	private ArrayList removeList = new ArrayList();
+	private ArrayList<Entity> removeList = new ArrayList();
 	/** The entity representing the player */
 	private ShipEntity ship;
 	/** The speed at which the player's ship should move (pixels/sec) */
@@ -45,7 +40,6 @@ public class Game extends Canvas
 	private double firingInterval = 200;
 	/** The number of aliens left on the screen */
 	private int alienCount;
-
 	/** The message to display which waiting for a key press */
 	private String message = "";
 	/** True if we're holding up game play until a key has been pressed */
@@ -67,20 +61,17 @@ public class Game extends Canvas
 	/** The game window that we'll update with the frame count */
 	private JFrame container;
 	private Image background;
-	private int currentLevel;
 	private int level;
 	/** item관련 변수 */
 	private Player player;
-	private Inventory inventory;
 	private ItemManager itemManager;
 	private int bulletCount = 1;
 	private int spaceBetweenBullets = 30;
 	private long lastItemUsed = 0;
-	private DatabaseReference myRef;
 	private DB db;
 	private Theme theme;
 	private Skin skin;
-
+	private int coinCount = 0;
 
 	/**
 	 * Construct our game and set it running.
@@ -112,15 +103,9 @@ public class Game extends Canvas
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
 
-		inventory = player.getInventory();
-
 		itemManager = new ItemManager(this.player);
 
-		myRef = FirebaseDatabase.getInstance().getReference("users").child(LoginFrame.getUserName());
 		db = new DB();
-
-		// initialise the entities in our game so there's something
-		// to see at startup
 
 		initEntities();
 	}
@@ -138,6 +123,8 @@ public class Game extends Canvas
 		leftPressed = false;
 		rightPressed = false;
 		firePressed = false;
+
+		waitingForKeyPress = false;
 	}
 
 	/**
@@ -146,55 +133,44 @@ public class Game extends Canvas
 	 */
 	int alienkill=0;
 
-	// 민재형 이부분 캐릭터 사진 변경임
 	private void initEntities() {
-		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this,this.player.getSkin().getShipImage(),370,500, this.player);
-		entities.add(ship);
-
-		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
+		createShip();
 		alienCount = 0;
 		db.getPlayCount(count -> {
 			if (count != 0 && count % 5 == 0) {
 				setLevel(6);
-			} else {
-				setLevel(currentLevel);
 			}
+			createAliens();
 		});
+
+	}
+
+	private void createShip() {
+		// create the player ship and place it roughly in the center of the screen
+		ship = new ShipEntity(this, this.skin.getShipImage(),370,500, this.player);
+		entities.add(ship);
+	}
+
+	private void createAliens() {
+		int numRows, numCols, rowSpace, colSpace;
 		if (level == 1) {
-			for (int row = 0; row < 4; row++) {
-				for (int col = 0; col < 6; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 110), (50) + row * 40, this.player);
-					entities.add(alien);
-					alienCount++;
-				}
-			}
+			numRows = 4; numCols = 6; rowSpace = 40; colSpace = 80;
 		} else if (level == 2) {
-			for (int row = 0; row < 5; row++) {
-				for (int col = 0; col < 8; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 80), (50) + row * 30, this.player);
-					entities.add(alien);
-					alienCount++;
-				}
-			}
+			numRows = 5; numCols = 8; rowSpace = 35; colSpace = 70;
 		} else if (level == 6) {
-			for (int n = 0; n < 15; n++) {
-				Entity alien = new BossAlienEntity(this, 700, 50);
+			numRows = 15; numCols = 1; rowSpace = 0; colSpace = 0;
+		} else {
+			numRows = 5; numCols = 12; rowSpace = 35; colSpace = 50;
+		}
+		for (int row = 0; row < numRows; row++) {
+			for (int col = 0; col < numCols; col++) {
+				Entity alien = level == 6 ?
+						new BossAlienEntity(this, 700, 50) :
+						new AlienEntity(this, 100 + (col * colSpace), 50 + (row * rowSpace), this.player);
 				entities.add(alien);
 				alienCount++;
 			}
-
-		} else {
-			for (int row = 0; row < 5; row++) {
-				for (int col = 0; col < 12; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 50), (50) + row * 30, this.player);
-					entities.add(alien);
-					alienCount++;
-				}
-			}
 		}
-
-		if (player.getSelectedSkinId() == 1) {bulletCount=2; moveSpeed=100;firingInterval=700;} else if (player.getSelectedSkinId() ==2) {bulletCount=3; moveSpeed=150;firingInterval=2000;}
 	}
 
 	public ShipEntity getShip(){
@@ -289,36 +265,35 @@ public class Game extends Canvas
 		coinCount = 0;
 	}
 
-	private int coinCount = 0;
-
 	public void increaseCoinCount() {
 		coinCount++;
 		System.out.println("Coin Count: " + coinCount); // 콘솔에 현재 코인 개수를 출력합니다.
 	}
 
+	// 에일리언 처치 시 관련 함수
 	public void notifyAlienKilled(Entity alienEntity) {
 		// reduce the alien count, if there are none left, the player has won!
 		alienCount--;
+		alienkill++;
 
-		alienkill ++;
 		if (alienCount == 0) {
 			notifyWin();
 		}
 
-		Random rand = new Random();
-		int randomNum = rand.nextInt(100);
+		generateCoin(alienEntity);
+		speedUpAliens();
+	}
 
-		if (randomNum < 50) { // 50%의 확률로 코인 생성
+	private void generateCoin(Entity alienEntity) {
+		Random rand = new Random();
+		if (rand.nextInt(100) < 50) { // 50% chance to generate a coin
 			CoinEntity coin = new CoinEntity(this, "sprites/coin.png", alienEntity.getX(), alienEntity.getY());
 			entities.add(coin);
 		}
+	}
 
-
-		// if there are still some aliens left then they all need to get faster, so
-		// speed up all the existing aliens
-		for (int i=0;i<entities.size();i++) {
-			Entity entity = (Entity) entities.get(i);
-
+	private void speedUpAliens() {
+		for (Entity entity : entities) { // Assuming 'aliens' is a collection that holds only alien entities
 			if (entity instanceof AlienEntity) {
 				// speed up by 2%
 				entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.02);
@@ -342,7 +317,7 @@ public class Game extends Canvas
 
 		for (int i = 0; i < bulletCount; i++) {
 			int bulletX = ship.getX() + 10 - (bulletCount - 1) * spaceBetweenBullets / 2 + i * spaceBetweenBullets;
-			ShotEntity shot = new ShotEntity(this, this.player.getSkin().getShipShotImage(), bulletX, ship.getY() - 30);
+			ShotEntity shot = new ShotEntity(this, this.skin.getShipShotImage(), bulletX, ship.getY() - 30);
 			entities.add(shot);
 		}
 	}
@@ -522,9 +497,6 @@ public class Game extends Canvas
 
 	/** 레벨 선택 */
 	public void setLevel(int level){
-		if (level != 6) {
-			this.currentLevel = level;
-		}
 		this.level = level;
 	}
 
@@ -562,6 +534,7 @@ public class Game extends Canvas
 			}
 		}
 
+		@Override
 		public void keyPressed(KeyEvent e) {
 			// if we're waiting for an "any key" typed then we don't
 			// want to do anything with just a "press"
@@ -587,6 +560,7 @@ public class Game extends Canvas
 		 *
 		 * @param e The details of the key that was released
 		 */
+		@Override
 		public void keyReleased(KeyEvent e) {
 			// if we're waiting for an "any key" typed then we don't
 			// want to do anything with just a "released"
@@ -614,6 +588,7 @@ public class Game extends Canvas
 		 *
 		 * @param e The details of the key that was typed.
 		 */
+		@Override
 		public void keyTyped(KeyEvent e) {
 			// if we're waiting for a "any key" type then
 			// check if we've recieved any recently. We may
@@ -625,7 +600,6 @@ public class Game extends Canvas
 					// since we've now recieved our key typed
 					// event we can mark it as such and start
 					// our new game
-					waitingForKeyPress = false;
 					startGame();
 					pressCount = 0;
 				} else {

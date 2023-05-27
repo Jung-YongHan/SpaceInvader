@@ -28,7 +28,7 @@ public class StageFrame extends JFrame{
 
     private void loadContent() {
         levelButton = new JButton[levels];
-        for(int i=0; i<5; i++){
+        for(int i=0; i<levels; i++){
             levelButton[i] = new JButton("Level " + (i+1));
             levelButton[i].setOpaque(false);
             levelButton[i].setContentAreaFilled(false);
