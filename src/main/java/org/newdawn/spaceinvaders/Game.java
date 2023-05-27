@@ -38,7 +38,6 @@ public class Game extends Canvas
 	private double firingInterval = 200;
 	/** The number of aliens left on the screen */
 	private int alienCount;
-
 	/** The message to display which waiting for a key press */
 	private String message = "";
 	/** True if we're holding up game play until a key has been pressed */
@@ -69,6 +68,7 @@ public class Game extends Canvas
 	private int spaceBetweenBullets = 30;
 	private long lastItemUsed = 0;
 	private DB db;
+	private int coinCount = 0;
 
 
 	/**
@@ -104,9 +104,6 @@ public class Game extends Canvas
 
 		db = new DB();
 
-		// initialise the entities in our game so there's something
-		// to see at startup
-
 		initEntities();
 	}
 
@@ -129,57 +126,46 @@ public class Game extends Canvas
 	 * Initialise the starting state of the entities (ship and aliens). Each
 	 * entity will be added to the overall list of entities in the game.
 	 */
-	int alienKill =0;
+	int alienkill =0;
 
-	// 민재형 이부분 캐릭터 사진 변경임
 	private void initEntities() {
-		// create the player ship and place it roughly in the center of the screen
-		ship = new ShipEntity(this,this.player.getSkin().getShipImage(),370,500, this.player);
-		entities.add(ship);
-
-		// create a block of aliens (5 rows, by 12 aliens, spaced evenly)
+		createShip();
 		alienCount = 0;
 		db.getPlayCount(count -> {
 			if (count != 0 && count % 5 == 0) {
 				setLevel(6);
-			} else {
-				setLevel(currentLevel);
 			}
+			createAliens();
 		});
+
+	}
+
+	private void createShip() {
+		// create the player ship and place it roughly in the center of the screen
+		ship = new ShipEntity(this, this.player.getSkin().getShipImage(),370,500, this.player);
+		entities.add(ship);
+	}
+
+	private void createAliens() {
+		int numRows, numCols, rowSpace, colSpace;
 		if (level == 1) {
-			for (int row = 0; row < 4; row++) {
-				for (int col = 0; col < 6; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 110), (50) + row * 40, this.player);
-					entities.add(alien);
-					alienCount++;
-				}
-			}
+			numRows = 4; numCols = 6; rowSpace = 40; colSpace = 80;
 		} else if (level == 2) {
-			for (int row = 0; row < 5; row++) {
-				for (int col = 0; col < 8; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 80), (50) + row * 30, this.player);
-					entities.add(alien);
-					alienCount++;
-				}
-			}
+			numRows = 5; numCols = 8; rowSpace = 35; colSpace = 70;
 		} else if (level == 6) {
-			for (int n = 0; n < 15; n++) {
-				Entity alien = new BossAlienEntity(this, 700, 50);
+			numRows = 15; numCols = 1; rowSpace = 0; colSpace = 0;
+		} else {
+			numRows = 5; numCols = 12; rowSpace = 35; colSpace = 50;
+		}
+		for (int row = 0; row < numRows; row++) {
+			for (int col = 0; col < numCols; col++) {
+				Entity alien = level == 6 ?
+						new BossAlienEntity(this, 700, 50) :
+						new AlienEntity(this, 100 + (col * colSpace), 50 + (row * rowSpace), this.player);
 				entities.add(alien);
 				alienCount++;
 			}
-
-		} else {
-			for (int row = 0; row < 5; row++) {
-				for (int col = 0; col < 12; col++) {
-					Entity alien = new AlienEntity(this, 100 + (col * 50), (50) + row * 30, this.player);
-					entities.add(alien);
-					alienCount++;
-				}
-			}
 		}
-
-		if (player.getSelectedSkinId() == 1) {bulletCount=2; moveSpeed=100;firingInterval=700;} else if (player.getSelectedSkinId() ==2) {bulletCount=3; moveSpeed=150;firingInterval=2000;}
 	}
 
 	public ShipEntity getShip(){
@@ -233,10 +219,10 @@ public class Game extends Canvas
 	 * Notification that the player has died.
 	 */
 	public void notifyDeath() {
-		message = "Level "+level+", Score :"+ alienKill;
+		message = "Level "+level+", Score :"+ alienkill;
 		waitingForKeyPress = true;
 		updatePlayInfo(timer, coinCount);
-		alienKill =0;
+		alienkill=0;
 		coinCount = 0;
 	}
 
@@ -245,10 +231,10 @@ public class Game extends Canvas
 	 * are dead.
 	 */
 	public void notifyWin() {
-		message = "Level " + level + ", Score :" + alienKill;
+		message = "Level " + level + ", Score :" + alienkill;
 		waitingForKeyPress = true;
-		db.storeHighScore(alienKill);
-		alienKill = 0;
+		db.storeHighScore(alienkill);
+		alienkill = 0;
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -281,29 +267,30 @@ public class Game extends Canvas
 		System.out.println("Coin Count: " + coinCount); // 콘솔에 현재 코인 개수를 출력합니다.
 	}
 
+	// 에일리언 처치 시 관련 함수
 	public void notifyAlienKilled(Entity alienEntity) {
 		// reduce the alien count, if there are none left, the player has won!
 		alienCount--;
+		alienkill++;
 
-		alienKill++;
 		if (alienCount == 0) {
 			notifyWin();
 		}
 
-		Random rand = new Random();
-		int randomNum = rand.nextInt(100);
+		generateCoin(alienEntity);
+		speedUpAliens();
+	}
 
-		if (randomNum < 50) { // 50%의 확률로 코인 생성
+	private void generateCoin(Entity alienEntity) {
+		Random rand = new Random();
+		if (rand.nextInt(100) < 50) { // 50% chance to generate a coin
 			CoinEntity coin = new CoinEntity(this, "sprites/coin.png", alienEntity.getX(), alienEntity.getY());
 			entities.add(coin);
 		}
+	}
 
-
-		// if there are still some aliens left then they all need to get faster, so
-		// speed up all the existing aliens
-		for (int i=0;i<entities.size();i++) {
-			Entity entity = entities.get(i);
-
+	private void speedUpAliens() {
+		for (Entity entity : entities) { // Assuming 'aliens' is a collection that holds only alien entities
 			if (entity instanceof AlienEntity) {
 				// speed up by 2%
 				entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.02);
@@ -446,7 +433,7 @@ public class Game extends Canvas
 
 			//죽인 에일리언 표시
 			g.setColor(Color.white);
-			g.drawString("죽인 에일리언" + alienKill, 30, 30);
+			g.drawString("죽인 에일리언" + alienkill, 30, 30);
 			g.drawString("HP: " + ship.getHP(), 720, 30);
 
 			// finally, we've completed drawing so clear up the graphics
