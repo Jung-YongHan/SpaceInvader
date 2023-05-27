@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.user;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Skin.CharacterStatus;
 import org.newdawn.spaceinvaders.item.*;
 
 import java.util.HashMap;
@@ -37,11 +38,11 @@ public class Inventory {
     public void removeItem(String item) {
         items.put(item, getItemCount(item)-1);
     }
-    public void useItem(String itemName, Game game) {
+    public void useItem(String itemName, CharacterStatus characterStatus) {
         if (getItemCount(itemName) > 0) {
             Item item = nameToItem.get(itemName);
             if (item != null) {
-                item.useItem(game);
+                item.useItem(characterStatus);
             }
         }
     }

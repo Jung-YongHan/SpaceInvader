@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.item;
 
 import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Skin.CharacterStatus;
 import org.newdawn.spaceinvaders.user.Inventory;
 
 public class HealItem extends Item{
@@ -12,9 +13,9 @@ public class HealItem extends Item{
     }
 
     @Override
-    public void useItem(Game game) {
+    public void useItem(CharacterStatus characterStatus){
         if (inventory.getItemCount(this.getName()) > 0) {
-            game.getEntity().setHP(game.getEntity().getHP()+1);
+            characterStatus.setHp(characterStatus.getHp()+1);
             inventory.removeItem(this.getName());
         }
     }

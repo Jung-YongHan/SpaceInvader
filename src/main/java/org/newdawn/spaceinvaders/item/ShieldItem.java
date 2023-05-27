@@ -1,11 +1,9 @@
 package org.newdawn.spaceinvaders.item;
 
-import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.entity.ShipEntity;
+import org.newdawn.spaceinvaders.Skin.CharacterStatus;
 import org.newdawn.spaceinvaders.user.Inventory;
 
 public class ShieldItem extends Item{
-    private ShipEntity shipEntity;
     public ShieldItem(Inventory inventory) {
         super(inventory);
         this.inventory = inventory;
@@ -14,10 +12,9 @@ public class ShieldItem extends Item{
     }
 
     @Override
-    public void useItem(Game game) {
+    public void useItem(CharacterStatus characterStatus) {
         if (inventory.getItemCount(this.getName()) > 0) {
-            shipEntity = game.getShip();
-            shipEntity.activateShield();
+            characterStatus.getShieldStatus().activateShield();
             inventory.removeItem(this.getName());
         }
     }

@@ -2,10 +2,10 @@ package org.newdawn.spaceinvaders.user;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.Skin.AstronautSkin;
-import org.newdawn.spaceinvaders.Skin.CatSkin;
-import org.newdawn.spaceinvaders.Skin.SpaceSkin;
-import org.newdawn.spaceinvaders.Skin.Skin;
+import org.newdawn.spaceinvaders.Skin.AstronautCharacter;
+import org.newdawn.spaceinvaders.Skin.CatCharacter;
+import org.newdawn.spaceinvaders.Skin.SpaceShipCharacter;
+import org.newdawn.spaceinvaders.Skin.Character;
 import org.newdawn.spaceinvaders.dataBase.DB;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.theme.CatTheme;
@@ -21,7 +21,7 @@ public class Player {
     private int characterId;
     private Theme configTheme = new SpaceTheme();
     private ShipEntity playerShip;
-    private Skin configSkin = new SpaceSkin();
+    private Character configCharacter = new SpaceShipCharacter();
 
     private int selectedSkinId; // 스킨 ID를 저장하기 위한 필드 추가
 
@@ -36,13 +36,6 @@ public class Player {
         }
         this.inventory = new Inventory();
         setCharacterId(this.characterId);
-    }
-    public ShipEntity getPlayerShip() {
-        return this.playerShip;
-    }
-
-    public void setPlayerShip(ShipEntity playerShip) {
-        this.playerShip = playerShip;
     }
 
     public void setGame(Game game){
@@ -64,15 +57,9 @@ public class Player {
     public void setCharacterId(int characterId) { this.characterId = characterId; }
     public void setTheme(int themeId) {
         switch (themeId) {
-            case 1:
-                this.configTheme = new CatTheme();
-                break;
-            case 2:
-                this.configTheme = new DesertTheme();
-                break;
-            default:
-                this.configTheme = new SpaceTheme();
-                break;
+            case 1 -> this.configTheme = new CatTheme();
+            case 2 -> this.configTheme = new DesertTheme();
+            default -> this.configTheme = new SpaceTheme();
         }
     }
 
@@ -86,25 +73,20 @@ public class Player {
 
     public void setSkin(int skinId) {
         switch (skinId) {
-            case 1:
-                this.configSkin = new CatSkin();
-                selectedSkinId =1;
-                break;
-            case 2:
-                this.configSkin = new AstronautSkin();
-                selectedSkinId =2;
-                break;
-            default:
-                this.configSkin = new SpaceSkin();
-                selectedSkinId =0;
-                break;
+            case 1 -> {
+                this.configCharacter = new CatCharacter();
+                selectedSkinId = 1;
+            }
+            case 2 -> {
+                this.configCharacter = new AstronautCharacter();
+                selectedSkinId = 2;
+            }
+            default -> {
+                this.configCharacter = new SpaceShipCharacter();
+                selectedSkinId = 0;
+            }
         }
     }
-
-    // 현재 선택된 스킨 ID를 반환하는 메소드 추가
-    public int getSelectedSkinId() {
-        return selectedSkinId;
-    }
-    public Skin getSkin() {return this.configSkin;}
+    public Character getSkin() {return this.configCharacter;}
 
 }

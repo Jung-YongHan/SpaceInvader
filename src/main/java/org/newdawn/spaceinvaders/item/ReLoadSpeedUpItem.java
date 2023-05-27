@@ -1,6 +1,6 @@
 package org.newdawn.spaceinvaders.item;
 
-import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.Skin.CharacterStatus;
 import org.newdawn.spaceinvaders.user.Inventory;
 
 public class ReLoadSpeedUpItem extends Item{
@@ -11,9 +11,9 @@ public class ReLoadSpeedUpItem extends Item{
         coins = 0;
     }
     @Override
-    public void useItem(Game game) {
+    public void useItem(CharacterStatus characterStatus) {
         if (inventory.getItemCount(this.getName()) > 0) {
-            game.setFireSpeed(game.getFireSpeed()*(0.75));
+            characterStatus.setFiringInterval(characterStatus.getFiringInterval()*(0.75));
             inventory.removeItem(this.getName());
         }
     }
