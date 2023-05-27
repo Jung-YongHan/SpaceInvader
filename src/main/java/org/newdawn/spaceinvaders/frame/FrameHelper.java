@@ -32,7 +32,7 @@ public class FrameHelper {
     public static void setButtonFormat(JButton button) {
         button.setOpaque(false);
         button.setContentAreaFilled(false); // 배경
-        button.setBorderPainted(false); // 배경
+        button.setBorderPainted(false); // 테두리
         button.setForeground(Color.WHITE); // 글자색
         button.setFocusPainted(false); // 테두리
         button.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트

@@ -9,6 +9,8 @@ import org.newdawn.spaceinvaders.item.SpeedUpItem;
 import org.newdawn.spaceinvaders.item.*;
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -16,6 +18,7 @@ public class Shop {
     private ArrayList<Item> items;
     private Inventory inventory;
     private DB db;
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     public Shop(Player player) throws FirebaseAuthException {
         db = new DB();
@@ -31,13 +34,13 @@ public class Shop {
 
     public void sellItem(Item item, Player player) {
         db.getCoin(coin -> {
-            System.out.println(coin);
+            log.debug("Coin: {}", coin);
             if (coin >= item.getPrice()) {
                 db.updateCoin(-item.getPrice());
                 player.addItemToInventory(item.getName());
-                System.out.println("You have purchased " + item.getName() + ".");
+                log.debug("You have purchased {}.", item.getName());
             } else {
-                System.out.println("You do not have enough money to purchase " + item.getName() + ".");
+                log.debug("You do not have enough money to purchase {}.", item.getName());
             }
         });
     }

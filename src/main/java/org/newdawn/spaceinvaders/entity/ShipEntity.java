@@ -5,6 +5,8 @@ import org.newdawn.spaceinvaders.Skin.CharacterStatus;
 import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.SpriteStore;
 import org.newdawn.spaceinvaders.user.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The entity that represents the players ship
@@ -16,6 +18,7 @@ public class ShipEntity extends Entity {
 	/** The game in which the ship exists */
 	private Game game;
 	private Player player;
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Create a new entity to represent the players ship
@@ -79,7 +82,7 @@ public class ShipEntity extends Entity {
 			Sprite sprite = SpriteStore.get().getSprite(player.getCharacter().getShipImage());
 			setSprite(sprite);
 		} catch (Exception e) {
-			System.out.println("Failed to load normal image: " + e.getMessage());
+			log.debug("Failed to load normal image: {}", e.getMessage());
 		}
 	}
 
@@ -88,7 +91,7 @@ public class ShipEntity extends Entity {
 			Sprite sprite = SpriteStore.get().getSprite(player.getCharacter().getShipShieldImage());
 			setSprite(sprite);
 		} catch (Exception e) {
-			System.out.println("Failed to load shielded image: " + e.getMessage());
+			log.debug("Failed to load shielded image: {}", e.getMessage());
 		}
 	}
 
