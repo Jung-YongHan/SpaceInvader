@@ -17,7 +17,7 @@ public class CharacterSelectFrame extends JFrame{
     private int iconSize = 128;
     private int[] iconX = {100, 370, 590};
     private int iconY = 200;
-    private int[] buttonX = {120, 360, 600};
+    private int[] buttonX = {110, 350, 590};
     private int buttonY = 350;
     private String[] iconImage = {"src/main/resources/sprites/ship/space/", "src/main/resources/sprites/ship/cat/", "src/main/resources/sprites/ship/astronaut/"};
     private Player player;
@@ -84,7 +84,7 @@ public class CharacterSelectFrame extends JFrame{
             selectButton[i].setForeground(Color.WHITE); // 전경색(글자색)을 흰색으로 설정
             selectButton[i].setFocusPainted(false); // 포커스 그림을 그리지 않도록 설정
             selectButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트를 Arial, 볼드체 + 이탤릭체, 크기 20으로 설정
-            selectButton[i].setBounds(buttonX[i], buttonY, 80, 30); // 버튼의 위치와 크기를 설정
+            selectButton[i].setBounds(buttonX[i], buttonY, 110, 30); // 버튼의 위치와 크기를 설정
             getContentPane().add(selectButton[i]);
             getContentPane().setComponentZOrder(selectButton[i], 1); // 버튼을 라벨 아래에 배치
         }
