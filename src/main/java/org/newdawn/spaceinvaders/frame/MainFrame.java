@@ -99,9 +99,9 @@ public class MainFrame extends JFrame{
         });
 
         // Character 설정 버튼
-        characterSelectButton = new JButton("Character");
+        characterSelectButton = new JButton("Select");
         FrameHelper.setButtonFormat(characterSelectButton);
-        characterSelectButton.setBounds(700, 500, 100, 50);
+        characterSelectButton.setBounds(600, 500, 200, 50);
         characterSelectButton.addActionListener(e -> {
             new CharacterSelectFrame(player);
             setVisible(false);
