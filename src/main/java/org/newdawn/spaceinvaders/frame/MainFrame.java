@@ -25,15 +25,10 @@ public class MainFrame extends JFrame{
         super("Main Page");
         this.player = player;
 
-        setFrameLayout();
+        FrameHelper.setFrameLayout(this, player);
         loadContent();
         setVisible(true);
     }
-
-    private void setFrameLayout() {
-        FrameHelper.setFrameLayout(this, new ImageIcon(player.getTheme().getBackgroundImage()));
-    }
-
     private void loadContent() {
         // Title
         titleLabel = new JLabel("SpaceInvaders ");
@@ -50,7 +45,7 @@ public class MainFrame extends JFrame{
 
         // Start 버튼
         startButton = new JButton("Start");
-        FrameHelper.setButtonFormat(startButton);
+        FrameHelper.setTextButtonFormat(startButton);
         startButton.setBounds(0, 300, 200, 50);
         startButton.addActionListener(e -> {
             new StageFrame(player); // Stage 선택 창
@@ -59,7 +54,7 @@ public class MainFrame extends JFrame{
 
         // MyPage 버튼
         myPageButton = new JButton("MyPage");
-        FrameHelper.setButtonFormat(myPageButton);
+        FrameHelper.setTextButtonFormat(myPageButton);
         myPageButton.setBounds(200, 300, 200, 50);
         myPageButton.addActionListener(e -> {
             try {
@@ -72,7 +67,7 @@ public class MainFrame extends JFrame{
 
         // Shop 버튼
         shopButton = new JButton("Shop");
-        FrameHelper.setButtonFormat(shopButton);
+        FrameHelper.setTextButtonFormat(shopButton);
         shopButton.setBounds(400, 300, 200, 50);
         shopButton.addActionListener(e -> {
             try {
@@ -85,13 +80,13 @@ public class MainFrame extends JFrame{
 
         // Game Introduction 버튼
         gameIntroduction = new JButton("Introduction");
-        FrameHelper.setButtonFormat(gameIntroduction);
+        FrameHelper.setTextButtonFormat(gameIntroduction);
         gameIntroduction.setBounds(600, 300, 200, 50);
         gameIntroduction.addActionListener(e -> gameIntroductionDialog());
 
         // Theme 설정 버튼
         themeConfig = new JButton("Theme");
-        FrameHelper.setButtonFormat(themeConfig);
+        FrameHelper.setTextButtonFormat(themeConfig);
         themeConfig.setBounds(300, 350, 200, 50);
         themeConfig.addActionListener(e -> {
             new ThemeFrame(player);
@@ -100,7 +95,7 @@ public class MainFrame extends JFrame{
 
         // Character 설정 버튼
         characterSelectButton = new JButton("Character");
-        FrameHelper.setButtonFormat(characterSelectButton);
+        FrameHelper.setTextButtonFormat(characterSelectButton);
         characterSelectButton.setBounds(600, 500, 200, 50);
         characterSelectButton.addActionListener(e -> {
             new CharacterSelectFrame(player);

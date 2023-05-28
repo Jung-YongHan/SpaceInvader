@@ -17,13 +17,9 @@ public class StageFrame extends JFrame{
         super("Stage Page");
         this.player = player;
 
-        setFrameLayout();
+        FrameHelper.setFrameLayout(this, player);
         loadContent();
         setVisible(true);
-    }
-
-    private void setFrameLayout() {
-        FrameHelper.setFrameLayout(this, new ImageIcon(player.getTheme().getBackgroundImage()));
     }
 
     private void loadContent() {

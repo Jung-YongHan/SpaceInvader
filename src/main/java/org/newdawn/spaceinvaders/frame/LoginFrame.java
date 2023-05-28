@@ -33,7 +33,7 @@ public class LoginFrame extends JFrame{
     }
 
     private void setFrameLayout() {
-        FrameHelper.setFrameLayout(this, new ImageIcon("src/main/resources/background/loginBackground.png"));
+        FrameHelper.setBasicFrameLayout(this, new ImageIcon("src/main/resources/background/loginBackground.png"));
     }
 
     private void loadContent() {

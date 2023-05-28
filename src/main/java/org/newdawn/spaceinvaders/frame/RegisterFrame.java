@@ -27,7 +27,7 @@ public class RegisterFrame extends JFrame {
     }
 
     private void setFrameLayout() {
-        FrameHelper.setFrameLayout(this, new ImageIcon("src/main/resources/background/white.png"));
+        FrameHelper.setBasicFrameLayout(this, new ImageIcon("src/main/resources/background/white.png"));
     }
 
     private void loadContent() {

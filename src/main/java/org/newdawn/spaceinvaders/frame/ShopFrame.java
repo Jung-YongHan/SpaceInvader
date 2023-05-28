@@ -1,6 +1,7 @@
 package org.newdawn.spaceinvaders.frame;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import org.newdawn.spaceinvaders.actionlisteners.BuyActionListener;
 import org.newdawn.spaceinvaders.item.*;
 import org.newdawn.spaceinvaders.user.Inventory;
 import org.newdawn.spaceinvaders.user.Player;
@@ -19,12 +20,6 @@ public class ShopFrame extends JFrame{
     private Shop shop;
     private Player player;
     private Inventory inventory;
-    private AddBulletItem addBulletItem;
-    private HealItem healItem;
-    private SpeedUpItem speedUpItem;
-    private ReLoadSpeedUpItem reLoadSpeedUpItem;
-    private ShieldItem shieldItem;
-
     final int itemCount = 5;
     private JButton backButton;
     private JButton[] buyButton;
@@ -49,25 +44,19 @@ public class ShopFrame extends JFrame{
         inventory = player.getInventory();
         shop = new Shop(player);
 
-        addBulletItem = new AddBulletItem(inventory);
-        healItem = new HealItem(inventory);
-        speedUpItem = new SpeedUpItem(inventory);
-        shieldItem = new ShieldItem(inventory);
-        reLoadSpeedUpItem = new ReLoadSpeedUpItem(inventory);
+        initializeItems();
 
-        items.add(addBulletItem);
-        items.add(healItem);
-        items.add(speedUpItem);
-        items.add(shieldItem);
-        items.add(reLoadSpeedUpItem);
-
-        setFrameLayout();
+        FrameHelper.setFrameLayout(this, player);
         loadContent();
         setVisible(true);
     }
 
-    private void setFrameLayout() {
-        FrameHelper.setFrameLayout(this, new ImageIcon(player.getTheme().getBackgroundImage()));
+    private void initializeItems() {
+        items.add(new AddBulletItem(inventory));
+        items.add(new HealItem(inventory));
+        items.add(new SpeedUpItem(inventory));
+        items.add(new ShieldItem(inventory));
+        items.add(new ReLoadSpeedUpItem(inventory));
     }
 
     private void loadContent() {
@@ -88,43 +77,25 @@ public class ShopFrame extends JFrame{
         // item 이름
         itemName = new JLabel[itemCount];
         for(int i=0; i<itemCount; i++){
-            itemName[i] = new JLabel(iconName[i]);
-            itemName[i].setOpaque(false);
-            itemName[i].setForeground(Color.BLACK);
-            itemName[i].setFont(new Font("Arial", Font.BOLD, 20));
-            itemName[i].setBounds(iconNameX[i], iconNameY, 200, 20);
+            itemName[i] = FrameHelper.createLabelButton(iconName[i], iconNameX[i], iconNameY);
             getContentPane().add(itemName[i]);
         }
 
         // Buy 버튼
         buyButton = new JButton[itemCount];
         for(int i=0; i<itemCount; i++){
-            buyButton[i] = new JButton("Buy");
-            buyButton[i].setOpaque(true);
-            buyButton[i].setBackground(Color.BLACK);
-            buyButton[i].setForeground(Color.WHITE);
-            buyButton[i].setFocusPainted(false);
-            buyButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20));
-            buyButton[i].setBounds(buttonX[i], buttonY, 80, 30);
             final int index = i;
-            buyButton[i].addActionListener(e -> {
-                Item item = items.get(index);
-                shop.sellItem(item, player);
-                updatePlayerCoins();
-            });
+            buyButton[i] = FrameHelper.createBuyButton("Buy", buttonX[i], buttonY);
+            buyButton[i].addActionListener(new BuyActionListener(items.get(index), player, shop, this));
             getContentPane().add(buyButton[i]);
         }
-
 
         // Back 버튼
         backButton = FrameHelper.createBackButton(player, this);
         getContentPane().add(backButton);
 
-        playerCoins = new JLabel("Coins: " + player.getCoins());
-        playerCoins.setOpaque(false);
-        playerCoins.setForeground(Color.WHITE);
-        playerCoins.setFont(new Font("Arial", Font.BOLD, 20));
-        playerCoins.setBounds(620, 500, 200, 20);
+        // 플레이어 화폐
+        playerCoins = FrameHelper.createLabelButton("Coins: " + player.getCoins(), 620, 500);
         getContentPane().add(playerCoins);
     }
 
