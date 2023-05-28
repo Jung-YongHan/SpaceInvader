@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders.Skin;
+package org.newdawn.spaceinvaders.character;
 
 public class CatCharacter extends Character {
     public CatCharacter(){

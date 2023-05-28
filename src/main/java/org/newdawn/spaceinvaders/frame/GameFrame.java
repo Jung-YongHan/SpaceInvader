@@ -26,3 +26,5 @@ public class GameFrame extends JFrame{
         getContentPane().setLayout(null);
     }
 }
+
+

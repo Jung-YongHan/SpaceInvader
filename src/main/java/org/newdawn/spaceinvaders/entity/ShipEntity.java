@@ -1,7 +1,7 @@
 package org.newdawn.spaceinvaders.entity;
 
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.Skin.CharacterStatus;
+import org.newdawn.spaceinvaders.character.CharacterStatus;
 import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.SpriteStore;
 import org.newdawn.spaceinvaders.user.Player;

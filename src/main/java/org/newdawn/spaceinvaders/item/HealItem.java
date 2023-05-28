@@ -1,7 +1,6 @@
 package org.newdawn.spaceinvaders.item;
 
-import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.Skin.CharacterStatus;
+import org.newdawn.spaceinvaders.character.CharacterStatus;
 import org.newdawn.spaceinvaders.user.Inventory;
 
 public class HealItem extends Item{

@@ -12,8 +12,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import org.newdawn.spaceinvaders.Skin.Character;
-import org.newdawn.spaceinvaders.Skin.CharacterStatus;
+import org.newdawn.spaceinvaders.character.Character;
+import org.newdawn.spaceinvaders.character.CharacterStatus;
 import org.newdawn.spaceinvaders.database.DB;
 import org.newdawn.spaceinvaders.entity.*;
 import org.newdawn.spaceinvaders.theme.*;

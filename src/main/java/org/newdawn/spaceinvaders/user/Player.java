@@ -2,10 +2,10 @@ package org.newdawn.spaceinvaders.user;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.Skin.AstronautCharacter;
-import org.newdawn.spaceinvaders.Skin.CatCharacter;
-import org.newdawn.spaceinvaders.Skin.SpaceShipCharacter;
-import org.newdawn.spaceinvaders.Skin.Character;
+import org.newdawn.spaceinvaders.character.AstronautCharacter;
+import org.newdawn.spaceinvaders.character.CatCharacter;
+import org.newdawn.spaceinvaders.character.SpaceShipCharacter;
+import org.newdawn.spaceinvaders.character.Character;
 import org.newdawn.spaceinvaders.database.DB;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.theme.CatTheme;

@@ -25,9 +25,7 @@ public class ShopFrame extends JFrame{
     private JButton[] buyButton;
     private JLabel[] itemIcon;
     private JLabel[] itemName;
-
     private int iconSize = 128;
-    private int[] iconX = {60, 180, 320, 460, 600};
     private int[] iconNameX = {70, 230, 340, 490, 590};
     private int iconY = 200;
     private int iconNameY = 350;
@@ -64,7 +62,7 @@ public class ShopFrame extends JFrame{
         itemIcon = new JLabel[itemCount];
         for(int i=0; i<itemCount; i++){
             itemIcon[i] = new JLabel();
-            itemIcon[i].setBounds(iconX[i], iconY, iconSize, iconSize);
+            itemIcon[i].setBounds(40+140*i, 200, iconSize, iconSize);
             itemIcon[i].setOpaque(false);
             try {
                 itemIcon[i].setIcon(new ImageIcon(ImageIO.read(new File("src/main/resources/itemIcon/" + iconImage[i]))));

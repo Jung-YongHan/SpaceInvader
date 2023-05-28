@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders.Skin;
+package org.newdawn.spaceinvaders.character;
 
 import org.newdawn.spaceinvaders.user.Player;
 
