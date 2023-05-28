@@ -90,11 +90,7 @@ public class CharacterSelectFrame extends JFrame{
         }
 
         // back 버튼
-        backButton = FrameHelper.createBackButton();
-        backButton.addActionListener(e -> {
-            new MainFrame(player);
-            setVisible(false);
-        });
+        backButton = FrameHelper.createBackButton(player, this);
         getContentPane().add(backButton);
     }
 

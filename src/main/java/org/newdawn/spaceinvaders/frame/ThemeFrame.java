@@ -12,7 +12,7 @@ public class ThemeFrame extends JFrame {
     private final String[] buttonNames = {"Space", "Cafe", "Dessert"};
 
     public ThemeFrame(Player player) {
-        super("Thema");
+        super("Theme");
         this.player = player;
 
         setFrameLayout();
@@ -53,11 +53,7 @@ public class ThemeFrame extends JFrame {
         }
 
         // 버튼 추가
-        backButton = FrameHelper.createBackButton();
-        backButton.addActionListener(e -> {
-            new MainFrame(player);
-            setVisible(false);
-        });
+        backButton = FrameHelper.createBackButton(player, this);
         getContentPane().add(backButton);
     }
 

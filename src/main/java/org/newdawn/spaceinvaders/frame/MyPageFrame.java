@@ -58,11 +58,7 @@ public class MyPageFrame extends JFrame{
         getContentPane().add(titleLabel);
 
         // 버튼 추가
-        backButton = FrameHelper.createBackButton();
-        backButton.addActionListener(e -> {
-            new MainFrame(player);
-            setVisible(false);
-        });
+        backButton = FrameHelper.createBackButton(player, this);
         getContentPane().add(backButton);
 
         highScoreLabel = new JLabel();

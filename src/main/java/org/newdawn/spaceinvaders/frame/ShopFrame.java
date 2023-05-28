@@ -117,11 +117,7 @@ public class ShopFrame extends JFrame{
 
 
         // Back 버튼
-        backButton = FrameHelper.createBackButton();
-        backButton.addActionListener(e -> {
-            new MainFrame(player);
-            setVisible(false);
-        });
+        backButton = FrameHelper.createBackButton(player, this);
         getContentPane().add(backButton);
 
         playerCoins = new JLabel("Coins: " + player.getCoins());

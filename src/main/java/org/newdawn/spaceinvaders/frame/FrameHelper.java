@@ -1,5 +1,8 @@
 package org.newdawn.spaceinvaders.frame;
 
+import org.newdawn.spaceinvaders.actionlisteners.BackActionListener;
+import org.newdawn.spaceinvaders.user.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -38,15 +41,11 @@ public class FrameHelper {
         button.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
     }
 
-    public static JButton createBackButton() {
+    public static JButton createBackButton(Player player, JFrame jFrame) {
         JButton backButton = new JButton("Back");
-        backButton.setOpaque(false);
-        backButton.setContentAreaFilled(false); // 배경
-        backButton.setBorderPainted(false); // 배경
-        backButton.setForeground(Color.WHITE); // 글자색
-        backButton.setFocusPainted(false); // 테두리
-        backButton.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 20)); // 폰트
+        setButtonFormat(backButton);
         backButton.setBounds(0, 500, 100, 20); // set position and size
+        backButton.addActionListener(new BackActionListener(player, jFrame));
         return backButton;
     }
 }
