@@ -10,7 +10,7 @@ import java.awt.*;
 public class StageFrame extends JFrame{
     private JButton[] levelButton;
     private Player player;
-    private final int levels = 5;
+    private final int levels = 6;
     private JButton backButton;
 
     public StageFrame(Player player) {
@@ -32,7 +32,7 @@ public class StageFrame extends JFrame{
             levelButton[i].setForeground(Color.WHITE); // 글자색
             levelButton[i].setFocusPainted(false); // 테두리
             levelButton[i].setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 30)); // 폰트
-            levelButton[i].setBounds(130*i+50, 250, 150, 60);
+            levelButton[i].setBounds(120*i+10, 250, 150, 60);
             final int level = i+1;
             levelButton[i].addActionListener(e -> {
                 // 해당 스테이지로 넘어가는 액션

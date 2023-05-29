@@ -114,6 +114,7 @@ public class Game extends Canvas
 	 */
 	private void startGame() {
 		// clear out any existing entities and initialise a new set
+		characterStatus.initializeStatus();
 		entities.clear();
 		initEntities();
 
@@ -132,15 +133,9 @@ public class Game extends Canvas
 	int alienKill =0;
 
 	private void initEntities() {
-		createShip();
 		alienCount = 0;
-		db.getPlayCount(count -> {
-			if (count != 0 && count % 5 == 0) {
-				setLevel(6);
-			}
-			createAliens();
-		});
-
+		createShip();
+		createAliens();
 	}
 
 	private void createShip() {
@@ -157,7 +152,7 @@ public class Game extends Canvas
 		} else if (level == 2) {
 			numRows = 5; numCols = 8; rowSpace = 35; colSpace = 70;
 		} else if (level == 6) {
-			numRows = 15; numCols = 1; rowSpace = 0; colSpace = 0;
+			numRows = 50; numCols = 1; rowSpace = 0; colSpace = 0;
 		} else {
 			numRows = 5; numCols = 12; rowSpace = 35; colSpace = 50;
 		}
@@ -321,6 +316,7 @@ public class Game extends Canvas
 			// work out how long its been since the last update, this
 			// will be used to calculate how far the entities should
 			// move this loop
+
 			long delta = SystemTimer.getTime() - lastLoopTime;
 			lastLoopTime = SystemTimer.getTime();
 
@@ -341,75 +337,20 @@ public class Game extends Canvas
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 
 			// draw the background image
-			if (background != null) {
-				g.drawImage(background, 0, 0, null);
-			}
+			drawBackground(g);
 
-			// cycle round asking each entity to move itself
-			if (!waitingForKeyPress) {
-				for (int i=0;i<entities.size();i++) {
-					Entity entity = entities.get(i);
+			drawEntities(waitingForKeyPress, g);
 
-					entity.move(delta);
-				}
-				if ((level == 4 && timer % 50 == 0) || (level == 5 && timer % 20 == 0) || (level == 6 && timer % 20 == 0)) {
-					ObstacleEntity.addObstacle(this, player.getTheme(), this.entities, this.level);
-				}
-			}
+			activeEntityLogic();
+			moveEntities(delta);
 
+			checkCollision();
 
-			// cycle round drawing all the entities we have in the game
-			for (int i=0;i<entities.size();i++) {
-				Entity entity = entities.get(i);
+			removeUselessEntities();
 
-				entity.draw(g);
-			}
+			displayWaitingMessagesAndResetTimer(g);
 
-			// brute force collisions, compare every entity against
-			// every other entity. If any of them collide notify
-			// both entities that the collision has occured
-			for (int p=0;p<entities.size();p++) {
-				for (int s=p+1;s<entities.size();s++) {
-					Entity me = entities.get(p);
-					Entity him = entities.get(s);
-
-					if (me.collidesWith(him)) {
-						me.collidedWith(him);
-						him.collidedWith(me);
-					}
-				}
-			}
-
-			// remove any entity that has been marked for clear up
-			entities.removeAll(removeList);
-			removeList.clear();
-
-			// if a game event has indicated that game logic should
-			// be resolved, cycle round every entity requesting that
-			// their personal logic should be considered.
-			if (logicRequiredThisLoop) {
-				for (int i=0;i<entities.size();i++) {
-					Entity entity = entities.get(i);
-					entity.doLogic();
-				}
-
-				logicRequiredThisLoop = false;
-			}
-
-			// if we're waiting for an "any key" press then draw the
-			// current message
-			if (waitingForKeyPress) {
-				g.setColor(Color.white);
-				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("Press any key", (800 - g.getFontMetrics().stringWidth("Press any key")) / 2, 300);
-				//타이머(스코어) 0 초기화
-				timer =0;
-			}
-
-			//죽인 에일리언 표시
-			g.setColor(Color.white);
-			g.drawString("죽인 에일리언" + alienKill, 30, 30);
-			g.drawString("HP: " + characterStatus.getHp(), 720, 30);
+			displayAlienStatus(g);
 
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over
@@ -443,6 +384,99 @@ public class Game extends Canvas
 		}
 	}
 
+	private long calculateDeltaTime(long lastLoopTime) {
+		long currentLoopTime = SystemTimer.getTime();
+		long delta = currentLoopTime - lastLoopTime;
+		lastLoopTime = currentLoopTime;
+
+		return delta;
+	}
+
+
+	private void displayAlienStatus(Graphics2D g) {
+		g.setColor(Color.white);
+		g.drawString(getALienStatus(level), 30, 30);
+		g.drawString("HP: " + characterStatus.getHp(), 720, 30);
+	}
+
+	private void displayWaitingMessagesAndResetTimer(Graphics2D g) {
+		if (waitingForKeyPress) {
+			g.setColor(Color.white);
+			g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
+			g.drawString("Press any key", (800 - g.getFontMetrics().stringWidth("Press any key")) / 2, 300);
+			//타이머(스코어) 0 초기화
+			timer =0;
+		}
+	}
+
+	private void removeUselessEntities() {
+		entities.removeAll(removeList);
+		removeList.clear();
+	}
+
+	private void drawBackground(Graphics2D g) {
+		if (background != null) {
+			g.drawImage(background, 0, 0, null);
+		}
+	}
+
+	private void activeEntityLogic() {
+		if (logicRequiredThisLoop) {
+			for (int i=0;i<entities.size();i++) {
+				Entity entity = entities.get(i);
+				entity.doLogic();
+			}
+
+			logicRequiredThisLoop = false;
+		}
+	}
+
+	private void moveEntities(long delta) {
+		if (!waitingForKeyPress) {
+			for (int i=0;i<entities.size();i++) {
+				Entity entity = entities.get(i);
+
+				entity.move(delta);
+			}
+			if ((level == 4 && timer % 50 == 0) || (level == 5 && timer % 20 == 0) || (level == 6 && timer % 20 == 0)) {
+				ObstacleEntity.addObstacle(this, player.getTheme(), this.entities, this.level);
+			}
+		}
+	}
+
+	private void checkCollision() {
+		for (int p=0;p<entities.size();p++) {
+			for (int s=p+1;s<entities.size();s++) {
+				Entity me = entities.get(p);
+				Entity him = entities.get(s);
+
+				if (me.collidesWith(him)) {
+					me.collidedWith(him);
+					him.collidedWith(me);
+				}
+			}
+		}
+	}
+
+	private void drawEntities(boolean waitingForKeyPress, Graphics2D g){
+		drawShip(g);
+		drawAliens(waitingForKeyPress, g);
+	}
+
+	private void drawShip(Graphics2D g) {
+		Entity entity = entities.get(0);
+		entity.draw(g);
+	}
+
+	private void drawAliens(boolean waitingForKeyPress, Graphics2D g) {
+		if (!waitingForKeyPress){
+			for (int i = 1; i < entities.size(); i++) {
+				Entity entity = entities.get(i);
+				entity.draw(g);
+			}
+		}
+	}
+
 	/**
 	 * A class to handle keyboard input from the user. The class
 	 * handles both dynamic input during game play, i.e. left/right
@@ -461,6 +495,12 @@ public class Game extends Canvas
 		this.level = level;
 	}
 
+	public String getALienStatus(int level){
+		if (level == 6) {
+			return "Boss Hp: " + (50 - alienKill);
+		}
+		else return "죽인 에일리언: " + alienKill;
+	}
 
 	private class KeyInputHandler extends KeyAdapter {
 		/**

@@ -8,7 +8,7 @@ public class ThemeFrame extends JFrame {
     private JButton[] skinSelectButton;
     private JButton backButton;
     private Player player;
-    private final String[] buttonNames = {"Space", "Cafe", "Desert"};
+    private final String[] buttonNames = {"Space", "Cat", "Desert"};
 
     public ThemeFrame(Player player) {
         super("Theme");

@@ -5,7 +5,7 @@ import org.newdawn.spaceinvaders.entity.ShipEntity;
 public class ShieldStatus {
     private boolean shieldActive;
     private long shieldStartTime;
-    private long SHIELD_DURATION = 5000;
+    private long SHIELD_DURATION = 2000;
     private ShipEntity shipEntity;
 
     public void setShipEntity(ShipEntity shipEntity){

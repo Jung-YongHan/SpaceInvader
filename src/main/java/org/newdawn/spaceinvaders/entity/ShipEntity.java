@@ -66,10 +66,9 @@ public class ShipEntity extends Entity {
 
 		if (other instanceof AlienEntity || other instanceof ObstacleEntity) {
 			if (!characterStatus.getShieldStatus().isShieldActive()) {
-				if (characterStatus.getHp() == 1)
+				characterStatus.setHp(characterStatus.getHp()-1);
+				if (characterStatus.getHp() <= 0)
 					game.notifyDeath();
-				else
-					characterStatus.setHp(characterStatus.getHp()-1);
 			}
 		}
 	}

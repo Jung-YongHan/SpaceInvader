@@ -8,14 +8,12 @@ public abstract class Character {
     protected String shieldShipImage = "shieldShip.png";
     protected String shipShotImage = "shot.png";
     protected String path = "sprites/ship/";
-
     protected double moveSpeed;
     protected double firingInterval;
     protected int hp;
     protected int bulletCount;
 
     public abstract String getShipImageFolderPath();
-
     public String getShipImage() {return getShipImageFolderPath()+shipImage;}
     public String getShipShieldImage() {return getShipImageFolderPath()+shieldShipImage;}
     public String getShipShotImage() {return getShipImageFolderPath()+shipShotImage;}
